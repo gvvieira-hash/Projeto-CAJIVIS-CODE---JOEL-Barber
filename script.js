@@ -81,5 +81,5 @@ form.addEventListener("submit", function(event) {
     localStorage.setItem("emailUsuario", emailInputReg.value);
 
     // 3. Redireciona
-    window.location.href = "../home/home.html";
+    window.location.href = "home/home.html";
 });
