@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joel Barber</title>
+    <link rel="stylesheet" href="style-produto.css">
+</head>
+<body>
+
+     <!-- Font Awesome -->
+<link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+    <header>
+
+        <!-- LOGO -->
+        <div class="logo">
+            <img src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png" alt="Logo Joel Barber" id="foto">
+        </div>
+
+        <!-- MENU -->
+        <nav>
+            <ul>
+                <li><a href="../home/home.html">Início</a></li>
+                <li><a href="../agendamento1/index-ag1.html">Agendamentos</a></li>
+                <li><a href="../produtos/index-produto.html" class="active">Produtos</a></li>
+                <li><a href="../fila_de_espera/index-fila.html">Fila de Espera</a></li>
+                <li><a href="../servicos/index-serv.html">Serviços</a></li>
+            </ul>
+        </nav>
+
+       
+        <!-- BOTÕES -->
+        <div class="buttons" id="auth-buttons">
+            <a href="../log/index.html" class="btn-login">Entrar</a>
+            <a href="../criar conta/index2.html" class="btn-register">Criar Conta</a>
+        </div>
+
+        <!-- PERFIl  -->
+        <div class="user-profile" id="user-profile" style="display: none;">
+            <div class="avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <span class="user-name">Minha Conta</span>
+            <a href="#" id="btn-logout" >Sair</a>
+        </div>
+        
+        
+    </header>
+
+    <section class="container">
+
+        <!-- HERO -->
+        <section class="hero-produtos">
+            <div class="overlay"></div>
+            <div class="hero-texto">
+                <h1>Produtos</h1>
+                    <p>
+                        Os melhores <br>
+                        produtos para <br>
+                        cuidar do seu estilo
+                    </p>
+            </div>
+
+        </section>
+
+        <!-- FILTROS -->
+        <section class="filtros">
+            <button>Todos</button>
+            <button>Cabelo</button>
+            <button>Barba</button>
+            <button>Acabamento</button>
+            <button>Acessórios</button>
+        </section>
+
+        <!-- PRODUTOS -->
+        <section class="produtos">
+
+            <!-- CARD -->
+            <div class="card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbHe-d5bxwVuipawpkIu_7dUg3pABPps1VF6ho0AlUscNOOixC" alt="a" class="pi">
+                <h3>Pomada Modeladora</h3>
+                <p>Fixação forte</p>
+
+                <div class="card-footer">
+                    <span>R$ 30,00</span>
+                    <button class="bnt-mais"><img src="icons8-soma-64.png" alt="a"></button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://product-data.raiadrogasil.io/images/3503779.webp" alt="a" class="pi">
+                <h3>Óleo para barba</h3>
+                <p>Hidratação intensa</p>
+
+ 
+        
+                <div class="card-footer">
+                    <span>R$ 45,00</span>
+                    <button class="bnt-mais"><img src="icons8-soma-64.png" alt="a"></button>
+                </div>
+            </div>
+
+    
+            <div class="card">
+                <img src="https://americanas.vtexassets.com/arquivos/ids/414852/4957474448_2_xlarge.jpg?v=638750818717000000" alt="a" class="pi">
+                <h3>Spray Fixador</h3>
+                <p>Fixação leve</p>
+ 
+                <div class="card-footer">
+                    <span>R$ 35,00</span>
+                    <button class="bnt-mais"><img src="icons8-soma-64.png" alt="a"></button>
+                </div>
+            </div>
+
+            <div class="card destaque">
+                 <img src="https://http2.mlstatic.com/D_Q_NP_779993-MLA99855004595_112025-O.webp" alt="a" class="pi">
+                <h3>Shampoo para barba</h3>
+                <p>Limpeza suave</p>
+
+                <div class="card-footer">
+                    <span>R$ 30,00</span>
+                    <button class="bnt-mais"><img src="icons8-soma-64.png" alt="a"></button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://http2.mlstatic.com/D_Q_NP_913786-MLA84471756473_052025-O.webp" alt="a" class="pi">
+                <h3>Balm Pós-Barba</h3>
+                <p>Hidrata e acalma</p>
+
+                <div class="card-footer">
+                   <span>R$ 40,00</span>
+                   <button class="bnt-mais"><img src="icons8-soma-64.png" alt="a"></button>
+                </div>
+                
+            </div>
+
+            <div class="card">
+                <img src="https://down-br.img.susercontent.com/file/br-11134201-81z1k-mdw7dmuxiuip67" alt="a" class="pi">
+                <h3>Condicionador</h3>
+                <p>Cabelos hidratados</p>
+    
+                <div class="card-footer">
+                    <span>R$ 35,00</span>
+                    <button class="bnt-mais">
+                        <img src="icons8-soma-64.png" alt="a">
+                    </button>
+                </div>
+            </div>
+        </section>
+    </section>
+
+</body>
+<script src="produtos.js"></script> <script src="../home/auth.js"></script> </body>
+    
+</html>

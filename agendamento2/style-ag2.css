@@ -1,0 +1,743 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #0b0b0b;
+    color: white;
+}
+
+/* =======================================================
+   HEADER
+======================================================= */
+
+header{
+    width:100%;
+    height:90px;
+    background:#000;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 50px;
+
+    position:fixed;
+    top:0;
+    left:0;
+
+    z-index:999;
+}
+
+.logo img{
+    width:90px;
+}
+
+/* MENU */
+
+.navbar ul{
+    display:flex;
+    gap:40px;
+    list-style:none;
+}
+
+.navbar a{
+    text-decoration:none;
+    color:white;
+    font-size:15px;
+    transition:.3s;
+    position:relative;
+}
+
+.navbar a::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-6px;
+
+    width:0;
+    height:2px;
+
+    background:#d4a24c;
+    transition:.3s;
+}
+
+.navbar a:hover,
+.navbar .active{
+    color:#d4a24c;
+}
+
+.navbar a:hover::after,
+.navbar .active::after{
+    width:100%;
+}
+
+/* BOTÕES */
+
+.buttons{
+    display:flex;
+    gap:15px;
+}
+
+.btn-login,
+.btn-register{
+    text-decoration:none;
+    padding:12px 22px;
+    border-radius:10px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-login{
+    border:1px solid #d4a24c;
+    color:white;
+}
+
+.btn-login:hover{
+    background:#d4a24c;
+    color:black;
+}
+
+.btn-register{
+    background:#d4a24c;
+    color:black;
+}
+
+.btn-register:hover{
+    opacity:.8;
+}
+
+/* =======================================================
+   CONTAINER
+======================================================= */
+
+.container{
+    display:flex;
+    gap:30px;
+
+    padding:30px;
+    margin-top:90px;
+
+    height:690px;
+}
+
+/* LOGO */
+.logo img{
+    width: 90px;
+    display: block;
+}
+
+/* MENU */
+nav ul{
+    display: flex;
+    list-style: none;
+    gap: 40px;
+}
+
+nav ul li a{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.3s;
+    position: relative;
+}
+
+/* LINHA EMBAIXO DO LINK */
+nav ul li a::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+
+    width: 0%;
+    height: 2px;
+
+    background-color: #d4a24c;
+
+    transition: 0.3s;
+}
+
+nav ul li a:hover{
+    color: #d4a24c;
+}
+
+nav ul li a:hover::after{
+    width: 100%;
+}
+
+/* BOTÕES */
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-login,
+.btn-register {
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: 10px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btn-login {
+    border: 1px solid #d4a24c;
+    color: white;
+}
+
+.btn-login:hover {
+    background: #d4a24c;
+    color: black;
+}
+
+.btn-register {
+    background: #d4a24c;
+    color: black;
+}
+
+.btn-register:hover {
+    opacity: 0.8;
+}
+
+/* --- PERFIL  --- */
+.user-profile {
+    display: flex;
+    align-items: center;
+    background-color: #121212; 
+    border: 1px solid #d4a24c; 
+    padding: 6px 16px 6px 6px;
+    border-radius: 50px; 
+}
+
+
+.user-profile .avatar {
+    background-color: #d4a24c;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 14px; 
+}
+
+.user-profile .avatar i{
+    color: #000;
+}
+
+.user-profile .user-name {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#btn-logout{
+    color: #d4a24c; 
+    margin-left: 15px; 
+    font-size: 13px; 
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+/* Container que segura o card da img barbeariano centro da página */
+.container-pagina {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    min-height: 100vh; /* Faz ocupar a tela toda */
+    padding: 20px;
+
+}
+
+/* O Card em si */
+.card-barbearia {
+    position: relative; /* Regra de ouro para podermos jogar o texto por cima */
+    width: 400px;       /* Largura aproximada do card da foto */
+    border-radius: 15px;
+    overflow: hidden;   /* Faz a imagem respeitar as bordas arredondadas */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+   
+
+}
+
+/* A IMAGEM DE FUNDO (Ela dita as regras do tamanho agora) */
+.card-barbearia img, 
+.card-barbearia .img-fundo {
+    /* REMOVEMOS: position: absolute (para ela voltar a ocupar espaço real) */
+    display: block;
+    width: 100%;
+    height: auto; /* Faz a altura se ajustar proporcionalmente sem sobras */
+      opacity: 0.2; /* aqui controla a transparência */
+}
+
+/* Bloco de texto flutuando sobre a imagem */
+.conteudo-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Centraliza todo o texto e botão verticalmente */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    
+    padding: 40px 30px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Título */
+.conteudo-card h1 {
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 42px;         /* Fonte grande igual à foto */
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+/* A linha divisória dourada */
+.divisor {
+    width: 60%;
+    border: none;
+    height: 1px;
+    background-color: #c09455; /* Cor dourada */
+    margin-bottom: 30px;
+    opacity: 0.7;
+}
+
+/* Parágrafo explicativo */
+.conteudo-card p {
+    color: #a0a0a0; /* Cinza claro idêntico à imagem */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+}
+
+/* Botão Começar Agendamento */
+.btn-agendamento {
+    background-color: #dca35a; /* Tom de dourado/caramelo fosco */
+    color: #000000;    
+    border: none;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-family: sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;                 /* Espaço entre o emoji de calendário e o texto */
+    transition: 
+    background-color 0.3s;
+}
+
+.btn-agendamento:hover {
+    background-color: #c09455; /* Escurece de leve ao passar o mouse */
+}
+/* =======================================================
+TITLE
+======================================================= */
+
+.title-area{
+    margin-bottom:35px;
+}
+
+.title-area h2{
+    font-size:34px;
+    margin-bottom:8px;
+}
+
+.title-area p{
+    color:#777;
+    font-size:15px;
+}
+
+/* =======================================================
+STEPS
+======================================================= */
+
+.steps{
+    display:flex;
+    align-items:center;
+    margin-bottom:50px;
+}
+
+.step{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    min-width:140px;
+}
+
+.circle{
+    width:65px;
+    height:65px;
+
+    border-radius:50%;
+    border:2px solid #333;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+
+    margin-bottom:12px;
+
+    transition:.3s;
+}
+
+.circle i{
+    font-size:20px;
+}
+
+.step span{
+    font-size:15px;
+    font-weight:600;
+}
+
+.step small{
+    margin-top:4px;
+    color:#666;
+    font-size:12px;
+}
+
+.line{
+    flex:1;
+    height:2px;
+    background:#222;
+    margin:0 10px;
+}
+
+.active .circle{
+    background:#d4a24c;
+    color:black;
+    border:none;
+
+    box-shadow:0 0 25px rgba(212,162,76,.3);
+}
+
+.done .circle{
+    border-color:#d4a24c;
+    color:#d4a24c;
+}
+
+.active-line{
+    background:#d4a24c;
+}
+
+/* =======================================================
+BARBEIROS
+======================================================= */
+
+.barbers{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+}
+
+.barber-card{
+
+    background:#121212;
+
+    border:1px solid transparent;
+
+    border-radius:22px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    position:relative;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.barber-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#d4a24c;
+}
+
+.selected{
+
+    border-color:#d4a24c;
+
+    background:linear-gradient(
+        180deg,
+        #1a1a1a,
+        #101010
+    );
+
+    box-shadow:
+    0 10px 30px rgba(212,162,76,.12);
+}
+
+.selected-icon{
+
+    position:absolute;
+
+    top:18px;
+    right:18px;
+
+    width:24px;
+    height:24px;
+
+    border-radius:50%;
+
+    border:2px solid #555;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:11px;
+
+    color:transparent;
+
+    transition:.3s;
+}
+
+.selected .selected-icon{
+
+    background:#d4a24c;
+
+    border-color:#d4a24c;
+
+    color:black;
+}
+
+.barber-image{
+
+    width:110px;
+    height:110px;
+
+    margin:0 auto 20px auto;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    border:3px solid #d4a24c;
+}
+
+.barber-card img{
+    width:110px;
+    height:110px;
+
+    border-radius:50%; /* deixa redonda */
+
+    object-fit:cover;
+
+    border:3px solid #d4a24c;
+
+    margin-bottom:18px;
+
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.barber-card h3{
+
+    font-size:20px;
+
+    margin-bottom:8px;
+}
+
+.job{
+
+    color:#888;
+
+    font-size:14px;
+
+    display:block;
+
+    margin-bottom:16px;
+}
+
+.rating{
+
+    color:#d4a24c;
+
+    font-size:15px;
+}
+
+/* =======================================================
+ACTIONS
+======================================================= */
+
+.actions{
+
+    display:flex;
+    justify-content:space-between;
+
+    margin-top:45px;
+}
+
+.back-btn,
+.next-btn{
+
+    height:55px;
+
+    padding:0 28px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+
+    font-weight:700;
+
+    transition:.3s;
+}
+
+.back-btn{
+
+    border:1px solid #333;
+
+    color:white;
+}
+
+.back-btn:hover{
+
+    border-color:#d4a24c;
+
+    color:#d4a24c;
+}
+
+.next-btn{
+
+    background:#d4a24c;
+
+    color:black;
+}
+
+.next-btn:hover{
+
+    transform:translateY(-4px);
+}
+/* =======================================================
+   CONTAINER
+======================================================= */
+
+.container{
+    display:flex;
+    gap:30px;
+
+    padding:30px;
+    margin-top:90px;
+
+    height: 810px
+}
+
+/* =======================================================
+   SIDEBAR
+======================================================= */
+
+.sidebar{
+    width:400px;
+    height:750px;
+
+    border-radius:24px;
+    overflow:hidden;
+
+    position:relative;
+    flex-shrink:0;
+
+    background:#111;
+}
+
+.sidebar img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    position:absolute;
+    inset:0;
+
+    opacity:.22;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.95) 15%,
+        rgba(0,0,0,.55) 45%,
+        rgba(0,0,0,.15) 100%
+    );
+}
+
+.sidebar-content{
+    position:absolute;
+    bottom:40px;
+    left:25px;
+    right:25px;
+    z-index:2;
+}
+
+.sidebar-content h1{
+    font-size:50px;
+    line-height:1;
+    margin-bottom:18px;
+}
+
+.sidebar-content p{
+    color:#ccc;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+
+.sidebar button{
+    background:#d4a24c;
+    color:black;
+
+    border:none;
+    padding:15px 25px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:700;
+    transition:.3s;
+}
+
+.sidebar button:hover{
+    transform:scale(1.05);
+}
+.main-content{
+    flex:1;
+    background:#0d0d0d;
+    border-radius:24px;
+    padding:40px;
+    min-height:630px;
+}
+

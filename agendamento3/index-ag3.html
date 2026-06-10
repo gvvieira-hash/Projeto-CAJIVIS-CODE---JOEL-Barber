@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joel Barber</title>
+
+    <link rel="stylesheet" href="style-ag3.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="logo">
+            <img src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png" alt="Logo Joel Barber">
+        </div>
+
+        <nav class="navbar">
+            <ul>
+                <li><a href="../home/home.html">Início</a></li>
+                <li><a href="../agendamento1/index4.html" class="active">Agendamentos</a></li>
+                <li><a href="../produtos/index-produto.html">Produtos</a></li>
+                <li><a href="../fila_de_espera/index-fila.html">Fila de Espera</a></li>
+                <li><a href="../servicos/index-serv.html">Serviços</a></li>
+            </ul>
+        </nav>
+
+        <!-- BOTÕES -->
+        <div class="buttons" id="auth-buttons">
+            <a href="../log/index.html" class="btn-login">Entrar</a>
+
+            <a href="../criar conta/index2.html" class="btn-register">Criar Conta</a>
+        </div>
+
+         <!-- PERFIl  -->
+        <div class="user-profile" id="user-profile" style="display: none;">
+            <div class="avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <span class="user-name">Minha Conta</span>
+            <a href="#" id="btn-logout" >Sair</a>
+        </div>
+
+    </header>
+
+    <section class="container">
+
+        <section class="container-sidebar">
+            <aside class="sidebar">
+                <img src="barbearia-em-fortaleza-7.webp" alt="Imagem de uma barbearia meramente ilustrativa">
+
+                <div class="overlay"></div>
+
+                <div class="sidebar-content">
+                    <h1>Agende seu horário</h1>
+                    <p>
+                        Escolha o serviço, o profissional e o melhor horário para você.
+                    </p>
+                    <button>
+                        <i class="fa-solid fa-calendar-days"></i> COMEÇAR AGENDAMENTO
+                    </button>
+                </div>
+            </aside>
+        </section>
+
+        <main class="main-content">
+
+<section class="steps">
+
+    <div class="step done">
+        <div class="circle">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <span>Serviço</span>
+    </div>
+
+    <div class="line active-line"></div>
+
+    <div class="step done">
+        <div class="circle">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <span>Barbeiro</span>
+    </div>
+
+    <div class="line active-line"></div>
+
+    <div class="step active">
+        <div class="circle">
+            <i class="fa-solid fa-calendar"></i>
+        </div>
+        <span>Data</span>
+    </div>
+
+    <div class="line"></div>
+
+    <div class="step">
+        <div class="circle">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <span>Confirmação</span>
+    </div>
+
+</section>
+
+
+            <h2>Escolha a data e horário</h2>
+
+            <div class="schedule-container">
+                
+                <div class="calendar-wrapper">
+                    <div class="calendar-header">
+                        <button class="cal-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                        <span>Maio 2026</span>
+                        <button class="cal-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    
+                    <div class="calendar-grid">
+                        <div class="day-name">D</div><div class="day-name">S</div><div class="day-name">T</div>
+                        <div class="day-name">Q</div><div class="day-name">Q</div><div class="day-name">S</div><div class="day-name">S</div>
+                        
+                        <div class="day next-prev-month">28</div><div class="day next-prev-month">29</div><div class="day next-prev-month">30</div>
+                        
+                        <div class="day">01</div><div class="day">02</div><div class="day">03</div><div class="day">04</div>
+                        <div class="day">05</div><div class="day">06</div><div class="day">07</div><div class="day">08</div>
+                        <div class="day">09</div><div class="day">10</div><div class="day">11</div><div class="day">12</div>
+                        <div class="day">13</div><div class="day">14</div><div class="day">15</div><div class="day">16</div>
+                        <div class="day">17</div><div class="day">18</div><div class="day">19</div><div class="day">20</div>
+                        
+                        <div class="day active-day">21</div>
+                        
+                        <div class="day">22</div><div class="day">23</div><div class="day">24</div><div class="day">25</div>
+                        <div class="day">26</div><div class="day">27</div><div class="day">28</div><div class="day">29</div>
+                        <div class="day">30</div><div class="day">31</div>
+                        
+                        <div class="day next-prev-month">01</div>
+                    </div>
+                </div>
+
+                <div class="time-wrapper">
+                    <h3>Horários Disponíveis</h3>
+                    
+                    <div class="time-grid">
+                        <button class="time-slot">09:00</button>
+                        <button class="time-slot">09:30</button>
+                        <button class="time-slot">10:00</button>
+                        <button class="time-slot">10:30</button>
+                        <button class="time-slot active-time">11:00</button>
+                        <button class="time-slot">11:30</button>
+                        <button class="time-slot">14:00</button>
+                        <button class="time-slot">14:30</button>
+                        <button class="time-slot">15:00</button>
+                        <button class="time-slot">15:30</button>
+                        <button class="time-slot">16:00</button>
+                        <button class="time-slot">16:30</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="action-footer">
+                <a href="../agendamento2/index-ag2.html" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar
+                </a>
+
+                <a href="../agendamento4/index-ag4.html" class="btn-next">
+                    Proximo <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>      
+
+        </main> 
+    </section>
+
+
+    <script src="script-ag3.js"></script> <script src="../home/auth.js"></script> 
+
+</body>
+</html>

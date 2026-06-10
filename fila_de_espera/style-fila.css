@@ -1,0 +1,1045 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* =======================================================
+   RESET
+======================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#0b0b0b;
+    color:white;
+}
+
+/* =======================================================
+   HEADER
+======================================================= */
+
+header{
+    width:100%;
+    height:90px;
+
+    background:#000;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 50px;
+
+    position:fixed;
+    top:0;
+    left:0;
+
+    z-index:999;
+}
+
+.logo img{
+    width:90px;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:40px;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color:white;
+    font-size:15px;
+    font-weight:500;
+    transition:.3s;
+    position:relative;
+}
+
+/* LINHA EMBAIXO DO LINK */
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+
+    width: 0%;
+    height: 2px;
+
+    background-color: #d4a24c;
+    transition: 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active{
+    color:#d4a24c;
+}
+
+nav ul li a:hover::after,
+nav ul li a.active::after{
+    width:100%;
+}
+
+/* BOTÕES */
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-login,
+.btn-register {
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: 10px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btn-login {
+    border: 1px solid #d4a24c;
+    color: white;
+}
+
+.btn-login:hover {
+    background: #d4a24c;
+    color: black;
+}
+
+.btn-register {
+    background: #d4a24c;
+    color: black;
+}
+
+.btn-register:hover {
+    opacity: 0.8;
+}
+
+/* --- PERFIL  --- */
+.user-profile {
+    display: flex;
+    align-items: center;
+    background-color: #121212; 
+    border: 1px solid #d4a24c; 
+    padding: 6px 16px 6px 6px;
+    border-radius: 50px; 
+}
+
+
+.user-profile .avatar {
+    background-color: #d4a24c;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 14px; 
+}
+
+.user-profile .avatar i{
+    color: #000;
+}
+
+.user-profile .user-name {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#btn-logout{
+    color: #d4a24c; 
+    margin-left: 15px; 
+    font-size: 13px; 
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+/* =======================================================
+   LAYOUT
+======================================================= */
+
+.interface-layout{
+    width:95%;
+    max-width:1350px;
+
+    margin:120px auto 40px auto;
+
+    display:flex;
+    gap:25px;
+
+    align-items:flex-start;
+}
+
+.coluna-esquerda{
+    flex:1.5;
+
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.coluna-direita{
+    flex:1;
+
+    min-width:340px;
+
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* =======================================================
+   CARD PRINCIPAL FILA
+======================================================= */
+
+.fila-container{
+    width:100%;
+
+    background:#0d0d0d;
+
+    border:1px solid #1f1f1f;
+    border-radius:16px;
+
+    padding:28px;
+}
+
+.fila-topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:25px;
+}
+
+/* STATUS */
+
+.status-box{
+    width:38%;
+
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.status-icon{
+    width:60px;
+    height:60px;
+
+    border:1px solid #d4a24c;
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:24px;
+    color:#d4a24c;
+
+    flex-shrink:0;
+}
+
+.status-texto h2{
+    font-size:22px;
+    margin-bottom:4px;
+}
+
+.status-texto p{
+    color:#777;
+    font-size:14px;
+    line-height:1.4;
+}
+
+/* HORARIO */
+
+.horario-box{
+    width:31%;
+
+    text-align:center;
+
+    border-left:1px solid #252525;
+    border-right:1px solid #252525;
+}
+
+.horario-box span{
+    color:#999;
+    font-size:15px;
+}
+
+.horario-box h1{
+    color:#d4a24c;
+    font-size:34px;
+    margin-top:6px;
+}
+
+/* PREVISÃO */
+
+.previsao-box{
+    width:31%;
+    text-align:center;
+}
+
+.previsao-box span{
+    color:#999;
+    font-size:15px;
+}
+
+.previsao-box h3{
+    color:#d4a24c;
+    margin-top:8px;
+    font-size:20px;
+}
+
+/* DIVISORIA */
+
+.linha-divisoria{
+    width:100%;
+    height:1px;
+
+    background:#252525;
+
+    margin:30px 0;
+}
+
+/* POSIÇÃO */
+
+.fila-posicao h2{
+    font-size:22px;
+    margin-bottom:25px;
+}
+
+/* TRACK */
+
+.fila-track{
+    width:100%;
+
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+}
+
+/* ITEM */
+
+.fila-item{
+    width:90px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+}
+
+.bola{
+    width:48px;
+    height:48px;
+
+    border-radius:50%;
+    border:2px solid #d4a24c;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#d4a24c;
+
+    font-size:18px;
+    font-weight:700;
+
+    background:#0d0d0d;
+
+    z-index:2;
+}
+
+.active .bola,
+.voce .bola{
+    background:#d4a24c;
+    color:black;
+}
+
+.numero{
+    margin-top:12px;
+    font-size:17px;
+    font-weight:700;
+}
+
+.fila-item p{
+    margin-top:4px;
+
+    font-size:13px;
+    color:#777;
+}
+
+.voce p{
+    color:#d4a24c;
+    font-weight:700;
+}
+
+/* LINHA */
+
+.linha{
+    flex:1;
+    height:2px;
+
+    background:#333;
+
+    margin-top:23px;
+    margin-left:-20px;
+    margin-right:-20px;
+}
+
+.active-linha{
+    background:#d4a24c;
+}
+
+/* =======================================================
+   CARD NOTIFICAÇÃO
+======================================================= */
+
+.fila-notificacao{
+    width:100%;
+
+    background:#0d0d0d;
+
+    border:1px solid #1f1f1f;
+    border-radius:16px;
+
+    padding:28px 39px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    height:300px;
+}
+
+.notificacao-esquerda{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+/* ICONE */
+
+.sino-icon{
+    width:60px;
+    height:60px;
+
+    background:#111;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:20px;
+    color:#d4a24c;
+
+    flex-shrink:0;
+}
+
+/* TEXTO */
+
+.notificacao-texto h3{
+    font-size:25px;
+    line-height:1.3;
+
+    max-width:300px;
+
+    color:white;
+    font-weight:600;
+}
+
+.notificacao-texto p{
+    margin-top:4px;
+
+    color:#667;
+    font-size:17px;
+    line-height:1.4;
+}
+
+/* BOTÃO */
+
+.btn-sair{
+    height:48px;
+
+    padding:0 40px;
+
+    border-radius:30px;
+
+    background:transparent;
+
+    border:1px solid #8b1e1e;
+
+    color:#e53935;
+
+    font-size:18px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+     margin-left: 20px;
+}
+
+.btn-sair:hover{
+    background:#e53935;
+    color:white;
+
+    box-shadow:0 0 15px rgba(229,57,53,.4);
+}
+
+/* =======================================================
+   SIDECARDS
+======================================================= */
+
+.side-card{
+    background:#0d0d0d;
+
+    border:1px solid #1f1f1f;
+    border-radius:18px;
+
+    padding:25px;
+}
+
+.side-card h2{
+    font-size:20px;
+    margin-bottom:22px;
+}
+
+/* PERFIL */
+
+.barbearia-container-perfil{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.barbearia-foto{
+    width:85px;
+    height:85px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    border:2px solid #d4a24c;
+
+    flex-shrink:0;
+}
+
+.barbearia-foto img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+
+.barbearia-detalhes h3{
+    font-size:18px;
+}
+
+.rating{
+    color:#d4a24c;
+    margin:5px 0;
+    font-size:14px;
+}
+
+.barbearia-detalhes p{
+    color:#888;
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* SERVIÇOS */
+
+.lista-servicos{
+    display:flex;
+    flex-direction:column;
+}
+
+.servico-item{
+    display:flex;
+    align-items:center;
+
+    padding:14px 0;
+
+    border-bottom:1px solid #1f1f1f;
+}
+
+.item-badge{
+    width:24px;
+    height:24px;
+
+    border:1px solid #d4a24c;
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#d4a24c;
+
+    font-size:12px;
+
+    margin-right:15px;
+}
+
+.item-nome{
+    flex:1;
+    font-size:14px;
+}
+
+.item-preco{
+    font-size:14px;
+    font-weight:600;
+}
+
+/* BOTÕES */
+
+.btn-ver-todos,
+.btn-avaliar{
+    width:100%;
+    height:50px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:14px;
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.btn-ver-todos{
+    margin-top:20px;
+
+    background:transparent;
+
+    border:1px solid #1f1f1f;
+    color:white;
+}
+
+.btn-ver-todos:hover{
+    border-color:#d4a24c;
+    color:#d4a24c;
+}
+
+.btn-avaliar{
+    background:transparent;
+
+    border:1px solid #1f1f1f;
+
+    color:#d4a24c;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
+
+.btn-avaliar:hover{
+    background:#d4a24c;
+    color:black;
+}
+
+/* =======================================================
+   RESPONSIVO
+======================================================= */
+
+@media(max-width:1200px){
+
+    .fila-topo{
+        flex-direction:column;
+        gap:30px;
+    }
+
+    .status-box,
+    .horario-box,
+    .previsao-box{
+        width:100%;
+
+        border:none;
+
+        text-align:center;
+        justify-content:center;
+    }
+
+    .status-box{
+        flex-direction:column;
+    }
+
+    .fila-track{
+        flex-wrap:wrap;
+        gap:30px;
+        justify-content:center;
+    }
+
+    .linha{
+        display:none;
+    }
+}
+
+@media(max-width:992px){
+
+    .interface-layout{
+        flex-direction:column;
+    }
+
+    .coluna-esquerda,
+    .coluna-direita{
+        width:100%;
+        min-width:100%;
+    }
+
+    .fila-notificacao{
+        flex-direction:column;
+        gap:20px;
+
+        text-align:center;
+    }
+
+    .notificacao-esquerda{
+        flex-direction:column;
+    }
+}
+/* =========================
+CARD AVALIAÇÃO
+========================= */
+
+.card-avaliacao{
+
+    margin-top: 25px;
+
+    background: #0d0d0d;
+
+    border: 1px solid #1f1f1f;
+
+    border-radius: 16px;
+
+    padding: 25px;
+}
+
+.card-avaliacao h2{
+
+    color: white;
+
+    font-size: 26px;
+
+    margin-bottom: 12px;
+}
+
+.card-avaliacao p{
+
+    color: #777;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    margin-bottom: 22px;
+}
+
+/* =========================
+ESTRELAS ANIMADAS
+========================= */
+
+/* =========================
+ESTRELAS ANIMADAS
+========================= */
+
+.estrelas-avaliacao{
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.estrelas-avaliacao span{
+
+    font-size: 38px;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+    filter: grayscale(100%);
+
+    opacity: .4;
+}
+
+/* HOVER */
+
+.estrelas-avaliacao span:hover{
+
+    transform: scale(1.2);
+
+    opacity: 1;
+}
+
+/* ESTRELA ACESA */
+
+.estrelas-avaliacao span.ativa{
+
+    filter: grayscale(0%);
+
+    opacity: 1;
+
+    transform: scale(1.2);
+
+    text-shadow:
+    0 0 8px #ffd700,
+    0 0 18px #ffd700,
+    0 0 28px #ffcc00;
+
+    animation: brilhoEstrela .5s ease;
+}
+
+/* ANIMAÇÃO */
+
+@keyframes brilhoEstrela{
+
+    0%{
+
+        transform: scale(.5);
+
+        opacity: 0;
+    }
+
+    50%{
+
+        transform: scale(1.4);
+    }
+
+    100%{
+
+        transform: scale(1.2);
+
+        opacity: 1;
+    }
+}
+
+.card-avaliacao textarea{
+
+    width: 100%;
+
+    height: 120px;
+
+    resize: none;
+
+    background: #111;
+
+    border: 1px solid #222;
+
+    border-radius: 12px;
+
+    padding: 15px;
+
+    color: white;
+
+    outline: none;
+
+    margin-bottom: 20px;
+}
+
+.btn-enviar-avaliacao{
+
+    width: 100%;
+
+    height: 52px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #d4a24c;
+
+    color: black;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.btn-enviar-avaliacao:hover{
+
+    transform: scale(1.02);
+}
+/* =======================================================
+SEM FILA
+======================================================= */
+
+.sem-fila{
+
+    width:100%;
+
+    min-height:300px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    animation: aparecerSuave .5s ease;
+}
+
+.icone-fila{
+
+    width:90px;
+    height:90px;
+
+    border-radius:50%;
+
+    background:#151515;
+
+    border:2px solid #d4a24c;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:42px;
+
+    margin-bottom:25px;
+}
+
+.sem-fila h2{
+
+    font-size:36px;
+
+    margin-bottom:12px;
+}
+
+.sem-fila p{
+
+    color:#777;
+
+    margin-bottom:30px;
+
+    font-size:16px;
+}
+
+.sem-fila a{
+
+    width:220px;
+    height:55px;
+
+    background:#d4a24c;
+
+    color:black;
+
+    text-decoration:none;
+
+    border-radius:12px;
+
+    font-weight:700;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.3s;
+}
+
+.sem-fila a:hover{
+
+    transform:translateY(-4px);
+}
+
+@keyframes aparecerSuave{
+
+    from{
+
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+/* =======================================================
+FILA PROFISSIONAL
+======================================================= */
+
+.numero-fila{
+
+    font-size:90px;
+    font-weight:800;
+
+    color:#d4a24c;
+
+    text-align:center;
+
+    margin:30px 0 20px 0;
+
+    transition:.4s;
+}
+
+.barra-fila{
+
+    width:100%;
+    height:14px;
+
+    background:#1a1a1a;
+
+    border-radius:30px;
+
+    overflow:hidden;
+}
+
+.barra-progresso{
+
+    width:20%;
+
+    height:100%;
+
+    background:linear-gradient(90deg,#d4a24c,#f3c86b);
+
+    border-radius:30px;
+
+    transition:1s ease;
+}
+
+/* ANIMAÇÃO */
+
+.atualizando{
+
+    animation:pulsar .5s ease;
+}
+
+@keyframes pulsar{
+
+    0%{
+
+        transform:scale(1);
+    }
+
+    50%{
+
+        transform:scale(1.08);
+    }
+
+    100%{
+
+        transform:scale(1);
+    }
+
+}

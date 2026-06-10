@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joel Barber</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style-ag5.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <!-- LOGO -->
+        <div class="logo">
+            <img src="image.png"
+                alt="Logo Joel Barber">
+        </div>
+
+        <!-- MENU -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="../home/home.html">Início</a></li>
+                <li><a href="../agendamento1/index-ag1.html" class="active">Agendamentos</a></li>
+                <li><a href="../produtos/index-produto.html">Produtos</a></li>
+                <li><a href="../fila_de_espera/index-fila.html">Fila de Espera</a></li>
+                <li><a href="../servicos/index-serv.html">Serviços</a></li>
+            </ul>
+            </ul>
+        </nav>
+
+        
+        <!-- BOTÕES -->
+        <div class="buttons" id="auth-buttons">
+            <a href="../log/index.html" class="btn-login">Entrar</a>
+            <a href="../criar conta/index2.html" class="btn-register">Criar Conta</a>
+        </div>
+
+        <!-- PERFIl  -->
+        <div class="user-profile" id="user-profile" style="display: none;">
+            <div class="avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <span class="user-name">Minha Conta</span>
+            <a href="#" id="btn-logout" >Sair</a>
+        </div>
+        
+
+    </header>
+    
+<div class="pagina-confirmacao">
+   <div class="confirmacao-container">
+
+        <div class="confirmacao-imagem">
+            <img src="maibarber.jpg" alt="Barbearia">
+        </div>
+
+        <div class="confirmacao-conteudo">
+
+            <div class="icone-check">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <h1>Agendamento confirmado!</h1>
+
+            <p>Seu horário está marcado.</p>
+            <p>Em breve você receberá uma confirmação<br>no seu WhatsApp.</p>
+
+            <a href="../fila_de_espera/index-fila.html" class="btn-agendamentos">
+                <i class="fa-solid fa-lines-leaning"></i>
+                VER FILA DE ESPERA
+            </a>
+
+            <a href="../home/home.html" class="btn-voltar">
+                <i class="fa-solid fa-house"></i>
+                VOLTAR PARA O INÍCIO
+            </a>
+        </div> 
+
+    </div>
+
+</div>
+
+<script src="script-ag5.js"></script> <script src="../home/auth.js"></script> 
+
+</body>
+
+</html>

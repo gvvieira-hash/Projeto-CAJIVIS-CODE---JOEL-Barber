@@ -1,0 +1,473 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #000;
+    color: white;
+}
+
+/* HEADER */
+header{
+    width: 100%;
+    height: 90px;
+    background-color: #000;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 50px;
+
+    border-bottom: none;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 999;
+}
+
+/* LOGO */
+.logo img{
+    width: 90px;
+    display: block;
+}
+
+/* MENU */
+nav ul{
+    display: flex;
+    list-style: none;
+    gap: 40px;
+}
+
+nav ul li a{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.3s;
+    position: relative;
+}
+
+/* LINHA EMBAIXO DO LINK */
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+
+    width: 0%;
+    height: 2px;
+
+    background-color: #d4a24c;
+    transition: 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active{
+    color:#d4a24c;
+}
+
+nav ul li a:hover::after,
+nav ul li a.active::after{
+    width:100%;
+}
+
+/* BOTÕES */
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-login,
+.btn-register {
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: 10px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btn-login {
+    border: 1px solid #D49C50;
+    color: white;
+}
+
+.btn-login:hover {
+    background: #D49C50;
+    color: black;
+}
+
+.btn-register {
+    background: #D49C50;
+    color: black;
+}
+
+.btn-register:hover {
+    opacity: 0.8;
+}
+
+/* --- PERFIL  --- */
+.user-profile {
+    display: flex;
+    align-items: center;
+    background-color: #121212; 
+    border: 1px solid #d4a24c; 
+    padding: 6px 16px 6px 6px;
+    border-radius: 50px; 
+}
+
+
+.user-profile .avatar {
+    background-color: #d4a24c;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 14px; 
+}
+
+.user-profile .avatar i{
+    color: #000;
+}
+
+.user-profile .user-name {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#btn-logout{
+    color: #d4a24c; 
+    margin-left: 15px; 
+    font-size: 13px; 
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+
+/* =======================================================
+   CONTAINER
+======================================================= */
+
+.container{
+    display: flex;
+    gap: 30px;
+    padding: 30px;
+    margin-top: 90px;
+    /* Removeu o height fixo de 690px */
+    min-height: calc(100vh - 90px); /* Ocupa a tela toda descontando o header */
+    align-items: stretch; /* Força os dois lados a terem exatamente a mesma altura */
+}
+
+/* =======================================================
+   SIDEBAR
+======================================================= */
+
+.sidebar{
+    width:400px;
+    height:730px;
+
+    border-radius:24px;
+    overflow:hidden;
+
+    position:relative;
+    flex-shrink:0;
+
+    background:#111;
+}
+
+.sidebar img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    position:absolute;
+    inset:0;
+      opacity: 0.2; /* aqui controla a transparência */
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.95) 15%,
+        rgba(0,0,0,.55) 45%,
+        rgba(0,0,0,.15) 100%
+    );
+}
+
+.sidebar-content{
+    position:absolute;
+    bottom:40px;
+    left:25px;
+    right:25px;
+    z-index:2;
+}
+
+.sidebar-content h1{
+    font-size:52px;
+    line-height:1;
+    margin-bottom:20px;
+}
+
+.sidebar-content p{
+    color:#ccc;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+
+.sidebar button{
+    background:#D49C50;
+    color:black;
+
+    border:none;
+    padding:15px 25px;
+
+    border-radius:12px;
+    cursor:pointer;
+
+    font-weight:600;
+    transition:.3s;
+}
+
+.sidebar button:hover{
+    transform:scale(1.05);
+}
+
+
+/* =======================================================
+   ESTRUTURA DO CONTEÚDO PRINCIPAL (ADICIONADO)
+======================================================= */
+
+.main-content {
+    flex: 1;
+    background: #0d0d0d;
+    border-radius: 20px;
+    padding: 40px;
+    min-height: 480px;
+}
+
+.main-content h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 25px;
+}
+
+/* =======================================================
+   ESTRUTURA DAS ETAPAS (STEPPER)
+======================================================= */
+
+.steps{
+    display:flex;
+    align-items:center; /* IMPORTANTE */
+    margin-bottom:50px;
+}
+
+.step{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    min-width:140px;
+}
+.line{
+    flex:1;
+    height:2px;
+    background:#222;
+    margin:0 20px;
+    align-self:flex-start;
+    margin-top:30px;
+}
+
+.active-line{
+    background:#d4a24c;
+}
+
+.circle{
+    width:60px;
+    height:60px;
+
+    border-radius:50%;
+    border:2px solid #444;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#0d0d0d;
+
+    color:white;
+
+    position:relative;
+    z-index:2;
+
+    margin-bottom:12px;
+}
+
+.step span{
+    font-size:16px;
+    color:white;
+    font-weight:600;
+}
+
+.done .circle{
+    border-color:#d4a24c;
+    color:#d4a24c;
+}
+
+.active .circle{
+    background:#d4a24c;
+    color:black;
+    border:none;
+}
+
+/* =======================================================
+   TABELA DE CONFIRMAÇÃO DOS DADOS (O CONTAINER CIRCULADO)
+======================================================= */
+
+.dados-agend {
+    width: 100%;
+    background: #111111;
+    border: 1px solid #222222;
+    border-radius: 12px;
+    padding: 10px 25px;
+    margin-bottom: 35px;
+}
+
+/* Estrutura de cada linha de informação */
+.linha-dado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #222222;
+}
+
+.dado-esquerda {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.dado-esquerda i {
+    font-size: 16px;
+    color: #D49C50; /* Força os ícones do Font Awesome a ficarem dourados */
+    width: 20px;
+    text-align: center;
+}
+
+.label-dado {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.valor-dado {
+    font-size: 15px;
+    color: #cccccc;
+    font-weight: 500;
+}
+
+/* Linha Exclusiva do Total */
+.linha-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0 12px 0;
+}
+
+.total-label {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.total-valor {
+    font-size: 22px;
+    font-weight: bold;
+    color: #D49C50;
+}
+
+/* =======================================================
+   ÁREA DOS BOTÕES INFERIORES (LADO A LADO)
+======================================================= */
+
+.action-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    width: 100%;
+}
+
+/* Botão Voltar (Estilo vazado com borda) */
+.back-btn {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid #444444;
+    padding: 14px 30px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+}
+
+.back-btn:hover {
+    background: #1a1a1a;
+}
+
+.arrow-back {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1); /* Torna o ícone da sua seta branco */
+}
+
+/* Botão Confirmar (Estilo principal dourado) */
+.confirm-btn {
+    background: #D49C50;
+    color: #000000;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.confirm-btn:hover {
+    transform: scale(1.02);
+    background: #c3923b;
+}
+.back-btn,
+.confirm-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    text-decoration:none;
+}

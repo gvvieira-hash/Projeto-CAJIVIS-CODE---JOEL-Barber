@@ -1,0 +1,431 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #0b0b0b;
+    color: white;
+}
+
+/* HEADER */
+header{
+    width: 100%;
+    height: 90px;
+    background-color: #000;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 50px;
+
+    border-bottom: none;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 999;
+}
+
+/* LOGO */
+.logo img{
+    width: 90px;
+    display: block;
+}
+
+/* MENU */
+nav ul{
+    display: flex;
+    list-style: none;
+    gap: 40px;
+}
+
+nav ul li a{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.3s;
+    position: relative;
+}
+
+/* LINHA EMBAIXO DO LINK */
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+
+    width: 0%;
+    height: 2px;
+
+    background-color: #d4a24c;
+    transition: 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active{
+    color:#d4a24c;
+}
+
+nav ul li a:hover::after,
+nav ul li a.active::after{
+    width:100%;
+}
+
+/* BOTÕES */
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-login,
+.btn-register {
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: 10px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btn-login {
+    border: 1px solid #d4a24c;
+    color: white;
+}
+
+.btn-login:hover {
+    background: #d4a24c;
+    color: black;
+}
+
+.btn-register {
+    background: #d4a24c;
+    color: black;
+}
+
+.btn-register:hover {
+    opacity: 0.8;
+}
+
+/* --- PERFIL  --- */
+.user-profile {
+    display: flex;
+    align-items: center;
+    background-color: #121212; 
+    border: 1px solid #d4a24c; 
+    padding: 6px 16px 6px 6px;
+    border-radius: 50px; 
+}
+
+
+.user-profile .avatar {
+    background-color: #d4a24c;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 14px; 
+}
+
+.user-profile .avatar i{
+    color: #000;
+}
+
+.user-profile .user-name {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#btn-logout{
+    color: #d4a24c; 
+    margin-left: 15px; 
+    font-size: 13px; 
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+/* HERO */
+.hero{
+    width: 100%;
+    min-height: 75vh;
+
+    /* --- MUDANÇA AQUI: Empilhando os degradês --- */
+    background:
+    linear-gradient(to bottom, transparent 65%, #0b0b0b 100%), /* 1º: Novo degradê que apaga a base (funde com o body) */
+    linear-gradient(to right, rgba(0,0,0,0.95), rgba(0,0,0,0.55)), /* 2º: O seu degradê original da esquerda pra direita */
+    url("image 52.png"); /* 3º: A sua imagem */
+
+    background-size: cover;
+    background-position: right center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+
+    padding: 120px 60px 50px;
+}
+
+/* CONTEÚDO */
+.hero-content{
+    max-width: 620px;
+}
+
+.hero-content h1{
+    font-size: 65px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.hero-content h1 span{
+    color: #d4a24c;
+}
+
+.hero-content p{
+    color: #c7c7c7;
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 35px;
+}
+
+/* BOTÕES HERO */
+.hero-buttons{
+    display: flex;
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
+.hero-features{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 35px;
+}
+
+.feature-icon{
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: rgba(212, 162, 76, 0.14);
+    color: #d4a24c;
+    font-size: 20px;
+}
+
+.feature-icon img{
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+}
+
+.feature-text strong{
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.feature-text p{
+    margin-top: 4px;
+    color: #c7c7c7;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.btn-agendar{
+    background-color: #d4a24c;
+    color: black;
+    border: none;
+
+    padding: 15px 30px;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+   
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.btn-agendar:hover{
+    cursor: pointer;
+}
+
+.btn-agendar a {
+    color: black;
+    list-style: none;
+}
+
+.btn-serv {
+    background-color: transparent;
+    color: white;
+
+    border: 1px solid #d4a24c;
+
+    padding: 15px 30px;
+
+    border-radius: 10px;
+    text-decoration: none;
+  
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.btn-serv:hover{
+    background-color: #d4a24c;
+    color: black;
+}
+
+
+.btn-serv a {
+    color: #d4a24c;
+    list-style: none;
+}
+
+/* CARDS */
+.cards{
+    padding: 20px 60px 80px;
+    margin-top: -40px;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 25px;
+}
+
+/* CARD */
+.card{
+    background-color: #161616;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    transition: 0.3s;
+
+    border: 1px solid #242424;
+}
+
+.card:hover{
+    transform: translateY(-8px);
+}
+
+.card img{
+    width: 100%;
+    height: 220px;
+
+    object-fit: cover;
+}
+
+.card h3{
+    font-size: 24px;
+    margin: 20px;
+}
+
+.card p{
+    color: #c2c2c2;
+
+    font-size: 14px;
+
+    margin: 0 20px 20px;
+}
+
+.card-btn {
+    margin: 0 20px 25px;
+}
+
+.card-btn a {
+    text-decoration: none;
+    color: #d4a24c;
+    font-size: 15px;
+    font-weight: 600;
+    display: inline-block; 
+    transition: color 0.2s;
+}
+
+
+.card-btn a:hover {
+    color: #fff;
+}
+
+@media(max-width: 1100px){
+
+    .cards{
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .agendamento-box{
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-features{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media(max-width: 768px){
+
+    header{
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    nav ul{
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero{
+        padding: 180px 30px 60px;
+    }
+
+    .hero-content h1{
+        font-size: 45px;
+    }
+
+    .cards{
+        grid-template-columns: 1fr;
+        padding: 20px 30px 60px;
+    }
+
+    .agendamento{
+        padding: 60px 30px;
+    }
+
+    .agendamento-box{
+        grid-template-columns: 1fr;
+    }
+
+    .hero-features{
+        grid-template-columns: 1fr;
+    }
+
+    .hero-buttons{
+        flex-direction: column;
+    }
+}

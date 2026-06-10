@@ -1,0 +1,212 @@
+'<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joel Barber</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style-ag4.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <!-- LOGO -->
+        <div class="logo">
+            <img src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png"
+                alt="Logo Joel Barber">
+        </div>
+
+        <!-- MENU -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="../home/home.html">Início</a></li>
+                <li><a href="../agendamento1/index-ag1.html" class="active">Agendamentos</a></li>
+                <li><a href="../produtos/index-produto.html">Produtos</a></li>
+                <li><a href="../fila_de_espera/index-fila.html">Fila de Espera</a></li>
+                <li><a href="../servicos/index-serv.html">Serviços</a></li>
+            </ul>
+        </nav>
+        
+        <!-- BOTÕES -->
+        <div class="buttons" id="auth-buttons">
+            <a href="../log/index.html" class="btn-login">Entrar</a>
+            <a href="../criar conta/index2.html" class="btn-register">Criar Conta</a>
+        </div>
+
+        <!-- PERFIl  -->
+        <div class="user-profile" id="user-profile" style="display: none;">
+            <div class="avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <span class="user-name">Minha Conta</span>
+            <a href="#" id="btn-logout" >Sair</a>
+        </div>
+        
+        
+    </header>
+
+    <!-- CONTAINER -->
+    <section class="container">
+
+        <section class="container-sidebar">
+
+    
+            <!-- ASIDE -->
+    
+            <aside class="sidebar">
+
+          <!-- IMAGEM -->
+          <img src="image.png">
+
+          <!-- SOMBRA -->
+          <div class="overlay"></div>
+
+          <!-- CONTEÚDO -->
+          <div class="sidebar-content">
+
+        <h1>Agende seu horário</h1>
+
+        <p>
+            Escolha o serviço, o profissional
+            e o melhor horário para você.
+        </p>
+                    
+                    <button>
+                        <i class="fa-solid fa-calendar-days"></i>
+                        COMEÇAR AGENDAMENTO
+                    </button>
+                    
+                </div>
+                
+            </aside>
+        </section>
+
+        <!-- MAIN -->
+        <main class="main-content">
+
+ <section class="steps">
+
+    <div class="step done">
+        <div class="circle">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <span>Serviço</span>
+    </div>
+
+    <div class="line active-line"></div>
+
+    <div class="step done">
+        <div class="circle">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <span>Barbeiro</span>
+    </div>
+
+    <div class="line active-line"></div>
+
+    <div class="step done">
+        <div class="circle">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <span>Data</span>
+    </div>
+
+    <div class="line active-line"></div>
+
+    <div class="step active">
+        <div class="circle">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <span>Confirmação</span>
+    </div>
+
+</section>
+
+
+  <h2>Confirme seus dados</h2>
+
+<section class="dados-agend">
+
+    <div class="linha-dado">
+        <div class="dado-esquerda">
+            <i class="fa-solid fa-scissors"></i>
+            <span class="label-dado">Serviço</span>
+        </div>
+
+        <span class="valor-dado" id="servico"></span>
+    </div>
+
+    <div class="linha-dado">
+        <div class="dado-esquerda">
+            <i class="fa-solid fa-user"></i>
+            <span class="label-dado">Barbeiro</span>
+        </div>
+
+        <span class="valor-dado" id="barbeiro"></span>
+    </div>
+
+    <div class="linha-dado">
+        <div class="dado-esquerda">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span class="label-dado">Data</span>
+        </div>
+
+        <span class="valor-dado" id="data"></span>
+    </div>
+
+    <div class="linha-dado">
+        <div class="dado-esquerda">
+            <i class="fa-regular fa-clock"></i>
+            <span class="label-dado">Horário</span>
+        </div>
+
+        <span class="valor-dado" id="horario"></span>
+    </div>
+
+    <div class="linha-dado">
+        <div class="dado-esquerda">
+            <i class="fa-solid fa-dollar-sign"></i>
+            <span class="label-dado">Valor</span>
+        </div>
+
+        <span class="valor-dado" id="valor"></span>
+    </div>
+
+    <div class="linha-total">
+        <span class="total-label">Total</span>
+
+        <span class="total-valor" id="total"></span>
+    </div>
+
+</section>
+
+       <div class="action-footer">
+
+    <a href="../agendamento3/index-ag3.html" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        VOLTAR
+    </a>
+
+    <a href="../agendamento5/index-ag5.html" class="confirm-btn">
+        Confirmar Agendamento
+        <i class="fa-solid fa-check"></i>
+    </a>
+
+</div>
+
+    </main>
+
+    </section>
+
+</body>
+<script src="script-ag4.js"></script> <script src="../home/auth.js"></script> 
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joel Barber</title>
+
+    <link rel="stylesheet" href="style-fila.css">
+
+<!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <header>
+        
+          <!-- LOGO -->
+        <div class="logo">
+            <img src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png" alt="Logo Joel Barber" id="foto">
+        </div>
+
+        <!-- MENU -->
+        <nav>
+            <ul>
+                <li><a href="../home/home.html">Início</a></li>
+                <li><a href="../agendamento1/index-ag1.html">Agendamentos</a></li>
+                <li><a href="../produtos/index-produto.html">Produtos</a></li>
+                <li><a href="../fila_de_espera/index-fila.html" class="active">Fila de Espera</a></li>
+                <li><a href="../servicos/index-serv.html">Serviços</a></li>
+            </ul>
+        </nav>
+
+       
+        <!-- BOTÕES -->
+        <div class="buttons" id="auth-buttons">
+            <a href="../log/index.html" class="btn-login">Entrar</a>
+            <a href="../criar conta/index2.html" class="btn-register">Criar Conta</a>
+        </div>
+
+        <!-- PERFIl  -->
+        <div class="user-profile" id="user-profile" style="display: none;">
+            <div class="avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <span class="user-name">Minha Conta</span>
+            <a href="#" id="btn-logout" >Sair</a>
+        </div>
+        
+        
+
+    </header>
+
+<div class="interface-layout">
+    
+    <div class="coluna-esquerda">
+        <div class="fila-container">
+
+    <!-- TOPO -->
+    <div class="fila-topo">
+
+        <div class="status-box">
+
+            <div class="status-icon" id="statusIcon">
+                ⏳
+            </div>
+
+            <div class="status-texto">
+
+                <h2 id="statusTitulo">
+                    Você está na fila
+                </h2>
+
+                <p id="statusDescricao">
+                    Aguarde seu atendimento.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="horario-box">
+
+            <span>Tempo estimado</span>
+
+            <h1 id="tempoEstimado">
+                21 min
+            </h1>
+
+        </div>
+
+        <div class="previsao-box">
+
+            <span>Pessoas na frente</span>
+
+            <h3 id="pessoasFrente">
+                3 pessoas
+            </h3>
+
+        </div>
+
+    </div>
+
+    <div class="linha-divisoria"></div>
+
+    <!-- FILA -->
+    <div class="fila-posicao">
+
+        <h2>Sua posição</h2>
+
+        <div class="numero-fila" id="numeroFila">
+            #4
+        </div>
+
+        <div class="barra-fila">
+
+            <div class="barra-progresso" id="barraProgresso"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+        <div class="fila-notificacao">
+            <div class="notificacao-esquerda">
+                <div class="sino-icon">🔔</div>
+                <div class="notificacao-texto">
+                    <h3>Avisaremos quando estiver quase na sua vez!</h3>
+                    <p>Você receberá uma notificação aqui e por push</p>
+                </div>
+            </div>
+          <button class="btn-sair" onclick="sairDaFila()">Sair da fila</button>
+          <div class="interface-layout" id="layout-fila">
+        </div>
+    </div>
+
+    <div class="coluna-direita">
+        
+        <div class="card-info side-card">
+    <h2>Sobre a barbearia</h2>
+    
+    <div class="barbearia-container-perfil">
+        <div class="barbearia-foto">
+            <img src="maibarber.jpg" alt="Joel Barber">
+        </div>
+        
+        <div class="barbearia-detalhes">
+            <h3>Joel Barber</h3>
+            <div class="rating">⭐ 4.9</div>
+            <p>Centro comercial de camaçari</p>
+            <p class="subtext">Centro, Camaçari, BA</p>
+        </div>
+    </div>
+</div>
+
+        <div class="card-info side-card">
+            <h2>Serviços mais procurados</h2>
+            
+            <div class="lista-servicos">
+                <div class="servico-item">
+                    <span class="item-badge">1</span>
+                    <span class="item-nome">Corte de Cabelo</span>
+                    <span class="item-preco">R$ 30,00</span>
+                </div>
+                <div class="servico-item">
+                    <span class="item-badge">2</span>
+                    <span class="item-nome">Barba</span>
+                    <span class="item-preco">R$ 20,00</span>
+                </div>
+                <div class="servico-item">
+                    <span class="item-badge">3</span>
+                    <span class="item-nome">Corte + Barba</span>
+                    <span class="item-preco">R$ 50,00</span>
+                </div>
+                <div class="servico-item">
+                    <span class="item-badge">4</span>
+                    <span class="item-nome">Barba Premium</span>
+                    <span class="item-preco">R$ 30,00</span>
+                </div>
+                <div class="servico-item">
+                    <span class="item-badge">5</span>
+                    <span class="item-nome">Sobrancelha</span>
+                    <span class="item-preco">R$ 10,00</span>
+                </div>
+            </div>
+
+          <div>
+    <a href="../servicos/index-serv.html">
+        <button type="button" class="btn-ver-todos">
+            Ver todos os serviços
+        </button>
+    </a>
+</div>
+    </div>
+<!-- POPUP DE AVALIAÇÃO -->
+<div class="card-avaliacao">
+
+    <h2>⭐ Avalie a barbearia</h2>
+
+    <p>
+        Sua opinião ajuda outros clientes a conhecerem
+        melhor nossos serviços.
+    </p>
+
+    <div class="estrelas-avaliacao">
+
+        <span onclick="avaliar(1)">⭐</span>
+        <span onclick="avaliar(2)">⭐</span>
+        <span onclick="avaliar(3)">⭐</span>
+        <span onclick="avaliar(4)">⭐</span>
+        <span onclick="avaliar(5)">⭐</span>
+
+    </div>
+
+    <textarea placeholder="Conte como foi sua experiência..."></textarea>
+
+    <button class="btn-enviar-avaliacao">
+        Enviar avaliação
+    </button>
+
+</div>
+
+<script src="script-fila.js"></script> <script src="../home/auth.js"></script> 
+
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joel Barber</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style-ag1.css">
+
+<!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <!-- LOGO -->
+        <div class="logo">
+            <img src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png"
+                alt="Logo Joel Barber">
+        </div>
+
+        <!-- MENU -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="../home/home.html">Início</a></li>
+                <li><a href="../agendamento1/index-ag1.html" class="active">Agendamentos</a></li>
+                <li><a href="../produtos/index-produto.html">Produtos</a></li>
+                <li><a href="../fila_de_espera/index-fila.html">Fila de Espera</a></li>
+                <li><a href="../servicos/index-serv.html">Serviços</a></li>
+            </ul>
+        </nav>
+
+        
+        <!-- BOTÕES -->
+        <div class="buttons" id="auth-buttons">
+            <a href="../log/index.html" class="btn-login">Entrar</a>
+            <a href="../criar conta/index2.html" class="btn-register">Criar Conta</a>
+        </div>
+
+        <!-- PERFIl  -->
+        <div class="user-profile" id="user-profile" style="display: none;">
+            <div class="avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <span class="user-name">Minha Conta</span>
+            <a href="#" id="btn-logout" >Sair</a>
+        </div>
+        
+    </header>
+
+    <!-- CONTAINER -->
+    <section class="container">
+
+        <section class="container-sidebar">
+
+    <!-- ASIDE -->
+    <aside class="sidebar">
+
+          <!-- IMAGEM -->
+          <img src="1000078875.jpeg"
+         alt="Imagem de uma barbearia meramente ilustrativa">
+
+          <!-- SOMBRA -->
+          <div class="overlay"></div>
+
+          <!-- CONTEÚDO -->
+          <div class="sidebar-content">
+
+        <h1>Agende seu horário</h1>
+
+        <p>
+            Escolha o serviço, o profissional
+            e o melhor horário para você.
+        </p>
+                    
+                    <button>
+                        <i class="fa-solid fa-calendar-days"></i>
+                        COMEÇAR AGENDAMENTO
+                    </button>
+                    
+                </div>
+                
+            </aside>
+        </section>
+
+        <!-- MAIN -->
+        <main class="main-content">
+
+            <!-- ETAPAS -->
+                   <!-- ETAPAS -->
+        <section class="steps">
+
+            <div class="step active">
+                <div class="circle">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <span>Serviço</span>
+            </div>
+
+            <div class="line"></div>
+
+            <div class="step">
+                <div class="circle">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <span>Barbeiro</span>
+            </div>
+
+            <div class="line"></div>
+
+            <div class="step">
+                <div class="circle">
+                    <i class="fa-solid fa-calendar"></i>
+                </div>
+                <span>Data</span>
+            </div>
+
+            <div class="line"></div>
+
+            <div class="step">
+                <div class="circle">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <span>Confirmação</span>
+            </div>
+
+        </section>
+
+
+            <!-- TÍTULO -->
+            <h2>Escolha o serviço</h2>
+
+            <!-- CARDS -->
+            <section class="services">
+
+                <div class="card active-card">
+                    <i class="fa-solid fa-scissors"></i>
+                    <h3>Corte de cabelo</h3>
+                    <p>R$ 45,00</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-user"></i>
+                    <h3>Barba</h3>
+                    <p>R$ 30,00</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <h3>Cabelo + Barba</h3>
+                    <p>R$ 65,00</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-regular fa-face-laugh-beam"></i>
+                    <h3>Sobrancelha</h3>
+                    <p>R$ 15,00</p>
+                </div>
+
+        
+            </section>
+            <!-- BOTÃO -->
+<div class="next-area">
+
+    <a href="../agendamento2/index-ag2.html" class="next-btn">
+        Próximo
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+
+</div>
+
+        </main>
+
+    </section>
+
+
+    <section class="products-cta">
+    <div class="products-text">
+        <h2>Confira nossos produtos</h2>
+        <p>
+            Pomadas, perfumes, óleos e muito mais para elevar seu estilo.
+        </p>
+    </div>
+
+    <a href="../produtos/index-produto.html" class="products-btn">
+        Ver Produtos
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+</section>
+</body>
+
+</html>
+
+<script src="script-ag1.js"></script> <script src="../home/auth.js"></script> 
