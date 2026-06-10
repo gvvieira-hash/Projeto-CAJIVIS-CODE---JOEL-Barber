@@ -54,9 +54,10 @@ botaoEntrar.addEventListener("click", function(event) {
 
     // 4. Agora sim, redireciona para a página principal (Home)
     // Usamos o mesmo caminho que estava no href do seu HTML
-    window.location.href = "../home/home.html";
+    window.location.href = "home/home.html";
 });
 
+/*
 // --- DENTRO DO script2.js (Página de Criar Conta) ---
 form.addEventListener("submit", function(event) {
     event.preventDefault(); 
@@ -71,15 +72,12 @@ form.addEventListener("submit", function(event) {
         return; 
     }
 
-    // Pega o valor do campo de e-mail
     const emailInputReg = document.querySelector("input[type='email']");
 
-    // 1. Salva que está logado
     localStorage.setItem("logado", "true");
-
-    // 2. SALVA O EMAIL DIGITADO
     localStorage.setItem("emailUsuario", emailInputReg.value);
 
-    // 3. Redireciona
-    window.location.href = "home/home.html";
+    window.location.href = "../home/home.html";
 });
+*/
+
