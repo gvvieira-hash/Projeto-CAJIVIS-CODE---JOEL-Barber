@@ -58,9 +58,11 @@ O sistema possui um design moderno com:
  ┣ 📁 produtos
  ┣ 📁 fila_de_espera
  ┣ 📁 servicos
+ ┣ 📁 criar conta
  ┣ 📄 index.html
  ┣ 📄 style.css
  ┗ 📄 script.js
+ ┗ 📄 auth.js
 ```
 
 ---
