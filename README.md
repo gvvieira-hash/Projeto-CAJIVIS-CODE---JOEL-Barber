@@ -48,6 +48,7 @@ O sistema possui um design moderno com:
 
 # 📂 Estrutura do Projeto
 
+```
 📁 projeto-barbearia
  ┣ 📁 home
  ┣ 📁 agendamento1
