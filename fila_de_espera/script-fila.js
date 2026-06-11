@@ -29,7 +29,7 @@ function sairDaFila() {
                         Entre novamente para garantir seu atendimento.
                     </p>
 
-                    <a href="../agendamento1/index-ag1.html">
+                    <a href="https://gvvieira-hash.github.io/Projeto-CAJIVIS-CODE---JOEL-Barber/agendamento1/index-ag1.html">
                         Entrar na fila
                     </a>
 
@@ -71,7 +71,7 @@ window.onload = function() {
         Para garantir a sua vaga na nossa lista de espera diária, clique abaixo.
     </p>
 
-    <a href="../agendamento1/index-ag1.html" style="background-color: #d4a24c; color: black; width: 190px; height: 55px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s;">
+    <a href="https://gvvieira-hash.github.io/Projeto-CAJIVIS-CODE---JOEL-Barber/agendamento1/index-ag1.html" style="background-color: #d4a24c; color: black; width: 190px; height: 55px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s;">
         Entrar na Fila
     </a>
 
