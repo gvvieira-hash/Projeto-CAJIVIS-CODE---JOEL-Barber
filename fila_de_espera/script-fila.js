@@ -29,7 +29,7 @@ function sairDaFila() {
                         Entre novamente para garantir seu atendimento.
                     </p>
 
-                    <a href="../agendamento1/index4.html">
+                    <a href="../agendamento1/index-ag1.html">
                         Entrar na fila
                     </a>
 
