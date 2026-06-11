@@ -11,6 +11,7 @@ A plataforma permite que clientes escolham serviços, barbeiros, datas e horári
 
 # 🚀 Funcionalidades
 
+```
 ✅ Agendamento de serviços
 ✅ Seleção de múltiplos serviços
 ✅ Escolha do barbeiro
@@ -21,7 +22,7 @@ A plataforma permite que clientes escolham serviços, barbeiros, datas e horári
 ✅ Interface responsiva
 ✅ Navegação entre páginas
 ✅ Salvamento das escolhas com LocalStorage
-
+```
 ---
 
 # 🛠️ Tecnologias Utilizadas
