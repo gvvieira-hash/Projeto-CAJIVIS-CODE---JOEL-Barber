@@ -1,4 +1,4 @@
-# 💈 Joel Barber — Sistema de Agendamento para Barbearia
+<img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/2fb707d2-e24e-4025-9fa7-be084c33a74d" /># 💈 Joel Barber — Sistema de Agendamento para Barbearia
 
 
 ## 👥 Equipe:
@@ -13,13 +13,14 @@
 Jessica Arnaut Prado Machado
 
 
-## <img width="274" height="325" alt="image" src="https://github.com/user-attachments/assets/df08c670-005b-40dd-a10e-30b2db074371" /> Cajives Code
+## 🧡💚 Cajives Code
 
-A Cajives Code surge do desejo de transformar demandas reais do mercado em soluções tecnologicas que resolvam seus problemas sem complicações
+A Cajives Code surge do desejo de transformar demandas reais do mercado em soluções tecnologicas que resolvam seus problemas sem complicações e que tragam resultados positivos reais, não somos apenas um time de desenvolvimento, somos as pessoas que irão aumentar sua produtividade e trazer resultados reais para o seu negócio. Contrate a Cajives Code!
+
 
 ## 🔍 Problema e introdução:
 
-Muitas barbearias em Camaçari ainda realizam seus agendamentos manualmente, o que faz o responsável pelos agendamentos perder o tempo em que poderia estar fazendo uma atividade de lazer ou trabalhando em sua barbearia, um exemplo dessas barbearias é a barbearia de Joel Posidoni, na qual realiza seus agendamentos por meio de um software que oferece apenas as ferramentas para a organização dos agendamentos de seus clientes, além de ocupar espaço na mémoria de seu dispositivo eletrônico o software não oferece o mais importante, a simplificação do processo de agendamento para os clientes e gestão desses para o dono da barbearia ou responsável por tal parte.
+Muitas barbearias em Camaçari ainda sofrem com o problema de realizar seus agendamentos manualmente, o que faz o responsável pelos agendamentos perder o tempo em que poderia estar fazendo uma atividade de lazer ou trabalhando em sua barbearia, um exemplo dessas barbearias é a barbearia de Joel Posidoni, na qual realiza seus agendamentos por meio de um software que oferece apenas as ferramentas para a organização dos agendamentos de seus clientes, além de ocupar espaço na mémoria de seu dispositivo eletrônico o software não oferece o mais importante, a simplificação do processo de agendamento para os clientes e gestão desses para o dono da barbearia ou responsável por tal parte.
 
 ajudar quem nos ajuda, para a equipe ir a barbearia é uma experiência que vai além da simples mudança no visual, é uma mudança na autoestima e consequentemente aumento da produtividade de cada indivíduo.
 
