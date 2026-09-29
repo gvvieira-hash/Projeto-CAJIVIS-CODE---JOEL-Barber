@@ -1,150 +1,153 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const daysContainer = document.getElementById("calendar-days");
+    const monthYearText = document.getElementById("month-year");
+    const prevMonthBtn = document.getElementById("prev-month");
+    const nextMonthBtn = document.getElementById("next-month");
+    const timeSlots = document.querySelectorAll(".time-slot");
+    const btnProximo = document.getElementById("btn-proximo");
 
-/* =========================================
-   SELEÇÃO DE DATA
-========================================= */
+    let currentDate = new Date();
+    let selectedDate = null;
+    let selectedTime = null;
+    let selectedDateObj = null;
 
-const dias =
-document.querySelectorAll(".calendar-grid .day");
+    // Função para desabilitar horários passados no dia de hoje
+    function atualizarHorarios() {
+        if (!selectedDateObj) return;
 
-dias.forEach((dia) => {
+        const agora = new Date();
+        const ehHoje = selectedDateObj.getDate() === agora.getDate() &&
+                       selectedDateObj.getMonth() === agora.getMonth() &&
+                       selectedDateObj.getFullYear() === agora.getFullYear();
 
-    dia.addEventListener("click", () => {
+        const horaAtual = agora.getHours();
+        const minutoAtual = agora.getMinutes();
 
-        /* NÃO SELECIONA DIAS APAGADOS */
+        timeSlots.forEach(slot => {
+            const timeText = slot.innerText.trim();
+            const [horaSlot, minutoSlot] = timeText.split(":").map(Number);
 
-        if(
-            dia.classList.contains("next-prev-month")
-        ) return;
+            slot.classList.remove("disabled-slot");
 
-        /* REMOVE ANTIGO */
+            if (ehHoje) {
+                if (horaSlot < horaAtual || (horaSlot === horaAtual && minutoSlot <= minutoAtual)) {
+                    slot.classList.add("disabled-slot");
+                    if (slot.classList.contains("selected")) {
+                        slot.classList.remove("selected");
+                        selectedTime = null;
+                    }
+                }
+            }
+        });
+    }
 
-        document
-        .querySelector(".active-day")
-        ?.classList.remove("active-day");
+    // Função para desenhar os dias do mês
+    function renderCalendar() {
+        if (!daysContainer || !monthYearText) return;
 
-        /* ATIVA NOVO */
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
 
-        dia.classList.add("active-day");
+        const monthNames = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
 
-        /* PEGAR DIA */
+        monthYearText.innerText = `${monthNames[month]} ${year}`;
+        daysContainer.innerHTML = "";
 
-        const numeroDia =
-        dia.innerText;
+        const firstDayIndex = new Date(year, month, 1).getDay();
+        const lastDay = new Date(year, month + 1, 0).getDate();
+        const prevLastDay = new Date(year, month, 0).getDate();
 
-        /* DATA COMPLETA */
+        // Dias do mês anterior
+        for (let x = firstDayIndex; x > 0; x--) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("day", "other-month");
+            dayDiv.innerText = prevLastDay - x + 1;
+            daysContainer.appendChild(dayDiv);
+        }
 
-        const dataCompleta =
-        `${numeroDia}/05/2026`;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
-        /* SALVAR */
+        // Dias do mês atual
+        for (let i = 1; i <= lastDay; i++) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("day");
+            dayDiv.innerText = i;
 
-        localStorage.setItem(
-            "data",
-            dataCompleta
-        );
+            const checkDate = new Date(year, month, i);
 
-    });
+            if (checkDate < today) {
+                dayDiv.classList.add("past-day");
+            } else {
+                // Seleção do dia
+                dayDiv.addEventListener("click", () => {
+                    document.querySelectorAll(".calendar-days .day").forEach(d => d.classList.remove("selected"));
+                    dayDiv.classList.add("selected");
 
-});
+                    selectedDateObj = checkDate;
+                    const diaFmt = String(i).padStart(2, '0');
+                    const mesFmt = String(month + 1).padStart(2, '0');
+                    selectedDate = `${diaFmt}/${mesFmt}/${year}`;
 
-/* =========================================
-   SELEÇÃO DE HORÁRIO
-========================================= */
+                    atualizarHorarios();
+                });
+            }
 
-const horarios =
-document.querySelectorAll(".time-slot");
-
-horarios.forEach((horario) => {
-
-    horario.addEventListener("click", () => {
-
-        /* REMOVE ANTIGO */
-
-        document
-        .querySelector(".active-time")
-        ?.classList.remove("active-time");
-
-        /* ATIVA NOVO */
-
-        horario.classList.add("active-time");
-
-        /* PEGAR HORA */
-
-        const horaSelecionada =
-        horario.innerText;
-
-        /* SALVAR */
-
-        localStorage.setItem(
-            "horario",
-            horaSelecionada
-        );
-
-    });
-
-});
-
-/* =========================================
-   SALVAR DATA PADRÃO
-========================================= */
-
-const dataInicial =
-document.querySelector(".active-day");
-
-if(dataInicial){
-
-    const dataPadrao =
-    `${dataInicial.innerText}/05/2026`;
-
-    localStorage.setItem(
-        "data",
-        dataPadrao
-    );
-
-}
-
-/* =========================================
-   SALVAR HORÁRIO PADRÃO
-========================================= */
-
-const horarioInicial =
-document.querySelector(".active-time");
-
-if(horarioInicial){
-
-    localStorage.setItem(
-        "horario",
-        horarioInicial.innerText
-    );
-
-}
-
-// NO FINAL
-document.addEventListener("DOMContentLoaded", function() {
-    const usuarioLogado = localStorage.getItem("logado") === "true"; 
-    const emailSalvo = localStorage.getItem("emailUsuario"); 
-
-    const authButtons = document.getElementById("auth-buttons");
-    const userProfile = document.getElementById("user-profile");
-
-    if (authButtons && userProfile) {
-        if (usuarioLogado) {
-            authButtons.style.display = "none";
-            userProfile.style.display = "flex"; 
-            if (emailSalvo) userProfile.title = emailSalvo; 
-        } else {
-            authButtons.style.display = "flex"; 
-            userProfile.style.display = "none";
+            daysContainer.appendChild(dayDiv);
         }
     }
 
-    const btnLogout = document.getElementById("btn-logout");
-    if(btnLogout) {
-        btnLogout.addEventListener("click", function(event) {
-            event.preventDefault();
-            localStorage.setItem("logado", "false"); 
-            localStorage.removeItem("emailUsuario"); 
-            window.location.href = "../home/home.html"; // Manda de volta pra home deslogado
+    // Setas de Troca de Mês
+    if (prevMonthBtn) {
+        prevMonthBtn.addEventListener("click", () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
         });
     }
+
+    if (nextMonthBtn) {
+        nextMonthBtn.addEventListener("click", () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+    }
+
+    // Seleção dos Horários
+    timeSlots.forEach(slot => {
+        slot.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (slot.classList.contains("disabled-slot")) return;
+
+            timeSlots.forEach(s => s.classList.remove("selected"));
+            slot.classList.add("selected");
+            selectedTime = slot.innerText.trim();
+        });
+    });
+
+    // Botão Próximo -> Salva e envia para a Página 4
+    if (btnProximo) {
+        btnProximo.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            if (!selectedDate) {
+                alert("Por favor, selecione uma data no calendário!");
+                return;
+            }
+
+            if (!selectedTime) {
+                alert("Por favor, selecione um horário disponível!");
+                return;
+            }
+
+            localStorage.setItem("data", selectedDate);
+            localStorage.setItem("horario", selectedTime);
+
+            window.location.href = "../agendamento4/index-ag4.html";
+        });
+    }
+
+    renderCalendar();
 });
