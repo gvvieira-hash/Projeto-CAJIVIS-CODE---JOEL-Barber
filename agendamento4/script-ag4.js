@@ -1,38 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const servico =
-    localStorage.getItem("servico");
+    const servico = localStorage.getItem("servico");
+    const barbeiro = localStorage.getItem("barbeiro");
+    const data = localStorage.getItem("data");
+    const horario = localStorage.getItem("horario");
+    const valor = localStorage.getItem("valor");
 
-    const barbeiro =
-    localStorage.getItem("barbeiro");
+    document.getElementById("servico").innerText = servico || "-";
+    document.getElementById("barbeiro").innerText = barbeiro || "-";
+    document.getElementById("data").innerText = data || "-";
+    document.getElementById("horario").innerText = horario || "-";
+    document.getElementById("valor").innerText = valor || "-";
+    document.getElementById("total").innerText = valor || "-";
 
-    const data =
-    localStorage.getItem("data");
-
-    const horario =
-    localStorage.getItem("horario");
-
-    const valor =
-    localStorage.getItem("valor");
-
-    document.getElementById("servico").innerText =
-    servico || "-";
-
-    document.getElementById("barbeiro").innerText =
-    barbeiro || "-";
-
-    document.getElementById("data").innerText =
-    data || "-";
-
-    document.getElementById("horario").innerText =
-    horario || "-";
-
-    document.getElementById("valor").innerText =
-    valor || "-";
-
-    document.getElementById("total").innerText =
-    valor || "-";
-
+    // Opcional: Adiciona uma flag no localStorage dizendo que o agendamento foi confirmado
+    // para a página da fila de espera saber que deve adicionar esse cliente lá.
+    const btnConfirmar = document.querySelector(".confirm-btn");
+    if (btnConfirmar) {
+        btnConfirmar.addEventListener("click", () => {
+            localStorage.setItem("agendamentoConcluido", "true");
+        });
+    }
 });
 
 document.addEventListener("DOMContentLoaded", function() {
