@@ -510,6 +510,47 @@ app.get("/api/agendamentos", async (req, res) => {
     });
   }
 });
+// ========================================
+// LISTAR AGENDAMENTOS DE UM CLIENTE
+// ========================================
+app.get("/api/clientes/meus-agendamentos", async (req, res) => {
+  try {
+    const email = req.query.email;
+
+    if (typeof email !== "string" || !email.trim()) {
+      return res.status(400).json({
+        erro: "E-mail do cliente não informado."
+      });
+    }
+
+    const [agendamentos] = await pool.execute(
+      `SELECT
+        a.id,
+        s.nome AS servico,
+        s.preco AS valor,
+        s.duracao_minutos,
+        b.nome AS barbeiro,
+        DATE_FORMAT(a.data_agendamento, '%Y-%m-%d') AS data,
+        TIME_FORMAT(a.hora_agendamento, '%H:%i') AS horario,
+        a.status
+      FROM agendamentos a
+      INNER JOIN clientes c ON c.id = a.cliente_id
+      INNER JOIN servicos s ON s.id = a.servico_id
+      LEFT JOIN barbeiros b ON b.id = a.barbeiro_id
+      WHERE c.email = ?
+      ORDER BY a.data_agendamento DESC, a.hora_agendamento DESC`,
+      [email.trim().toLowerCase()]
+    );
+
+    return res.json(agendamentos);
+  } catch (error) {
+    console.error("Erro ao buscar agendamentos do cliente:", error);
+
+    return res.status(500).json({
+      erro: "Não foi possível carregar seus agendamentos."
+    });
+  }
+});
 
 // ========================================
 // TESTAR CONEXÃO COM MYSQL
