@@ -70,6 +70,7 @@ function statusTexto(status) {
 }
 
 function obterProximoAgendamento() {
+    window.agendamentoSelecionado = item;
     const agora = new Date();
 
     return agendamentos
@@ -80,7 +81,7 @@ function obterProximoAgendamento() {
 
 function atualizarAgendamento() {
     const item = obterProximoAgendamento();
-
+window.agendamentoSelecionado = item;
     const botaoCancelar = document.getElementById("btnCancelar");
     const aviso = document.getElementById("avisoHorario");
     const status = document.getElementById("statusDetalhe");
@@ -167,9 +168,14 @@ function atualizarAgendamento() {
         </div>
     `;
 
-    botaoCancelar.disabled = true;
-    botaoCancelar.title =
-        "O cancelamento pela página ainda precisa ser conectado à API.";
+ const statusAtual = statusNormalizado(item.status);
+
+const podeCancelar = ["agendado", "confirmado"].includes(statusAtual);
+
+botaoCancelar.disabled = !podeCancelar;
+botaoCancelar.title = podeCancelar
+    ? "Clique para cancelar este agendamento."
+    : "Este agendamento já foi concluído ou cancelado.";
 }
 
 function renderizarHistorico(filtro = filtroAtual) {
@@ -305,8 +311,55 @@ document.querySelectorAll(".filtro").forEach(botao => {
     });
 });
 
-document.getElementById("btnCancelar").addEventListener("click", () => {
-    alert("O cancelamento pelo banco de dados ainda será implementado.");
+
+document.getElementById("btnCancelar").addEventListener("click", async () => {
+    const item = window.agendamentoSelecionado;
+    const email = localStorage.getItem("emailUsuario");
+    const botao = document.getElementById("btnCancelar");
+
+    if (!item || !item.id) {
+        alert("Nenhum agendamento foi selecionado para cancelamento.");
+        return;
+    }
+
+    if (!email) {
+        alert("Entre na sua conta para cancelar o agendamento.");
+        return;
+    }
+
+    if (!confirm(`Deseja realmente cancelar o agendamento de ${item.servico} no dia ${formatarDataCompleta(item.data)} às ${item.horario}?`)) {
+        return;
+    }
+
+    try {
+        botao.disabled = true;
+
+        const resposta = await fetch(
+            `${API_URL}/clientes/meus-agendamentos/${item.id}/cancelar`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email })
+            }
+        );
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+            throw new Error(dados.erro || "Não foi possível cancelar o agendamento.");
+        }
+
+        alert("Agendamento cancelado com sucesso!");
+
+        await carregarAgendamentos();
+    } catch (erro) {
+        console.error("Erro ao cancelar agendamento:", erro);
+        alert(erro.message || "Erro ao cancelar. Verifique se o servidor está funcionando.");
+        botao.disabled = false;
+    }
 });
+
 
 document.addEventListener("DOMContentLoaded", carregarAgendamentos);
