@@ -70,13 +70,16 @@ function statusTexto(status) {
 }
 
 function obterProximoAgendamento() {
-    window.agendamentoSelecionado = item;
     const agora = new Date();
 
-    return agendamentos
+    const proximo = agendamentos
         .filter(item => statusAtivo(item.status))
         .filter(item => obterInicio(item) >= agora)
         .sort((a, b) => obterInicio(a) - obterInicio(b))[0];
+
+    window.agendamentoSelecionado = proximo || null;
+
+    return proximo;
 }
 
 function atualizarAgendamento() {
