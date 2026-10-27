@@ -552,6 +552,52 @@ app.get("/api/clientes/meus-agendamentos", async (req, res) => {
   }
 });
 
+app.patch("/api/clientes/meus-agendamentos/:id/cancelar", async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const email = req.body?.email;
+
+        if (!Number.isInteger(id) || id <= 0) {
+            return res.status(400).json({
+                erro: "ID do agendamento inválido."
+            });
+        }
+
+        if (typeof email !== "string" || !email.trim()) {
+            return res.status(400).json({
+                erro: "E-mail do cliente não informado."
+            });
+        }
+
+        const [resultado] = await pool.execute(
+            `UPDATE agendamentos a
+             INNER JOIN clientes c ON c.id = a.cliente_id
+             SET a.status = 'cancelado'
+             WHERE a.id = ?
+               AND LOWER(c.email) = LOWER(?)
+               AND a.status IN ('agendado', 'confirmado')
+               AND TIMESTAMP(a.data_agendamento, a.hora_agendamento) > NOW()`,
+            [id, email.trim()]
+        );
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({
+                erro: "Agendamento não encontrado, já cancelado, concluído ou não pode mais ser cancelado."
+            });
+        }
+
+        return res.json({
+            mensagem: "Agendamento cancelado com sucesso!"
+        });
+    } catch (error) {
+        console.error("Erro ao cancelar agendamento:", error);
+
+        return res.status(500).json({
+            erro: "Não foi possível cancelar o agendamento."
+        });
+    }
+});
+
 // ========================================
 // TESTAR CONEXÃO COM MYSQL
 // ========================================
