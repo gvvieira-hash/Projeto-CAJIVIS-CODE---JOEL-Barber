@@ -1,22 +1,22 @@
 {
-  "name": "joelbarber",
+  "name": "atividade",
   "version": "1.0.0",
-  "description": "Sistema de agendamento para a barbearia Joel Barber",
-  "type": "module",
-  "main": "server.js",
+  "description": "<img width=\"512\" height=\"512\" alt=\"image\" src=\"https://github.com/user-attachments/assets/2fb707d2-e24e-4025-9fa7-be084c33a74d\" /># 💈 Joel Barber — Sistema de Agendamento para Barbearia",
+  "main": "auth.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
-  },
+  "dev": "nodemon src/server.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^18.0.8",
     "express": "^5.3.0",
-    "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.24.6"
+    "mysql2": "^3.24.6",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
