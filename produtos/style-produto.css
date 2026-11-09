@@ -405,3 +405,8 @@ footer {
         align-items: flex-start;
     }
 }
+.filtros button.ativo {
+    background-color: #d4a24c;
+    color: #000;
+    border-color: #d4a24c;
+}
