@@ -798,6 +798,11 @@ app.patch("/api/clientes/meus-agendamentos/:id/cancelar", async (req, res) => {
 // ========================================
 // TESTAR CONEXÃO COM MYSQL
 // ========================================
+console.log("HOST:", process.env.DB_HOST);
+console.log("PORT:", process.env.DB_PORT);
+console.log("USER:", process.env.DB_USER);
+console.log("DATABASE:", process.env.DB_NAME);
+console.log("PASSWORD CONFIGURADA:", !!process.env.DB_PASSWORD);
 app.get("/api/health", async (req, res) => {
   try {
     const [rows] = await pool.query(
