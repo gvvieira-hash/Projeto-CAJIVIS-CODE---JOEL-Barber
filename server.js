@@ -809,7 +809,7 @@ app.get("/api/health", async (req, res) => {
       banco: rows[0].banco
     });
   } catch (error) {
-    console.error("Erro no MySQL:", error.message);
+    console.error("Erro no MySQL:", error);
 
     return res.status(500).json({
       erro: "Não foi possível conectar ao banco."
