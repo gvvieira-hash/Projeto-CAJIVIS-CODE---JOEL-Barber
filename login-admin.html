@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administrativo | Joel Barber</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login-admin.css">
+</head>
+<body>
+    <main class="login-container">
+        <div class="logo">JB</div>
+
+        <p class="eyebrow">JOEL BARBER</p>
+        <h1>Painel administrativo</h1>
+        <p class="subtitle">Entre com suas credenciais de administrador.</p>
+
+        <form id="formLogin">
+            <label for="email">E-mail administrativo</label>
+            <input
+                type="email"
+                id="email"
+                placeholder="Digite seu e-mail"
+                autocomplete="username"
+                required
+            >
+
+            <label for="senha">Senha</label>
+            <div class="password-container">
+                <input
+                    type="password"
+                    id="senha"
+                    placeholder="Digite sua senha"
+                    autocomplete="current-password"
+                    required
+                >
+                <button type="button" id="btnMostrarSenha" aria-label="Mostrar senha">Mostrar</button>
+            </div>
+
+            <p id="mensagem" role="status"></p>
+
+            <button type="submit" id="btnEntrar">Entrar no painel</button>
+        </form>
+
+        <a class="voltar" href="index.html">← Voltar ao site</a>
+        <p class="footer">JOEL BARBER © 2026</p>
+    </main>
+
+    <script src="login-admin.js"></script>
+</body>
+</html>

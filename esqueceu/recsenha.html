@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha | Joel Barber</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #111111;
+            background-image: url('barbearia-em-fortaleza-7.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+        /* Fundo escurecido por cima da imagem para dar destaque à caixa */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); 
+            z-index: -1;
+        }
+        .container {
+            width: 100%;
+            max-width: 430px;
+            background: #1b1b1b;
+            border: 1px solid #333333;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+        }
+        /* Configuração do novo logótipo em imagem */
+        .logo {
+            max-width: 160px;
+            height: auto;
+            margin: 0 auto 30px auto;
+            display: block;
+        }
+        h1 {
+            font-size: 23px;
+            margin-bottom: 12px;
+        }
+        .descricao {
+            color: #aaaaaa;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 28px;
+        }
+        .campo {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 9px;
+            color: #eeeeee;
+        }
+        input {
+            width: 100%;
+            padding: 14px;
+            background: #111111;
+            border: 1px solid #444444;
+            border-radius: 8px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+        input:focus {
+            border-color: #d4a24c;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #d4a24c;
+            color: #111111;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        button:hover {
+            background: #e5b966;
+            transform: translateY(-1px);
+        }
+        #mensagem {
+            display: none;
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.7;
+            background: #29251c;
+            color: #e5c782;
+        }
+        .voltar {
+            display: inline-block;
+            margin-top: 25px;
+            color: #d4a24c;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+        .voltar:hover {
+            color: #ffffff;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 32px 22px;
+            }
+            h1 {
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <!-- LOGO ATUALIZADO AQUI -->
+        <img src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png" class="logo" alt="Logo">
+        <h1>Esqueceu sua senha?</h1>
+        <p class="descricao">
+            Não se preocupe! Informe o e-mail associado à sua conta
+            para iniciar a recuperação de senha.
+        </p>
+        <form id="formRecuperacao">
+            <div class="campo">
+                <label for="email">Seu e-mail</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Digite seu e-mail"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+            <button type="submit">
+                Enviar link de recuperação
+            </button>
+        </form>
+        <div id="mensagem" role="status" aria-live="polite"></div>
+        <a href="../index.html" class="voltar">
+            ← Voltar para o login
+        </a>
+    </main>
+    <script>
+        const formulario = document.getElementById('formRecuperacao');
+        const mensagem = document.getElementById('mensagem');
+        formulario.addEventListener('submit', function(event) {
+            event.preventDefault();
+            mensagem.style.display = 'block';
+            mensagem.textContent =
+                'Esta página ainda não está conectada ao sistema de envio de e-mails. A recuperação será ativada na integração com o backend.';
+        });
+    </script>
+</body>
+</html>
