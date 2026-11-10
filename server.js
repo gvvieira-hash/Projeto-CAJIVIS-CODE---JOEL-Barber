@@ -244,6 +244,36 @@ app.get("/api/admin/barbeiros", autenticarAdmin, async (req, res) => {
   }
 });
 
+
+app.post("/api/admin/barbeiros", autenticarAdmin, async (req, res) => {
+  try {
+    const { nome } = req.body;
+
+    if (!nome || !nome.trim()) {
+      return res.status(400).json({
+        erro: "Informe o nome do barbeiro."
+      });
+    }
+
+    const [resultado] = await pool.query(
+      "INSERT INTO barbeiros (nome, ativo) VALUES (?, 1)",
+      [nome.trim()]
+    );
+
+    return res.status(201).json({
+      mensagem: "Barbeiro cadastrado com sucesso!",
+      id: resultado.insertId
+    });
+
+  } catch (error) {
+    console.error("Erro ao cadastrar barbeiro:", error.message);
+
+    return res.status(500).json({
+      erro: "Não foi possível cadastrar o barbeiro."
+    });
+  }
+});
+
 // ========================================
 // PRODUTOS: LISTAGEM PÚBLICA E GESTÃO ADMIN
 // Execute antes: sql/05_produtos.sql
