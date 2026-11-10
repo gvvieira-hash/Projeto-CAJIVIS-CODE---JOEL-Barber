@@ -233,7 +233,7 @@ app.get("/api/admin/clientes", autenticarAdmin, async (req, res) => {
 app.get("/api/admin/barbeiros", autenticarAdmin, async (req, res) => {
   try {
     const [barbeiros] = await pool.query(`
-      SELECT id, nome
+      SELECT id, nome, ativo
       FROM barbeiros
       ORDER BY nome ASC
     `);
@@ -243,6 +243,43 @@ app.get("/api/admin/barbeiros", autenticarAdmin, async (req, res) => {
     res.status(500).json({ erro: "Não foi possível carregar os barbeiros." });
   }
 });
+
+app.patch("/api/admin/barbeiros/:id/status", autenticarAdmin, async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+
+        if (!Number.isInteger(id) || id <= 0) {
+            return res.status(400).json({
+                erro: "ID do barbeiro inválido."
+            });
+        }
+
+        const [resultado] = await pool.query(
+            `UPDATE barbeiros
+             SET ativo = IF(ativo = 1, 0, 1)
+             WHERE id = ?`,
+            [id]
+        );
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({
+                erro: "Barbeiro não encontrado."
+            });
+        }
+
+        return res.json({
+            mensagem: "Disponibilidade do barbeiro atualizada!"
+        });
+
+    } catch (error) {
+        console.error("Erro ao alterar disponibilidade:", error.message);
+
+        return res.status(500).json({
+            erro: "Não foi possível alterar a disponibilidade."
+        });
+    }
+});
+
 
 
 app.post("/api/admin/barbeiros", autenticarAdmin, async (req, res) => {
@@ -547,6 +584,26 @@ app.get("/api/servicos", async (req, res) => {
   }
 });
 
+// Lista somente os barbeiros disponíveis para agendamento
+app.get("/api/barbeiros", async (req, res) => {
+    try {
+        const [barbeiros] = await pool.query(`
+            SELECT id, nome
+            FROM barbeiros
+            WHERE ativo = 1
+            ORDER BY nome ASC
+        `);
+
+        return res.json(barbeiros);
+
+    } catch (error) {
+        console.error("Erro ao listar barbeiros:", error.message);
+
+        return res.status(500).json({
+            erro: "Não foi possível carregar os barbeiros."
+        });
+    }
+});
 // ========================================
 // CRIAR AGENDAMENTO
 // ========================================
@@ -636,14 +693,14 @@ app.post("/api/agendamentos", async (req, res) => {
     const [barbeiros] = await pool.execute(
       `SELECT id
        FROM barbeiros
-       WHERE nome = ?
+       WHERE nome = ? AND ativo = 1
        LIMIT 1`,
       [barbeiro.trim()]
     );
 
     if (barbeiros.length === 0) {
       return res.status(404).json({
-        erro: "Barbeiro não encontrado."
+        erro: "Barbeiro não encontrado ou indisponível."
       });
     }
 

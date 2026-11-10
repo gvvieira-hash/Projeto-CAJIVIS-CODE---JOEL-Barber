@@ -361,6 +361,7 @@ $("btnAtualizarClientes").addEventListener("click", carregarClientes);
 // BARBEIROS
 // ========================================
 
+
 async function carregarBarbeiros() {
     try {
         mensagem("mensagemBarbeiros", "Carregando barbeiros...");
@@ -377,10 +378,21 @@ async function carregarBarbeiros() {
                     <div>
                         <h3>${escaparHTML(b.nome)}</h3>
                         <p>
-                            ${Number(b.ativo) === 0
-                                ? "Inativo"
-                                : "Disponível para agendamentos"}
+                            ${Number(b.ativo) === 1
+                                ? "Disponível para agendamentos"
+                                : "Indisponível para agendamentos"}
                         </p>
+
+                        <button
+                            type="button"
+                            class="btn-primary"
+                            data-alterar-status="${b.id}"
+                            data-ativo="${Number(b.ativo)}"
+                            style="margin-top:10px;">
+                            ${Number(b.ativo) === 1
+                                ? "Desativar barbeiro"
+                                : "Ativar barbeiro"}
+                        </button>
                     </div>
                 </article>
             `).join("")
@@ -397,6 +409,31 @@ async function carregarBarbeiros() {
 }
 
 $("btnAtualizarBarbeiros").addEventListener("click", carregarBarbeiros);
+$("listaBarbeiros").addEventListener("click", async (e) => {
+    const botao = e.target.closest("[data-alterar-status]");
+
+    if (!botao) return;
+
+    const id = botao.dataset.alterarStatus;
+
+    botao.disabled = true;
+
+    try {
+        const resposta = await api(
+            `/api/admin/barbeiros/${id}/status`,
+            { method: "PATCH" }
+        );
+
+        mensagem("mensagemBarbeiros", resposta.mensagem);
+
+        await carregarBarbeiros();
+
+    } catch (erro) {
+        mensagem("mensagemBarbeiros", erro.message, true);
+        botao.disabled = false;
+    }
+});
+
 
 // ========================================
 // CADASTRAR BARBEIRO
