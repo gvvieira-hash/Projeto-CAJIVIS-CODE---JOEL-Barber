@@ -439,7 +439,35 @@ $("listaBarbeiros").addEventListener("click", async (e) => {
 // CADASTRAR BARBEIRO
 // ========================================
 
+
 const formularioBarbeiro = $("formNovoBarbeiro");
+
+const fotoInput = $("fotoBarbeiro");
+const previewFoto = $("previewFotoBarbeiro");
+
+// Prévia da foto selecionada
+fotoInput.addEventListener("change", () => {
+    const arquivo = fotoInput.files[0];
+
+    if (!arquivo) {
+        previewFoto.style.display = "none";
+        return;
+    }
+
+    if (arquivo.size > 7 * 1024 * 1024) {
+        $("erroBarbeiro").textContent =
+            "A imagem deve ter no máximo 7 MB.";
+
+        fotoInput.value = "";
+        previewFoto.style.display = "none";
+        return;
+    }
+
+    previewFoto.src = URL.createObjectURL(arquivo);
+    previewFoto.style.display = "block";
+
+    $("erroBarbeiro").textContent = "";
+});
 
 $("btnNovoBarbeiro").addEventListener("click", () => {
     formularioBarbeiro.style.display = "block";
@@ -450,12 +478,14 @@ $("cancelarBarbeiro").addEventListener("click", () => {
     formularioBarbeiro.style.display = "none";
     $("cadastroBarbeiro").reset();
     $("erroBarbeiro").textContent = "";
+    previewFoto.style.display = "none";
 });
 
 $("cadastroBarbeiro").addEventListener("submit", async e => {
     e.preventDefault();
 
     const nome = $("nomeBarbeiro").value.trim();
+    const arquivo = fotoInput.files[0];
     const botao = $("salvarBarbeiro");
 
     if (!nome) {
@@ -463,17 +493,40 @@ $("cadastroBarbeiro").addEventListener("submit", async e => {
         return;
     }
 
+    if (!arquivo) {
+        $("erroBarbeiro").textContent = "Selecione uma foto.";
+        return;
+    }
+
+    if (arquivo.size > 7 * 1024 * 1024) {
+        $("erroBarbeiro").textContent =
+            "A imagem deve ter no máximo 7 MB.";
+        return;
+    }
+
     botao.disabled = true;
     botao.textContent = "Salvando...";
 
     try {
+        const foto = await new Promise((resolve, reject) => {
+            const leitor = new FileReader();
+
+            leitor.onload = () => resolve(leitor.result);
+            leitor.onerror = () => reject(
+                new Error("Não foi possível ler a imagem.")
+            );
+
+            leitor.readAsDataURL(arquivo);
+        });
+
         const resposta = await api("/api/admin/barbeiros", {
             method: "POST",
-            body: JSON.stringify({ nome })
+            body: JSON.stringify({ nome, foto })
         });
 
         $("cadastroBarbeiro").reset();
         formularioBarbeiro.style.display = "none";
+        previewFoto.style.display = "none";
 
         mensagem("mensagemBarbeiros", resposta.mensagem);
 

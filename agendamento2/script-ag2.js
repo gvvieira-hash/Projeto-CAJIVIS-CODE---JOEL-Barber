@@ -59,9 +59,9 @@ async function carregarBarbeiros() {
         lista.innerHTML = barbeiros.map(barbeiro => {
             const dados = dadosBarbeiros[barbeiro.nome];
 
-            const imagem = dados
-                ? dados.imagem
-                : "images.jpg";
+          const imagem = barbeiro.foto || (
+    dados ? dados.imagem : "images.jpg"
+);
 
             const cargo = dados
                 ? dados.cargo

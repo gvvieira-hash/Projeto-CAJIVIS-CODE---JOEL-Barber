@@ -206,7 +206,24 @@
                         maxlength="100"
                         required
                         style="padding:12px; width:100%; margin:12px 0;"
-                    >
+                    > 
+                    <label for="fotoBarbeiro" style="display:block; margin:12px 0 8px; color:white;">
+    Foto do barbeiro
+</label>
+
+<input
+    type="file"
+    id="fotoBarbeiro"
+    accept="image/png, image/jpeg, image/webp"
+    required
+    style="padding:12px; width:100%; margin-bottom:15px; color:white;"
+>
+
+<img
+    id="previewFotoBarbeiro"
+    style="display:none; width:120px; height:120px; object-fit:cover; border-radius:50%; margin-bottom:15px;"
+    alt="Prévia da foto do barbeiro"
+>
 
                     <button type="submit" class="btn-primary" id="salvarBarbeiro">Salvar barbeiro</button>
                     <button type="button" class="btn-secondary" id="cancelarBarbeiro">Cancelar</button>

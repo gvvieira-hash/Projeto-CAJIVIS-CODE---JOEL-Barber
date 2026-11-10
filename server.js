@@ -15,7 +15,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 
 // ========================================
 // LOGIN DO ADMINISTRADOR
@@ -282,33 +282,40 @@ app.patch("/api/admin/barbeiros/:id/status", autenticarAdmin, async (req, res) =
 
 
 
+
 app.post("/api/admin/barbeiros", autenticarAdmin, async (req, res) => {
-  try {
-    const { nome } = req.body;
+    try {
+        const { nome, foto } = req.body;
 
-    if (!nome || !nome.trim()) {
-      return res.status(400).json({
-        erro: "Informe o nome do barbeiro."
-      });
+        if (!nome || !nome.trim()) {
+            return res.status(400).json({
+                erro: "Informe o nome do barbeiro."
+            });
+        }
+
+        if (!foto || !foto.startsWith("data:image/")) {
+            return res.status(400).json({
+                erro: "Selecione uma foto válida para o barbeiro."
+            });
+        }
+
+        const [resultado] = await pool.query(
+            "INSERT INTO barbeiros (nome, foto, ativo) VALUES (?, ?, 1)",
+            [nome.trim(), foto]
+        );
+
+        return res.status(201).json({
+            mensagem: "Barbeiro cadastrado com sucesso!",
+            id: resultado.insertId
+        });
+
+    } catch (error) {
+        console.error("Erro ao cadastrar barbeiro:", error.message);
+
+        return res.status(500).json({
+            erro: "Não foi possível cadastrar o barbeiro."
+        });
     }
-
-    const [resultado] = await pool.query(
-      "INSERT INTO barbeiros (nome, ativo) VALUES (?, 1)",
-      [nome.trim()]
-    );
-
-    return res.status(201).json({
-      mensagem: "Barbeiro cadastrado com sucesso!",
-      id: resultado.insertId
-    });
-
-  } catch (error) {
-    console.error("Erro ao cadastrar barbeiro:", error.message);
-
-    return res.status(500).json({
-      erro: "Não foi possível cadastrar o barbeiro."
-    });
-  }
 });
 
 // ========================================
@@ -588,7 +595,7 @@ app.get("/api/servicos", async (req, res) => {
 app.get("/api/barbeiros", async (req, res) => {
     try {
         const [barbeiros] = await pool.query(`
-            SELECT id, nome
+            SELECT id, nome, foto
             FROM barbeiros
             WHERE ativo = 1
             ORDER BY nome ASC
