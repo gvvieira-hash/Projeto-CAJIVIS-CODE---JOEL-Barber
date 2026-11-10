@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | Joel Barber</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<aside class="sidebar">
+    <div class="brand">
+        <span class="brand-icon">JB</span>
+        <div><h2>JOEL <span>BARBER</span></h2><small>PAINEL ADMINISTRATIVO</small></div>
+    </div>
+    <nav class="admin-nav">
+        <a href="#agendamentos" class="active" data-page="agendamentos">▦ <span>Agendamentos</span></a>
+        <a href="#barbeiros" data-page="barbeiros">♙ <span>Barbeiros</span></a>
+        <a href="#clientes" data-page="clientes">♧ <span>Clientes</span></a>
+        <a href="#produtos" data-page="produtos">▣ <span>Produtos</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+        <span class="online-dot"></span> Sistema administrativo
+        <button id="btnSair" type="button">Sair do painel ↗</button>
+    </div>
+</aside>
+
+<main class="main">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">GESTÃO DA BARBEARIA</p>
+            <h1 id="tituloPagina">Agendamentos</h1>
+            <p class="subtitle" id="subtituloPagina">Acompanhe os horários de todos os barbeiros.</p>
+        </div>
+        <div class="admin-profile">
+            <div class="avatar">JB</div>
+            <div><strong>Joel Barber</strong><small>Administrador</small></div>
+        </div>
+    </header>
+
+    <section class="admin-page active" id="pagina-agendamentos">
+        <section class="stats">
+            <article class="stat-card"><div class="stat-heading"><span>Total de agendamentos</span><span class="stat-icon">▦</span></div><strong id="totalAgendamentos">—</strong><small>Registros encontrados</small></article>
+            <article class="stat-card"><div class="stat-heading"><span>Agendados</span><span class="stat-icon gold">◷</span></div><strong id="totalAgendados">—</strong><small>Atendimentos programados</small></article>
+            <article class="stat-card"><div class="stat-heading"><span>Concluídos</span><span class="stat-icon green">✓</span></div><strong id="totalConcluidos">—</strong><small>Atendimentos realizados</small></article>
+            <article class="stat-card"><div class="stat-heading"><span>Cancelados</span><span class="stat-icon red">×</span></div><strong id="totalCancelados">—</strong><small>Agendamentos cancelados</small></article>
+        </section>
+        <section class="appointments">
+            <div class="section-heading"><div><h2>Todos os horários</h2><p>Visualize os agendamentos dos barbeiros.</p></div><button id="btnAtualizar" class="btn-primary" type="button">↻ Atualizar lista</button></div>
+            <div class="filters">
+                <label class="search-box"><span>⌕</span><input type="search" id="pesquisa" placeholder="Buscar cliente, serviço ou barbeiro..."></label>
+                <select id="filtroBarbeiro" aria-label="Filtrar por barbeiro"><option value="">Todos os barbeiros</option></select>
+                <input type="date" id="filtroData" aria-label="Filtrar por data">
+                <select id="filtroStatus" aria-label="Filtrar por status"><option value="">Todos os status</option><option value="agendado">Agendado</option><option value="concluido">Concluído</option><option value="cancelado">Cancelado</option></select>
+            </div>
+            <div id="mensagem" class="message" role="status">Carregando agendamentos...</div>
+            <div class="table-wrapper"><table><thead><tr><th>CLIENTE</th><th>SERVIÇO</th><th>BARBEIRO</th><th>DATA</th><th>HORÁRIO</th><th>STATUS / AÇÕES</th></tr></thead><tbody id="listaAgendamentos"><tr><td colspan="6" class="empty">Carregando...</td></tr></tbody></table></div>
+            <footer class="table-footer"><span id="contador">Nenhum agendamento carregado</span><span>Joel Barber <span class="gold-text">•</span> Administração</span></footer>
+        </section>
+    </section>
+
+    <section class="admin-page" id="pagina-clientes">
+        <section class="appointments">
+            <div class="section-heading"><div><h2>Clientes cadastrados</h2><p>Consulte os clientes que possuem cadastro no site.</p></div><button class="btn-primary" id="btnAtualizarClientes">↻ Atualizar lista</button></div>
+            <div class="filters single-filter"><label class="search-box"><span>⌕</span><input id="pesquisaClientes" type="search" placeholder="Buscar por nome, telefone ou e-mail..."></label></div>
+            <div class="message" id="mensagemClientes" role="status">Carregando clientes...</div>
+            <div class="table-wrapper"><table><thead><tr><th>NOME</th><th>TELEFONE</th><th>E-MAIL</th><th>CADASTRO</th></tr></thead><tbody id="listaClientes"><tr><td colspan="4" class="empty">Carregando...</td></tr></tbody></table></div>
+            <footer class="table-footer"><span id="contadorClientes">0 clientes</span><span>Joel Barber • Administração</span></footer>
+        </section>
+    </section>
+
+    <section class="admin-page" id="pagina-barbeiros">
+        <section class="appointments">
+            <div class="section-heading"><div><h2>Equipe de barbeiros</h2><p>Barbeiros cadastrados para receber agendamentos.</p></div><button class="btn-primary" id="btnAtualizarBarbeiros">↻ Atualizar lista</button></div>
+            <div class="message" id="mensagemBarbeiros" role="status">Carregando barbeiros...</div>
+            <div class="people-grid" id="listaBarbeiros"></div>
+        </section>
+    </section>
+
+    <section class="admin-page" id="pagina-produtos">
+        <section class="appointments">
+            <div class="section-heading"><div><h2>Produtos da loja</h2><p>Cadastre e gerencie os produtos exibidos no painel dos clientes.</p></div><button class="btn-primary" id="btnNovoProduto">＋ Adicionar produto</button></div>
+            <div class="filters single-filter"><label class="search-box"><span>⌕</span><input id="pesquisaProdutos" type="search" placeholder="Buscar produto..."></label></div>
+            <div class="message" id="mensagemProdutos" role="status">Carregando produtos...</div>
+            <div class="products-grid" id="listaProdutosAdmin"></div>
+        </section>
+    </section>
+    <p class="page-footer">JOEL BARBER © 2026 · Sistema de gerenciamento</p>
+</main>
+
+<div class="modal-backdrop" id="modalProduto" aria-hidden="true">
+    <form class="modal-card" id="formProduto">
+        <div class="section-heading"><div><h2 id="tituloModalProduto">Novo produto</h2><p>Os dados serão publicados na loja dos clientes.</p></div><button type="button" class="btn-close" id="fecharModalProduto">×</button></div>
+        <input type="hidden" id="produtoId">
+        <label>Nome do produto<input id="produtoNome" required maxlength="120" placeholder="Ex.: Pomada modeladora"></label>
+        <label>Descrição<input id="produtoDescricao" maxlength="255" placeholder="Descreva o produto"></label>
+        <div class="form-row">
+            <label>Preço (R$)<input id="produtoPreco" required type="number" min="0.01" step="0.01" placeholder="30,00"></label>
+            <label>Categoria<select id="produtoCategoria" required><option value="cabelo">Cabelo</option><option value="barba">Barba</option><option value="acabamento">Acabamento</option><option value="acessorios">Acessórios</option></select></label>
+        </div>
+        <label>URL da imagem<input id="produtoImagem" type="url" placeholder="https://..."></label>
+        <label class="check-label"><input id="produtoAtivo" type="checkbox" checked> Produto visível na loja</label>
+        <div class="modal-actions"><button type="button" class="btn-secondary" id="cancelarModalProduto">Cancelar</button><button class="btn-primary" type="submit" id="salvarProduto">Salvar produto</button></div>
+        <p class="modal-message" id="erroProduto" role="status"></p>
+    </form>
+</div>
+<script src="admin.js"></script>
+</body>
+</html>

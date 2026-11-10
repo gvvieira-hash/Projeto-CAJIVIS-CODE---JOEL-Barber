@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+/* RESET */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* BODY */
+body{
+    font-family: 'Poppins', sans-serif;
+}
+/* PÁGINA */
+.login-page{
+    width: 100%;
+    height: 100vh;
+    background-image: url('barbearia-em-fortaleza-7.webp');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+/* OVERLAY ESCURO */
+.overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.70);
+    backdrop-filter: blur(3px);
+}
+/* CARD */
+.login-card{
+    width: 430px;
+    background-color: rgba(0,0,0,0.95);
+    padding: 50px;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+/* LOGO */
+.logo{
+    width: 120px;
+    margin-bottom: 20px;
+}
+/* TÍTULO */
+.login-card h1{
+    color: white;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+/* TEXTO */
+.login-card p{
+    color: #b3b3b3;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+/* FORM - reduz o espaçamento geral entre elementos */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+/* BOTÃO - remove as margens verticais excessivas */
+.btn-entrar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 45px;
+    margin: 10px auto 0 auto;
+    background: #d4a24c;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+/* ESQUECEU A SENHA */
+.forgot-password {
+    display: inline-block;
+    margin-top: 5px;
+    color: #888888;
+    font-size: 13px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.forgot-password:hover {
+    color: #d4a024;
+    text-decoration: underline;
+}
+/* INPUT BOX */
+.input-box{
+    width: 100%;
+    height: 55px;
+    border: 1px solid #2e2e2e;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    background-color: transparent;
+}
+/* ÍCONES */
+.input-box i{
+    color: #888;
+    font-size: 14px;
+}
+/* INPUT */
+.input-box input{
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 0 10px;
+    font-size: 14px;
+}
+/* OPÇÕES */
+.options{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+/* LABEL */
+.options label{
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+/* LINK */
+.options a{
+    color: #d4a024;
+    text-decoration: none;
+}
+    
+.btn-entrar.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* CADASTRO */
+.register {
+    margin-top: 15px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+.register span {
+    color: #ccc;
+}
+.register a {
+    color: #d4a024;
+    text-decoration: none;
+    font-weight: 500;
+}
+.register a:hover {
+    text-decoration: underline;
+}
+/* ESQUECEU A SENHA */
+.forgot-password {
+    display: block;
+    margin-top: 8px;
+    color: #888888;
+    font-size: 13px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.forgot-password:hover {
+    color: #d4a024;
+    text-decoration: underline;
+}

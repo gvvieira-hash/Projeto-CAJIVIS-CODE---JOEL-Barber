@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joel Barber</title>
+
+    <link rel="stylesheet" href="style-produto.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <img src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png"
+             alt="Logo Joel Barber" id="foto">
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="../home/home.html">Início</a></li>
+            <li><a href="../agendamento1/index-ag1.html">Agendamentos</a></li>
+            <li><a href="../produtos/index-produto.html" class="active">Produtos</a></li>
+            <li><a href="../fila_de_espera/index-fila.html">Meus Agendamentos</a></li>
+            <li><a href="../servicos/index-serv.html">Serviços</a></li>
+        </ul>
+    </nav>
+
+    <div class="buttons" id="auth-buttons">
+        <a href="../log/index.html" class="btn-login">Entrar</a>
+        <a href="../criar conta/index2.html" class="btn-register">Criar Conta</a>
+    </div>
+
+    <div class="user-profile" id="user-profile" style="display: none;">
+        <div class="avatar">
+            <i class="fa-regular fa-user"></i>
+        </div>
+        <span class="user-name">Minha Conta</span>
+        <a href="#" id="btn-logout">Sair</a>
+    </div>
+</header>
+
+<section class="container">
+
+    <section class="hero-produtos">
+        <div class="overlay"></div>
+
+        <div class="hero-texto">
+            <h1>Produtos</h1>
+            <p>
+                Os melhores <br>
+                produtos para <br>
+                cuidar do seu estilo
+            </p>
+        </div>
+    </section>
+
+    <!-- FILTROS -->
+    <section class="filtros">
+        <button type="button" class="filtro ativo" data-categoria="todos">Todos</button>
+        <button type="button" class="filtro" data-categoria="cabelo">Cabelo</button>
+        <button type="button" class="filtro" data-categoria="barba">Barba</button>
+        <button type="button" class="filtro" data-categoria="acabamento">Acabamento</button>
+        <button type="button" class="filtro" data-categoria="acessorios">Acessórios</button>
+    </section>
+
+    <!-- PRODUTOS -->
+    <section class="produtos" id="lista-produtos">
+        <p id="carregando-produtos" style="grid-column:1/-1;text-align:center;color:#cfcfcf;padding:30px;">Carregando produtos...</p>
+    </section>
+
+</section>
+
+<footer>
+    <span>© 2026 Joel Barber</span>
+    <span>Seu estilo, nosso compromisso.</span>
+</footer>
+
+<script src="produtos.js"></script>
+<script src="../home/auth.js"></script>
+
+</body>
+</html>

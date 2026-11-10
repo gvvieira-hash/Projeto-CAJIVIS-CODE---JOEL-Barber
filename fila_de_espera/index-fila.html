@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Agendamentos | Joel Barber</title>
+
+    <link rel="stylesheet" href="style-fila.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img
+                src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png"
+                alt="Logo Joel Barber">
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="../home/home.html">Início</a></li>
+                <li><a href="../agendamento1/index-ag1.html">Agendamentos</a></li>
+                <li><a href="../produtos/index-produto.html">Produtos</a></li>
+                <li><a href="index-fila.html" class="active">Meus Agendamentos</a></li>
+                <li><a href="../servicos/index-serv.html">Serviços</a></li>
+            </ul>
+        </nav>
+
+        <!-- BOTÕES -->
+        <div class="buttons" id="auth-buttons">
+            <a href="../index.html" class="btn-login">Entrar</a>
+            <a href="../criar conta/index2.html" class="btn-register">Criar Conta</a>
+        </div>
+
+        <div class="user-profile" id="user-profile" style="display:none">
+            <div class="avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <span class="user-name">Minha Conta</span>
+            <a href="#" id="btn-logout">Sair</a>
+        </div>
+    </header>
+
+    <main class="pagina">
+
+        <section class="cabecalho-pagina">
+            <div>
+                <span class="subtitulo">JOEL BARBER</span>
+                <h1>Meus agendamentos</h1>
+                <p>Acompanhe seus horários e consulte seus atendimentos anteriores.</p>
+            </div>
+
+            <a href="../agendamento1/index-ag1.html" class="btn-novo">
+                <i class="fa-solid fa-plus"></i>
+                Novo agendamento
+            </a>
+        </section>
+
+        <section class="resumo">
+            <article class="resumo-card">
+                <div class="resumo-icone">
+                    <i class="fa-regular fa-calendar-check"></i>
+                </div>
+                <div>
+                    <span>Próximo agendamento</span>
+                    <h2 id="proximoHorario">09:30</h2>
+                    <small id="proximaData">Hoje</small>
+                </div>
+            </article>
+
+            <article class="resumo-card">
+                <div class="resumo-icone">
+                    <i class="fa-solid fa-scissors"></i>
+                </div>
+                <div>
+                    <span>Serviço marcado</span>
+                    <h2 id="proximoServico">Corte + Barba</h2>
+                    <small>Seu próximo atendimento</small>
+                </div>
+            </article>
+
+            <article class="resumo-card">
+                <div class="resumo-icone">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                <div>
+                    <span>Status</span>
+                    <h2 id="statusResumo">Confirmado</h2>
+                    <small>Consulte os detalhes abaixo</small>
+                </div>
+            </article>
+        </section>
+
+        <section class="conteudo-principal">
+
+            <div class="painel-agendamentos">
+                <div class="titulo-secao">
+                    <div>
+                        <h2>Detalhes do agendamento</h2>
+                        <p>Informações do seu próximo atendimento.</p>
+                    </div>
+                    <span class="status confirmado" id="statusDetalhe">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Confirmado
+                    </span>
+                </div>
+
+                <div class="agendamento-destaque">
+                    <div class="data-bloco">
+                        <span id="mesAgendamento">OUT</span>
+                        <strong id="diaAgendamento">21</strong>
+                        <small id="diaSemana">Quarta-feira</small>
+                    </div>
+
+                    <div class="dados-agendamento">
+                        <h3 id="servicoDetalhe">Corte + Barba</h3>
+
+                        <p>
+                            <i class="fa-regular fa-clock"></i>
+                            <span id="horarioDetalhe">09:30 - 10:30</span>
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-user"></i>
+                            Barbeiro: Joel
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-location-dot"></i>
+                            Centro, Camaçari - BA
+                        </p>
+                    </div>
+
+                    <div class="preco-agendamento">
+                        <span>Valor</span>
+                        <strong id="valorDetalhe">R$ 50,00</strong>
+                    </div>
+                </div>
+
+                <div class="aviso-horario" id="avisoHorario">
+                    <i class="fa-solid fa-bell"></i>
+                    <div>
+                        <strong>Não se esqueça do seu horário!</strong>
+                        <p>Chegue alguns minutos antes para evitar atrasos.</p>
+                    </div>
+                </div>
+
+                <div class="acoes-agendamento">
+                    <button class="btn-cancelar" id="btnCancelar">
+                        <i class="fa-solid fa-xmark"></i>
+                        Cancelar agendamento
+                    </button>
+                </div>
+            </div>
+
+            <div class="painel-historico">
+                <div class="titulo-secao">
+                    <div>
+                        <h2>Histórico de atendimentos</h2>
+                        <p>Consulte os serviços que você já realizou.</p>
+                    </div>
+
+                    <i class="fa-solid fa-clock-rotate-left icone-historico"></i>
+                </div>
+
+                <div class="filtros-historico">
+                    <button class="filtro ativo" data-filtro="todos">Todos</button>
+                    <button class="filtro" data-filtro="concluido">Concluídos</button>
+                    <button class="filtro" data-filtro="cancelado">Cancelados</button>
+                </div>
+
+                <div id="listaHistorico" class="lista-historico"></div>
+            </div>
+
+        </section>
+
+        <footer>
+            <span>© 2026 Joel Barber</span>
+            <span>Seu estilo, nosso compromisso.</span>
+        </footer>
+
+    </main>
+
+    <script src="script-fila.js"></script>
+    <script src="../home/auth.js"></script>
+
+</body>
+</html>
