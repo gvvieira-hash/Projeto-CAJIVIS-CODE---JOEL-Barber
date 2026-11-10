@@ -1,23 +1,14 @@
-function listarServicos(req, res) {
-  const servicos = [
-    {
-      id: 1,
-      nome: 'Corte degradê',
-      preco: 35
-    },
-    {
-      id: 2,
-      nome: 'Barba',
-      preco: 20
-    },
-    {
-      id: 3,
-      nome: 'Corte + Barba',
-      preco: 50
+import { listarServicos as buscarServicos } from "../models/servicoModel.js";
+
+export async function listarServicos(req, res) {
+    try {
+        const servicos = await buscarServicos();
+        return res.json(servicos);
+    } catch (error) {
+        console.error("Erro ao buscar serviços:", error.message);
+
+        return res.status(500).json({
+            erro: "Erro ao buscar serviços."
+        });
     }
-  ];
-
-  return res.status(200).json(servicos);
 }
-
-module.exports = { listarServicos };

@@ -9,13 +9,16 @@ import {
   gerarToken,
   autenticarAdmin
 } from "./auth-admin.js";
-
+import catalogoRoutes from "./src/routes/catalogoRoutes.js";
 dotenv.config();
+import agendamentoRoutes from "./src/routes/agendamentoRoutes.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
+app.use("/api", catalogoRoutes);
+app.use("/api", agendamentoRoutes);
 
 // ========================================
 // LOGIN DO ADMINISTRADOR
@@ -610,161 +613,6 @@ app.get("/api/barbeiros", async (req, res) => {
             erro: "Não foi possível carregar os barbeiros."
         });
     }
-});
-// ========================================
-// CRIAR AGENDAMENTO
-// ========================================
-app.post("/api/agendamentos", async (req, res) => {
-  try {
-    const {
-      email,
-      servico,
-      barbeiro,
-      data,
-      horario
-    } = req.body;
-
-    if (
-      typeof email !== "string" ||
-      typeof servico !== "string" ||
-      typeof barbeiro !== "string" ||
-      typeof data !== "string" ||
-      typeof horario !== "string" ||
-      !email.trim() ||
-      !servico.trim() ||
-      !barbeiro.trim() ||
-      !data.trim() ||
-      !horario.trim()
-    ) {
-      return res.status(400).json({
-        erro: "Estão faltando informações do agendamento."
-      });
-    }
-
-    // Aceita data no formato DD/MM/AAAA ou AAAA-MM-DD.
-    let dataBanco = data.trim();
-
-    const dataBrasileira = dataBanco.match(
-      /^(\d{2})\/(\d{2})\/(\d{4})$/
-    );
-
-    if (dataBrasileira) {
-      dataBanco =
-        `${dataBrasileira[3]}-${dataBrasileira[2]}-${dataBrasileira[1]}`;
-    }
-
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(dataBanco)) {
-      return res.status(400).json({
-        erro: "A data do agendamento está em um formato inválido."
-      });
-    }
-
-    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(horario.trim())) {
-      return res.status(400).json({
-        erro: "O horário do agendamento está inválido."
-      });
-    }
-
-    // Localiza o cliente cadastrado.
-    const [clientes] = await pool.execute(
-      `SELECT id
-       FROM clientes
-       WHERE email = ?
-       LIMIT 1`,
-      [email.trim().toLowerCase()]
-    );
-
-    if (clientes.length === 0) {
-      return res.status(404).json({
-        erro: "Cliente não encontrado. Faça seu cadastro antes de agendar."
-      });
-    }
-
-    // Localiza o serviço selecionado.
-    console.log("Serviço recebido do site:", servico);
-    const [servicos] = await pool.execute(
-      `SELECT id
-       FROM servicos
-       WHERE nome = ? AND ativo = 1
-       LIMIT 1`,
-      [servico.trim()]
-    );
-
-    if (servicos.length === 0) {
-      return res.status(404).json({
-        erro: "Serviço não encontrado ou indisponível."
-      });
-    }
-
-    // Localiza o barbeiro selecionado.
-    const [barbeiros] = await pool.execute(
-      `SELECT id
-       FROM barbeiros
-       WHERE nome = ? AND ativo = 1
-       LIMIT 1`,
-      [barbeiro.trim()]
-    );
-
-    if (barbeiros.length === 0) {
-      return res.status(404).json({
-        erro: "Barbeiro não encontrado ou indisponível."
-      });
-    }
-
-    // Impede dois agendamentos ativos no mesmo horário
-    // para o mesmo barbeiro.
-    const [conflitos] = await pool.execute(
-      `SELECT id
-       FROM agendamentos
-       WHERE barbeiro_id = ?
-         AND data_agendamento = ?
-         AND hora_agendamento = ?
-         AND status <> 'cancelado'
-       LIMIT 1`,
-      [
-        barbeiros[0].id,
-        dataBanco,
-        horario.trim()
-      ]
-    );
-
-    if (conflitos.length > 0) {
-      return res.status(409).json({
-        erro: "Esse barbeiro já possui um agendamento nesse horário. Escolha outro horário."
-      });
-    }
-
-    const [resultado] = await pool.execute(
-      `INSERT INTO agendamentos
-       (
-         cliente_id,
-         servico_id,
-         barbeiro_id,
-         data_agendamento,
-         hora_agendamento,
-         status
-       )
-       VALUES (?, ?, ?, ?, ?, 'agendado')`,
-      [
-        clientes[0].id,
-        servicos[0].id,
-        barbeiros[0].id,
-        dataBanco,
-        horario.trim()
-      ]
-    );
-
-    return res.status(201).json({
-      mensagem: "Agendamento confirmado com sucesso!",
-      id: resultado.insertId
-    });
-  } catch (error) {
-    console.error("Erro ao criar agendamento:", error.message);
-
-    return res.status(500).json({
-      erro: "Não foi possível salvar o agendamento."
-    });
-  }
 });
 
 // ========================================
