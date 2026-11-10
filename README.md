@@ -145,6 +145,6 @@ Este projeto é apenas para fins educacionais.
 3. Acesse o painel administrativo e entre nas abas Clientes, Barbeiros e Produtos.
 4. Na aba Produtos, use **Adicionar produto**. Produtos ativos aparecem automaticamente em `produtos/index-produto.html` para os clientes.
 
-O painel usa `https://projeto-cajivis-code-joel-barber-production.up.railway.app` como endereço da API, como na configuração local já existente. Para acesso público pelo GitHub Pages, o backend também precisará estar hospedado em um servidor acessível pela internet; `localhost` funciona somente na máquina em que o servidor Node está rodando.
+O painel usa `http://localhost:3000` como endereço da API, como na configuração local já existente. Para acesso público pelo GitHub Pages, o backend também precisará estar hospedado em um servidor acessível pela internet; `localhost` funciona somente na máquina em que o servidor Node está rodando.
 
 **Segurança:** o arquivo `.env` não é incluído neste pacote. Preserve seu `.env` local e nunca publique esse arquivo no GitHub.
