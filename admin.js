@@ -1,4 +1,4 @@
-const API_URL = "";
+const API_URL = "https://projeto-cajivis-code-joel-barber-production.up.railway.app";
 const tokenAdmin = localStorage.getItem("tokenAdmin");
 const authHeaders = { "Authorization": `Bearer ${tokenAdmin}` };
 const $ = id => document.getElementById(id);
