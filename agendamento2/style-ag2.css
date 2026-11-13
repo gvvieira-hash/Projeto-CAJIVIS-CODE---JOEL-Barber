@@ -368,12 +368,12 @@ TITLE
 }
 
 /* =======================================================
-STEPS
+   STEPS
 ======================================================= */
 
 .steps{
     display:flex;
-    align-items:center;
+    align-items:center; /* IMPORTANTE */
     margin-bottom:50px;
 }
 
@@ -384,53 +384,44 @@ STEPS
     text-align:center;
     min-width:140px;
 }
+.line{
+    flex:1;
+    height:2px;
+    background:#222;
+    margin:0 20px;
+    align-self:flex-start;
+    margin-top:30px;
+}
+
+.active-line{
+    background:#d4a24c;
+}
 
 .circle{
-    width:65px;
-    height:65px;
+    width:60px;
+    height:60px;
 
     border-radius:50%;
-    border:2px solid #333;
+    border:2px solid #444;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
+    background:#0d0d0d;
+
     color:white;
 
+    position:relative;
+    z-index:2;
+
     margin-bottom:12px;
-
-    transition:.3s;
-}
-
-.circle i{
-    font-size:20px;
 }
 
 .step span{
-    font-size:15px;
+    font-size:16px;
+    color:white;
     font-weight:600;
-}
-
-.step small{
-    margin-top:4px;
-    color:#666;
-    font-size:12px;
-}
-
-.line{
-    flex:1;
-    height:2px;
-    background:#222;
-    margin:0 10px;
-}
-
-.active .circle{
-    background:#d4a24c;
-    color:black;
-    border:none;
-
-    box-shadow:0 0 25px rgba(212,162,76,.3);
 }
 
 .done .circle{
@@ -438,9 +429,12 @@ STEPS
     color:#d4a24c;
 }
 
-.active-line{
+.active .circle{
     background:#d4a24c;
+    color:black;
+    border:none;
 }
+
 
 /* =======================================================
 BARBEIROS
