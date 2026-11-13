@@ -496,3 +496,358 @@ footer {
         align-items: flex-start;
     }
 }
+
+/* =======================================================
+   RESPONSIVIDADE - AGENDAMENTO 4
+======================================================= */
+
+/* NOTEBOOKS */
+@media (max-width: 1200px) {
+    header {
+        padding: 0 25px;
+        gap: 15px;
+    }
+
+    nav ul {
+        gap: 18px;
+    }
+
+    nav ul li a {
+        font-size: 13px;
+    }
+
+    .container {
+        gap: 20px;
+        padding: 25px;
+    }
+
+    .sidebar {
+        width: 320px;
+        height: 650px;
+    }
+
+    .sidebar-content h1 {
+        font-size: 40px;
+    }
+
+    .main-content {
+        padding: 30px;
+    }
+
+    .step {
+        min-width: 90px;
+    }
+
+    .line {
+        margin: 0 8px;
+        margin-top: 30px;
+    }
+}
+
+/* TABLETS */
+@media (max-width: 1000px) {
+    header {
+        position: relative;
+        height: auto;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 15px 20px;
+        gap: 15px;
+    }
+
+    .logo img {
+        width: 75px;
+    }
+
+    .navbar {
+        width: 100%;
+        order: 3;
+    }
+
+    nav ul {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px 22px;
+    }
+
+    .buttons,
+    .user-profile {
+        order: 2;
+    }
+
+    .container {
+        flex-direction: column;
+        margin-top: 0;
+        min-height: 0;
+        padding: 25px;
+        gap: 20px;
+    }
+
+    .container-sidebar {
+        width: 100%;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: 350px;
+        min-height: 0;
+    }
+
+    .sidebar-content h1 {
+        font-size: 42px;
+    }
+
+    .main-content {
+        width: 100%;
+        min-height: 0;
+        padding: 30px;
+    }
+
+    .steps {
+        margin-bottom: 35px;
+    }
+
+    .step {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .line {
+        flex: 1;
+        margin: 0 5px;
+        margin-top: 28px;
+    }
+
+    .dados-agend {
+        margin-bottom: 25px;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px) {
+    header {
+        padding: 12px 15px;
+        gap: 12px;
+    }
+
+    .logo img {
+        width: 65px;
+    }
+
+    nav ul {
+        gap: 12px 16px;
+    }
+
+    nav ul li a {
+        font-size: 12px;
+    }
+
+    .buttons {
+        gap: 8px;
+    }
+
+    .btn-login,
+    .btn-register {
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+
+    .user-profile {
+        padding: 5px 10px 5px 5px;
+    }
+
+    .user-profile .user-name {
+        font-size: 12px;
+    }
+
+    #btn-logout {
+        margin-left: 8px;
+        font-size: 11px;
+    }
+
+    .container {
+        padding: 15px;
+        gap: 18px;
+    }
+
+    .sidebar {
+        height: 280px;
+        border-radius: 18px;
+    }
+
+    .sidebar-content {
+        left: 20px;
+        right: 20px;
+        bottom: 22px;
+    }
+
+    .sidebar-content h1 {
+        font-size: 32px;
+        line-height: 1.1;
+        margin-bottom: 12px;
+    }
+
+    .sidebar-content p {
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+
+    .sidebar button {
+        padding: 12px 16px;
+        font-size: 11px;
+    }
+
+    .main-content {
+        padding: 22px 15px;
+        border-radius: 16px;
+    }
+
+    .steps {
+        width: 100%;
+        margin-bottom: 25px;
+        gap: 3px;
+    }
+
+    .step {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 8px;
+        font-size: 13px;
+    }
+
+    .step span {
+        font-size: 10px;
+    }
+
+    .line {
+        flex: 1;
+        min-width: 5px;
+        margin: 0 2px;
+        margin-top: 19px;
+    }
+
+    .main-content h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .dados-agend {
+        padding: 8px 15px;
+        margin-bottom: 20px;
+    }
+
+    .linha-dado {
+        padding: 15px 0;
+        gap: 10px;
+    }
+
+    .dado-esquerda {
+        gap: 10px;
+        flex-shrink: 0;
+    }
+
+    .dado-esquerda i {
+        font-size: 14px;
+        width: 18px;
+    }
+
+    .label-dado,
+    .valor-dado {
+        font-size: 12px;
+    }
+
+    .valor-dado {
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    .linha-total {
+        padding: 18px 0 10px;
+    }
+
+    .total-label,
+    .total-valor {
+        font-size: 19px;
+    }
+
+    .action-footer {
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .back-btn,
+    .confirm-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 12px;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px 12px;
+        gap: 8px;
+        margin-top: 15px;
+    }
+}
+
+/* CELULARES PEQUENOS */
+@media (max-width: 380px) {
+    nav ul {
+        gap: 10px 12px;
+    }
+
+    nav ul li a {
+        font-size: 11px;
+    }
+
+    .sidebar-content h1 {
+        font-size: 27px;
+    }
+
+    .sidebar-content p {
+        font-size: 12px;
+    }
+
+    .main-content {
+        padding: 18px 12px;
+    }
+
+    .circle {
+        width: 34px;
+        height: 34px;
+    }
+
+    .step span {
+        font-size: 9px;
+    }
+
+    .label-dado,
+    .valor-dado {
+        font-size: 11px;
+    }
+
+    .dado-esquerda {
+        gap: 7px;
+    }
+
+    .total-label,
+    .total-valor {
+        font-size: 17px;
+    }
+
+    .back-btn,
+    .confirm-btn {
+        font-size: 11px;
+        padding: 13px 8px;
+    }
+}
