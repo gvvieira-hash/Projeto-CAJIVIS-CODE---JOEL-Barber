@@ -569,3 +569,386 @@ footer {
     }
 
 }
+/* ==========================================
+   RESPONSIVIDADE COMPLEMENTAR
+   PÁGINA DE SERVIÇOS
+========================================== */
+
+/* NOTEBOOKS */
+@media (max-width: 1200px) {
+    header {
+        padding: 0 25px;
+    }
+
+    nav ul {
+        gap: 22px;
+    }
+
+    nav ul li a {
+        font-size: 13px;
+    }
+
+    .hero-servicos {
+        width: calc(100% - 50px);
+        height: 280px;
+    }
+
+    .hero-conteudo h1 {
+        font-size: 55px;
+    }
+
+    .hero-conteudo p {
+        font-size: 20px;
+    }
+
+    .container-servicos {
+        padding: 0 25px;
+    }
+
+    .banner-agendamento {
+        width: calc(100% - 50px);
+    }
+}
+
+/* TABLETS */
+@media (max-width: 900px) {
+    header {
+        height: auto;
+        min-height: 100px;
+        padding: 12px 20px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .logo img {
+        width: 75px;
+    }
+
+    nav {
+        order: 3;
+        width: 100%;
+    }
+
+    nav ul {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px 22px;
+    }
+
+    nav ul li a {
+        font-size: 13px;
+    }
+
+    .buttons {
+        width: auto;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-login,
+    .btn-register {
+        padding: 10px 14px;
+        font-size: 12px;
+    }
+
+    .user-profile {
+        padding: 5px 12px 5px 5px;
+    }
+
+    .hero-servicos {
+        margin-top: 150px;
+        height: 250px;
+    }
+
+    .hero-conteudo {
+        left: 35px;
+        right: 25px;
+    }
+
+    .hero-conteudo h1 {
+        font-size: 45px;
+    }
+
+    .hero-conteudo p {
+        font-size: 17px;
+    }
+
+    .container-servicos {
+        padding: 0 25px;
+    }
+
+    .card-servicos {
+        padding: 25px;
+    }
+
+    .card-servicos h2 {
+        font-size: 25px;
+    }
+
+    .servico-item {
+        grid-template-columns: 70px 45px minmax(0, 1fr) 110px;
+        gap: 15px;
+    }
+
+    .servico-item img {
+        width: 65px;
+        height: 65px;
+    }
+
+    .servico-info h3 {
+        font-size: 19px;
+    }
+
+    .servico-info p {
+        font-size: 13px;
+    }
+
+    .preco {
+        font-size: 20px;
+    }
+
+    .banner-agendamento {
+        width: calc(100% - 50px);
+        padding: 22px;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px) {
+    header {
+        padding: 10px 14px;
+        gap: 8px;
+    }
+
+    .logo img {
+        width: 65px;
+    }
+
+    nav {
+        overflow: hidden;
+    }
+
+    nav ul {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 20px;
+        padding: 8px 2px;
+        scrollbar-width: none;
+    }
+
+    nav ul::-webkit-scrollbar {
+        display: none;
+    }
+
+    nav ul li {
+        flex-shrink: 0;
+    }
+
+    nav ul li a {
+        font-size: 12px;
+    }
+
+    .buttons {
+        width: auto;
+        gap: 6px;
+    }
+
+    .btn-login,
+    .btn-register {
+        padding: 9px 10px;
+        font-size: 10px;
+    }
+
+    .user-profile {
+        padding: 5px 9px 5px 5px;
+    }
+
+    .user-profile .avatar {
+        width: 27px;
+        height: 27px;
+        margin-right: 6px;
+    }
+
+    .user-profile .user-name {
+        font-size: 11px;
+    }
+
+    #btn-logout {
+        margin-left: 8px;
+        font-size: 11px;
+    }
+
+    .hero-servicos {
+        width: calc(100% - 28px);
+        height: 210px;
+        margin-top: 145px;
+        border-radius: 15px;
+    }
+
+    .hero-conteudo {
+        left: 20px;
+        right: 15px;
+    }
+
+    .hero-conteudo h1 {
+        font-size: 32px;
+        margin-bottom: 12px;
+    }
+
+    .hero-conteudo p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .container-servicos {
+        padding: 0 14px;
+        margin: 25px auto;
+    }
+
+    .card-servicos {
+        padding: 18px;
+        border-radius: 15px;
+    }
+
+    .card-servicos h2 {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .servico-item {
+        grid-template-columns: 55px 38px minmax(0, 1fr);
+        gap: 10px;
+        padding: 18px 0;
+    }
+
+    .servico-item img {
+        width: 55px;
+        height: 55px;
+        border-radius: 10px;
+    }
+
+    .numero {
+        width: 34px;
+        height: 34px;
+        font-size: 12px;
+    }
+
+    .servico-info h3 {
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+
+    .servico-info p {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .preco {
+        grid-column: 3;
+        text-align: left;
+        font-size: 18px;
+        margin-top: -5px;
+    }
+
+    .banner-agendamento {
+        width: calc(100% - 28px);
+        margin: 25px auto;
+        padding: 20px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+    }
+
+    .banner-info {
+        gap: 12px;
+    }
+
+    .banner-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 19px;
+    }
+
+    .banner-texto h3 {
+        font-size: 16px;
+    }
+
+    .banner-texto p {
+        font-size: 12px;
+    }
+
+    .banner-btn {
+        width: 100%;
+        text-align: center;
+        padding: 12px 18px;
+        font-size: 13px;
+    }
+
+    footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 18px 12px;
+        font-size: 11px;
+    }
+}
+
+/* CELULARES PEQUENOS */
+@media (max-width: 380px) {
+    .hero-servicos {
+        height: 190px;
+    }
+
+    .hero-conteudo h1 {
+        font-size: 27px;
+    }
+
+    .hero-conteudo p {
+        font-size: 12px;
+    }
+
+    .card-servicos {
+        padding: 14px;
+    }
+
+    .card-servicos h2 {
+        font-size: 18px;
+    }
+
+    .servico-item {
+        grid-template-columns: 45px 32px minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .servico-item img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .numero {
+        width: 30px;
+        height: 30px;
+    }
+
+    .servico-info h3 {
+        font-size: 13px;
+    }
+
+    .servico-info p {
+        font-size: 10px;
+    }
+
+    .preco {
+        font-size: 16px;
+    }
+
+    .banner-agendamento {
+        padding: 16px;
+    }
+
+    .banner-texto h3 {
+        font-size: 14px;
+    }
+}
