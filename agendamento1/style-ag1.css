@@ -638,3 +638,379 @@ footer {
         align-items: flex-start;
     }
 }
+
+/* =======================================================
+   RESPONSIVIDADE COMPLETA - AGENDAMENTO 1
+======================================================= */
+
+/* NOTEBOOKS E TELAS MÉDIAS */
+@media (max-width: 1200px) {
+
+    header {
+        padding: 10px 25px;
+        gap: 15px;
+    }
+
+    .navbar ul {
+        gap: 18px;
+    }
+
+    .navbar a {
+        font-size: 13px;
+    }
+
+    .container {
+        height: auto;
+        min-height: 0;
+        gap: 20px;
+    }
+
+    .sidebar {
+        width: 320px;
+    }
+
+    .main-content {
+        padding: 30px;
+    }
+
+    .step {
+        min-width: 100px;
+    }
+
+    .line {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+    .services {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .products-cta {
+        width: calc(100% - 60px);
+    }
+}
+
+/* TABLETS */
+@media (max-width: 1000px) {
+
+    header {
+        position: relative;
+        height: auto;
+        min-height: 0;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 15px 20px;
+        gap: 15px;
+    }
+
+    .logo img {
+        width: 75px;
+    }
+
+    .navbar {
+        width: 100%;
+        order: 3;
+    }
+
+    .navbar ul {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px 22px;
+    }
+
+    .buttons,
+    .user-profile {
+        order: 2;
+    }
+
+    .container {
+        flex-direction: column;
+        height: auto;
+        margin-top: 0;
+        padding: 25px;
+    }
+
+    .container-sidebar {
+        width: 100%;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: 350px;
+    }
+
+    .sidebar-content h1 {
+        font-size: 42px;
+    }
+
+    .main-content {
+        width: 100%;
+        min-height: 0;
+    }
+
+    .steps {
+        justify-content: space-between;
+        margin-bottom: 35px;
+    }
+
+    .step {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .line {
+        flex: 1;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .products-cta {
+        width: calc(100% - 50px);
+        margin: 10px auto;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px) {
+
+    /* CABEÇALHO */
+    header {
+        padding: 12px 15px;
+        gap: 12px;
+    }
+
+    .logo img {
+        width: 65px;
+    }
+
+    .navbar {
+        width: 100%;
+    }
+
+    .navbar ul {
+        gap: 12px 16px;
+    }
+
+    .navbar a {
+        font-size: 12px;
+    }
+
+    .buttons {
+        gap: 8px;
+    }
+
+    .btn-login,
+    .btn-register {
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+
+    .user-profile {
+        padding: 5px 10px 5px 5px;
+    }
+
+    .user-profile .user-name {
+        font-size: 12px;
+    }
+
+    #btn-logout {
+        margin-left: 8px;
+        font-size: 11px;
+    }
+
+    /* CONTAINER */
+    .container {
+        padding: 15px;
+        gap: 18px;
+    }
+
+    /* IMAGEM LATERAL */
+    .sidebar {
+        height: 280px;
+        border-radius: 18px;
+    }
+
+    .sidebar-content {
+        left: 20px;
+        right: 20px;
+        bottom: 22px;
+    }
+
+    .sidebar-content h1 {
+        font-size: 32px;
+        line-height: 1.1;
+        margin-bottom: 12px;
+    }
+
+    .sidebar-content p {
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+
+    .sidebar button {
+        padding: 12px 16px;
+        font-size: 11px;
+    }
+
+    /* CONTEÚDO PRINCIPAL */
+    .main-content {
+        padding: 22px 15px;
+        border-radius: 16px;
+    }
+
+    .main-content > h2 {
+        font-size: 22px;
+    }
+
+    /* ETAPAS */
+    .steps {
+        width: 100%;
+        margin-bottom: 30px;
+        gap: 3px;
+    }
+
+    .step {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .circle {
+        width: 42px;
+        height: 42px;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .step span {
+        font-size: 10px;
+    }
+
+    .line {
+        flex: 1;
+        margin: 0 2px;
+        margin-top: 20px;
+        min-width: 5px;
+    }
+
+    /* SERVIÇOS */
+    .services {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .card {
+        height: 175px;
+        padding: 20px 10px;
+        border-radius: 15px;
+    }
+
+    .card i {
+        font-size: 35px;
+        margin-bottom: 15px;
+    }
+
+    .card h3 {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .card p {
+        font-size: 15px;
+    }
+
+    /* BOTÃO PRÓXIMO */
+    .next-area {
+        margin-top: 28px;
+    }
+
+    .next-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 20px;
+        min-width: 0;
+        font-size: 14px;
+    }
+
+    /* CHAMADA DE PRODUTOS */
+    .products-cta {
+        width: calc(100% - 30px);
+        margin: 5px auto 20px;
+        padding: 22px 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+        border-radius: 16px;
+    }
+
+    .products-text h2 {
+        font-size: 21px;
+    }
+
+    .products-text p {
+        font-size: 13px;
+    }
+
+    .products-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 13px 18px;
+    }
+
+    /* RODAPÉ */
+    footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px 12px;
+        gap: 8px;
+        margin-top: 15px;
+    }
+}
+
+/* CELULARES PEQUENOS */
+@media (max-width: 380px) {
+
+    .navbar ul {
+        gap: 10px 12px;
+    }
+
+    .navbar a {
+        font-size: 11px;
+    }
+
+    .sidebar-content h1 {
+        font-size: 27px;
+    }
+
+    .sidebar-content p {
+        font-size: 12px;
+    }
+
+    .steps {
+        gap: 1px;
+    }
+
+    .circle {
+        width: 36px;
+        height: 36px;
+    }
+
+    .step span {
+        font-size: 9px;
+    }
+
+    .card {
+        height: 160px;
+    }
+
+    .card h3 {
+        font-size: 12px;
+    }
+
+    .card i {
+        font-size: 30px;
+    }
+}
