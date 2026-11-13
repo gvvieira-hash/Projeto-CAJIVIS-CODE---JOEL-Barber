@@ -167,7 +167,7 @@ button:disabled {
 .forgot-password {
     display: block;
     margin-top: 8px;
-    color: #888888;
+    color: ##d3d3d3;
     font-size: 13px;
     text-decoration: none;
     transition: 0.3s;
