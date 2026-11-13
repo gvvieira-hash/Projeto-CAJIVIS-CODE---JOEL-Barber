@@ -410,3 +410,317 @@ footer {
     color: #000;
     border-color: #d4a24c;
 }
+/* ==========================================
+   RESPONSIVIDADE COMPLEMENTAR
+   PÁGINA DE PRODUTOS
+========================================== */
+
+/* NOTEBOOKS */
+@media (max-width: 1200px) {
+    header {
+        padding: 0 25px;
+    }
+
+    nav ul {
+        gap: 22px;
+    }
+
+    nav ul li a {
+        font-size: 13px;
+    }
+
+    .hero-produtos {
+        padding: 45px;
+    }
+
+    .produtos {
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 20px;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}
+
+/* TABLETS */
+@media (max-width: 900px) {
+    header {
+        height: auto;
+        min-height: 100px;
+        padding: 12px 20px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .logo img {
+        width: 75px;
+    }
+
+    nav {
+        order: 3;
+        width: 100%;
+    }
+
+    nav ul {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px 22px;
+    }
+
+    nav ul li a {
+        font-size: 13px;
+    }
+
+    .buttons {
+        width: auto;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-login,
+    .btn-register {
+        padding: 10px 14px;
+        font-size: 12px;
+    }
+
+    .user-profile {
+        padding: 5px 12px 5px 5px;
+    }
+
+    .hero-produtos {
+        margin-top: 150px;
+        height: 250px;
+        padding: 35px;
+    }
+
+    .hero-texto h1 {
+        font-size: 42px;
+    }
+
+    .hero-texto p {
+        font-size: 19px;
+    }
+
+    .filtros {
+        gap: 10px;
+        padding: 0 20px;
+    }
+
+    .filtros button {
+        padding: 11px 20px;
+    }
+
+    .produtos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 0 25px 45px;
+        gap: 18px;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px) {
+    header {
+        padding: 10px 14px;
+        gap: 8px;
+    }
+
+    .logo img {
+        width: 65px;
+    }
+
+    nav {
+        overflow: hidden;
+    }
+
+    nav ul {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 20px;
+        padding: 8px 2px;
+        scrollbar-width: none;
+    }
+
+    nav ul::-webkit-scrollbar {
+        display: none;
+    }
+
+    nav ul li {
+        flex-shrink: 0;
+    }
+
+    nav ul li a {
+        font-size: 12px;
+    }
+
+    .buttons {
+        width: auto;
+        gap: 6px;
+    }
+
+    .btn-login,
+    .btn-register {
+        padding: 9px 10px;
+        font-size: 10px;
+    }
+
+    .user-profile {
+        padding: 5px 9px 5px 5px;
+    }
+
+    .user-profile .avatar {
+        width: 27px;
+        height: 27px;
+        margin-right: 6px;
+    }
+
+    .user-profile .user-name {
+        font-size: 11px;
+    }
+
+    #btn-logout {
+        margin-left: 8px;
+        font-size: 11px;
+    }
+
+    .hero-produtos {
+        margin-top: 145px;
+        height: 210px;
+        padding: 25px;
+        background-position: center;
+    }
+
+    .hero-texto h1 {
+        font-size: 32px;
+    }
+
+    .hero-texto p {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .filtros {
+        margin: 25px 0;
+        padding: 0 15px;
+        gap: 9px;
+    }
+
+    .filtros button {
+        padding: 10px 14px;
+        font-size: 11px;
+        border-radius: 8px;
+    }
+
+    .produtos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 0 14px 35px;
+        gap: 12px;
+    }
+
+    .card {
+        border-radius: 10px;
+        padding-bottom: 14px;
+    }
+
+    .card img.pi {
+        height: 145px;
+        margin-bottom: 12px;
+    }
+
+    .card h3,
+    .card p,
+    .card .card-footer {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .card h3 {
+        font-size: 13px;
+    }
+
+    .card p {
+        font-size: 11px;
+        line-height: 1.5;
+        margin-bottom: 12px;
+    }
+
+    .card-footer {
+        gap: 8px;
+    }
+
+    .card-footer span {
+        font-size: 17px;
+    }
+
+    .bnt-mais {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+    }
+
+    .bnt-mais img {
+        width: 23px;
+        height: 23px;
+    }
+
+    footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 18px 12px;
+        font-size: 11px;
+    }
+}
+
+/* CELULARES PEQUENOS */
+@media (max-width: 380px) {
+    .hero-produtos {
+        height: 190px;
+        padding: 20px;
+    }
+
+    .hero-texto h1 {
+        font-size: 28px;
+    }
+
+    .hero-texto p {
+        font-size: 13px;
+    }
+
+    .filtros {
+        gap: 7px;
+        padding: 0 10px;
+    }
+
+    .filtros button {
+        padding: 9px 11px;
+        font-size: 10px;
+    }
+
+    .produtos {
+        gap: 9px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .card img.pi {
+        height: 125px;
+    }
+
+    .card h3 {
+        font-size: 12px;
+    }
+
+    .card p {
+        font-size: 10px;
+    }
+
+    .card-footer span {
+        font-size: 15px;
+    }
+
+    .bnt-mais {
+        width: 29px;
+        height: 29px;
+    }
+}
