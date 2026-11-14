@@ -436,7 +436,11 @@ app.post("/api/clientes", async (req, res) => {
         erro: "Preencha todos os campos. A senha precisa ter pelo menos 6 caracteres."
       });
     }
-
+console.log("DIAGNÓSTICO DAS VARIÁVEIS:", {
+    BREVO_API_KEY: Boolean(process.env.BREVO_API_KEY?.trim()),
+    BREVO_SENDER_EMAIL: Boolean(process.env.BREVO_SENDER_EMAIL?.trim()),
+    EMAIL_CODE_SECRET: Boolean(process.env.EMAIL_CODE_SECRET?.trim())
+});
     if (!process.env.BREVO_API_KEY ||
         !process.env.BREVO_SENDER_EMAIL ||
         !process.env.EMAIL_CODE_SECRET) {
