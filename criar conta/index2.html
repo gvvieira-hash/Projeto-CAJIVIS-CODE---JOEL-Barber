@@ -1,135 +1,148 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login Barbearia</title>
+    <title>Criar conta | Joel Barber</title>
 
     <link rel="stylesheet" href="style2.css">
 
-    <!-- ICONS -->
     <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
 </head>
 <body>
 
     <section class="login-page">
 
-        <!-- OVERLAY -->
         <div class="overlay"></div>
 
-        <!-- CARD -->
         <div class="login-card">
 
-            <!-- LOGO -->
-            <img src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png" class="logo" alt="Logo">
+            <img
+                src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png"
+                class="logo"
+                alt="Logo"
+            >
 
-            <!-- TÍTULO -->
             <h1>Crie seu Login</h1>
 
             <p>
-               Sua barbearia, agora de cara nova. Crie sua conta e venha nos conhecer!
+                Sua barbearia, agora de cara nova. Crie sua conta e venha nos conhecer!
             </p>
 
-            <!-- FORM -->
-            <form>
+            <form id="formCadastro">
 
-                <!-- USUÁRIO -->
-                <div
-                class="input-box"
-                >
+                <div class="input-box">
                     <i class="fa-solid fa-user"></i>
 
                     <input
-                    type="text"
-                    placeholder="Usuário"
-                    required
+                        type="text"
+                        id="nome"
+                        placeholder="Usuário"
+                        autocomplete="name"
+                        required
                     >
                 </div>
 
-                <!-- TELEFONE -->
                 <div class="input-box">
                     <i class="fa-solid fa-phone"></i>
 
                     <input
-                    type="tel"
-                    placeholder="Telefone"
-                    required
+                        type="tel"
+                        id="telefone"
+                        placeholder="Telefone"
+                        autocomplete="tel"
+                        required
                     >
                 </div>
 
-                <!-- EMAIL -->
                 <div class="input-box">
                     <i class="fa-regular fa-envelope"></i>
 
                     <input
-                    type="email"
-                    placeholder="E-mail"
-                    required
+                        type="email"
+                        id="email"
+                        placeholder="E-mail"
+                        autocomplete="email"
+                        required
                     >
                 </div>
 
-                <!-- SENHA -->
                 <div class="input-box">
                     <i class="fa-solid fa-lock"></i>
 
                     <input
-                    type="password"
-                    placeholder="Senha"
-                    id="senha"
-                    required
+                        type="password"
+                        placeholder="Senha"
+                        id="senha"
+                        autocomplete="new-password"
+                        required
                     >
 
                     <i class="fa-regular fa-eye-slash"></i>
                 </div>
 
-                <!-- CONFIRMAR SENHA -->
                 <div class="input-box">
                     <i class="fa-solid fa-lock"></i>
 
                     <input
-                    type="password"
-                    placeholder="Confirmar Senha"
-                    id="confirmarSenha"
-                    required
+                        type="password"
+                        placeholder="Confirmar Senha"
+                        id="confirmarSenha"
+                        autocomplete="new-password"
+                        required
                     >
 
                     <i class="fa-regular fa-eye-slash"></i>
                 </div>
 
-                <!-- OPÇÕES -->
-                <div class="options">
-
+                <div class="options" id="opcoesTermos">
                     <label>
-                        <input type="checkbox">
+                        <input type="checkbox" id="termos">
                         Eu concordo com os termos de uso e a política de privacidade
                     </label>
-
-
                 </div>
 
-                <!-- BOTÃO -->
-                <button type="submit">
+                <button type="submit" id="botaoCadastro">
                     CRIAR CONTA
                 </button>
 
+                <!-- CONFIRMAÇÃO DO E-MAIL -->
+                <div class="area-codigo" id="areaCodigo" hidden>
+
+                    <p>
+                        Enviamos um código de confirmação para seu e-mail.
+                        Digite os 6 números abaixo:
+                    </p>
+
+                    <div class="input-box">
+                        <i class="fa-solid fa-key"></i>
+
+                        <input
+                            type="text"
+                            id="codigoEmail"
+                            placeholder="000000"
+                            inputmode="numeric"
+                            maxlength="6"
+                            autocomplete="one-time-code"
+                        >
+                    </div>
+
+                    <button type="button" id="botaoConfirmar">
+                        CONFIRMAR E-MAIL
+                    </button>
+
+                </div>
+
             </form>
 
-
-            <!-- CADASTRO -->
             <div class="register">
-
-                <span>
-                    Já tem uma conta?
-                </span>
-
-               
-                      <a href="../index.html">Fazer login</a>
-
-
+                <span>Já tem uma conta?</span>
+                <a href="../index.html">Fazer login</a>
             </div>
 
         </div>

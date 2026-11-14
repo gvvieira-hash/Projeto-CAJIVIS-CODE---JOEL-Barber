@@ -1,57 +1,54 @@
 
-const form = document.querySelector("form");
+const API = "https://projeto-cajivis-code-joel-barber-production.up.railway.app/api";
+
+const form = document.getElementById("formCadastro");
+
+const nomeInput = document.getElementById("nome");
+const telefoneInput = document.getElementById("telefone");
+const emailInput = document.getElementById("email");
 const senhaInput = document.getElementById("senha");
 const confirmarSenhaInput = document.getElementById("confirmarSenha");
-const checkboxTermos = document.querySelector("input[type='checkbox']");
+const checkboxTermos = document.getElementById("termos");
 
-console.log("SCRIPT2.JS FOI CARREGADO!");
+const areaCodigo = document.getElementById("areaCodigo");
+const codigoInput = document.getElementById("codigoEmail");
 
-if (!form) {
-  console.error("Formulário de cadastro não encontrado.");
-} else {
-  // Mostrar e esconder as senhas
-  const olhos = document.querySelectorAll(".fa-eye-slash, .fa-eye");
+const botaoCadastro = document.getElementById("botaoCadastro");
+const botaoConfirmar = document.getElementById("botaoConfirmar");
 
-  olhos.forEach((olho) => {
+const opcoesTermos = document.getElementById("opcoesTermos");
+
+console.log("SCRIPT2.JS CARREGADO!");
+
+let dadosCadastro = null;
+
+// MOSTRAR E ESCONDER SENHAS
+const olhos = document.querySelectorAll(".fa-eye-slash, .fa-eye");
+
+olhos.forEach((olho) => {
     olho.addEventListener("click", (evento) => {
-      const icone = evento.currentTarget;
-      const inputRelacionado = icone.previousElementSibling;
+        const icone = evento.currentTarget;
+        const inputRelacionado = icone.previousElementSibling;
 
-      if (!inputRelacionado || inputRelacionado.tagName !== "INPUT") {
-        return;
-      }
+        if (!inputRelacionado || inputRelacionado.tagName !== "INPUT") {
+            return;
+        }
 
-      if (inputRelacionado.type === "password") {
-        inputRelacionado.type = "text";
-        icone.classList.remove("fa-eye-slash");
-        icone.classList.add("fa-eye");
-      } else {
-        inputRelacionado.type = "password";
-        icone.classList.remove("fa-eye");
-        icone.classList.add("fa-eye-slash");
-      }
+        if (inputRelacionado.type === "password") {
+            inputRelacionado.type = "text";
+            icone.classList.remove("fa-eye-slash");
+            icone.classList.add("fa-eye");
+        } else {
+            inputRelacionado.type = "password";
+            icone.classList.remove("fa-eye");
+            icone.classList.add("fa-eye-slash");
+        }
     });
-  });
+});
 
-  form.addEventListener("submit", async (event) => {
+// PRIMEIRA ETAPA: SOLICITAR CÓDIGO
+form.addEventListener("submit", async (event) => {
     event.preventDefault();
-
-    const nomeInput = form.querySelector('input[placeholder="Usuário"]');
-    const telefoneInput = form.querySelector('input[placeholder="Telefone"]');
-    const emailInput = form.querySelector('input[placeholder="E-mail"]');
-
-    if (
-      !nomeInput ||
-      !telefoneInput ||
-      !emailInput ||
-      !senhaInput ||
-      !confirmarSenhaInput ||
-      !checkboxTermos
-    ) {
-      alert("Não foi possível localizar todos os campos do cadastro.");
-      console.error("Confira os IDs e placeholders dos campos no HTML.");
-      return;
-    }
 
     const nome = nomeInput.value.trim();
     const telefone = telefoneInput.value.trim();
@@ -59,79 +56,145 @@ if (!form) {
     const senha = senhaInput.value;
 
     if (!nome || !telefone || !email || !senha) {
-      alert("Preencha todos os campos.");
-      return;
+        alert("Preencha todos os campos.");
+        return;
     }
 
     if (senha.length < 6) {
-      alert("A senha precisa ter pelo menos 6 caracteres.");
-      return;
+        alert("A senha precisa ter pelo menos 6 caracteres.");
+        return;
     }
 
     if (senha !== confirmarSenhaInput.value) {
-      alert("As senhas não coincidem. Tente novamente!");
-      return;
+        alert("As senhas não coincidem. Tente novamente!");
+        return;
     }
 
     if (!checkboxTermos.checked) {
-      alert("Você precisa concordar com os termos de uso!");
-      return;
+        alert("Você precisa concordar com os termos de uso!");
+        return;
     }
 
-    const botaoEnviar = form.querySelector(
-      'button[type="submit"], input[type="submit"], button:not([type])'
-    );
+    dadosCadastro = {
+        nome,
+        telefone,
+        email,
+        senha
+    };
 
-    if (botaoEnviar) {
-      botaoEnviar.disabled = true;
-    }
+    botaoCadastro.disabled = true;
+    botaoCadastro.textContent = "ENVIANDO...";
 
     try {
-      console.log("Enviando cadastro para o servidor...");
+        const resposta = await fetch(`${API}/clientes`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dadosCadastro)
+        });
 
-      const resposta = await fetch("https://projeto-cajivis-code-joel-barber-production.up.railway.app/api/clientes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          nome,
-          telefone,
-          email,
-          senha
-        })
-      });
+        const resultado = await resposta.json();
 
-      const resultado = await resposta.json();
+        if (!resposta.ok) {
+            throw new Error(
+                resultado.erro || "Não foi possível enviar o código."
+            );
+        }
 
-      console.log("Resposta do cadastro:", resposta.status, resultado);
+        // ESCONDE OS CAMPOS DO CADASTRO
+        document.querySelectorAll("#formCadastro > .input-box").forEach((campo) => {
+            campo.hidden = true;
+        });
 
-      if (!resposta.ok) {
-        throw new Error(
-          resultado.erro || "Não foi possível realizar o cadastro."
+        opcoesTermos.hidden = true;
+        botaoCadastro.hidden = true;
+
+        // MOSTRA A CONFIRMAÇÃO
+        areaCodigo.hidden = false;
+
+        codigoInput.required = true;
+        codigoInput.focus();
+
+        alert(
+            resultado.mensagem ||
+            "Código enviado! Confira sua caixa de entrada e a pasta de spam."
         );
-      }
 
-      localStorage.setItem("logado", "true");
-      localStorage.setItem("emailUsuario", email);
-      localStorage.setItem("nomeUsuario", nome);
-      localStorage.setItem("telefoneUsuario", telefone);
-
-      alert("Cadastro realizado com sucesso!");
-
-      window.location.href = "../home/home.html";
     } catch (error) {
-      console.error("Erro no cadastro:", error);
+        console.error("Erro ao solicitar código:", error);
+        alert(error.message || "Erro ao enviar o código por e-mail.");
 
-      alert(
-        error.message ||
-        "Não foi possível conectar ao servidor. Confira se o Node.js está rodando."
-      );
+        dadosCadastro = null;
+
     } finally {
-      if (botaoEnviar) {
-        botaoEnviar.disabled = false;
-      }
+        botaoCadastro.disabled = false;
+        botaoCadastro.textContent = "CRIAR CONTA";
     }
-  });
-}
-console.log("TESTE NOVO SCRIPT2 - CADASTRO");
+});
+
+// ACEITA SOMENTE NÚMEROS NO CÓDIGO
+codigoInput.addEventListener("input", () => {
+    codigoInput.value = codigoInput.value.replace(/\D/g, "").slice(0, 6);
+});
+
+// SEGUNDA ETAPA: CONFIRMAR CÓDIGO
+botaoConfirmar.addEventListener("click", async () => {
+    const codigo = codigoInput.value.trim();
+
+    if (!dadosCadastro) {
+        alert("Solicite novamente o código de confirmação.");
+        return;
+    }
+
+    if (!/^\d{6}$/.test(codigo)) {
+        alert("Digite o código de 6 números enviado para seu e-mail.");
+        codigoInput.focus();
+        return;
+    }
+
+    botaoConfirmar.disabled = true;
+    botaoConfirmar.textContent = "CONFIRMANDO...";
+
+    try {
+        const resposta = await fetch(`${API}/clientes/confirmar`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: dadosCadastro.email,
+                codigo
+            })
+        });
+
+        const resultado = await resposta.json();
+
+        if (!resposta.ok) {
+            throw new Error(
+                resultado.erro || "Não foi possível confirmar seu e-mail."
+            );
+        }
+
+        // LOGIN APENAS DEPOIS DA CONFIRMAÇÃO
+        localStorage.setItem("logado", "true");
+        localStorage.setItem("emailUsuario", dadosCadastro.email);
+        localStorage.setItem("nomeUsuario", dadosCadastro.nome);
+        localStorage.setItem("telefoneUsuario", dadosCadastro.telefone);
+
+        alert(
+            resultado.mensagem ||
+            "E-mail confirmado e cadastro realizado com sucesso!"
+        );
+
+        window.location.href = "../home/home.html";
+
+    } catch (error) {
+        console.error("Erro ao confirmar código:", error);
+        alert(error.message || "Erro ao confirmar o código.");
+
+    } finally {
+        botaoConfirmar.disabled = false;
+        botaoConfirmar.textContent = "CONFIRMAR E-MAIL";
+    }
+});

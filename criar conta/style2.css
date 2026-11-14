@@ -202,3 +202,40 @@ form button:hover{
 
     margin-left: 5px;
 }
+/* CAMPOS DO CADASTRO */
+.campos-cadastro {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ÁREA DE CONFIRMAÇÃO DO E-MAIL */
+.area-codigo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.area-codigo p {
+    color: #ccc;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.area-codigo .input-box input {
+    text-align: center;
+    letter-spacing: 8px;
+    font-size: 20px;
+}
+
+/* BOTÃO DESABILITADO */
+form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ELEMENTO OCULTO */
+[hidden] {
+    display: none !important;
+}

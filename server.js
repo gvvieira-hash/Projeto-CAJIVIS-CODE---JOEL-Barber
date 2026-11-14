@@ -12,6 +12,9 @@ import {
 import catalogoRoutes from "./src/routes/catalogoRoutes.js";
 dotenv.config();
 import agendamentoRoutes from "./src/routes/agendamentoRoutes.js";
+import axios from "axios";
+import { randomInt, createHash, timingSafeEqual } from "node:crypto";
+
 
 const app = express();
 
@@ -411,9 +414,11 @@ app.delete("/api/admin/produtos/:id", autenticarAdmin, async (req, res) => {
 // ========================================
 // CADASTRAR CLIENTE
 // ========================================
-app.post("/api/clientes", async (req, res) => {
-  console.log("🚀 ROTA DE CADASTRO DE CLIENTE FOI CHAMADA!");
 
+// ========================================
+// CADASTRO COM CONFIRMAÇÃO POR E-MAIL
+// ========================================
+app.post("/api/clientes", async (req, res) => {
   try {
     const { nome, telefone, email, senha } = req.body;
 
@@ -428,7 +433,15 @@ app.post("/api/clientes", async (req, res) => {
       senha.length < 6
     ) {
       return res.status(400).json({
-        erro: "Preencha nome, telefone, e-mail e uma senha com pelo menos 6 caracteres."
+        erro: "Preencha todos os campos. A senha precisa ter pelo menos 6 caracteres."
+      });
+    }
+
+    if (!process.env.BREVO_API_KEY ||
+        !process.env.BREVO_SENDER_EMAIL ||
+        !process.env.EMAIL_CODE_SECRET) {
+      return res.status(500).json({
+        erro: "Configuração de e-mail incompleta no servidor."
       });
     }
 
@@ -445,35 +458,268 @@ app.post("/api/clientes", async (req, res) => {
       });
     }
 
+    const [pendentes] = await pool.execute(
+      "SELECT criado_em FROM verificacoes_email WHERE email = ? LIMIT 1",
+      [emailNormalizado]
+    );
+
+    if (
+      pendentes.length > 0 &&
+      Date.now() - new Date(pendentes[0].criado_em).getTime() < 60000
+    ) {
+      return res.status(429).json({
+        erro: "Aguarde um minuto antes de solicitar outro código."
+      });
+    }
+
+    const codigo = String(randomInt(100000, 1000000));
+
+    const codigoHash = createHash("sha256")
+      .update(`${emailNormalizado}:${codigo}:${process.env.EMAIL_CODE_SECRET}`)
+      .digest("hex");
+
     const senhaHash = await bcrypt.hash(senha, 10);
 
     await pool.execute(
-      `INSERT INTO clientes (nome, telefone, email, senha_hash)
-       VALUES (?, ?, ?, ?)`,
+      `INSERT INTO verificacoes_email
+       (email, nome, telefone, senha_hash, codigo_hash, expira_em, tentativas)
+       VALUES (?, ?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE), 0)
+       ON DUPLICATE KEY UPDATE
+       nome = VALUES(nome),
+       telefone = VALUES(telefone),
+       senha_hash = VALUES(senha_hash),
+       codigo_hash = VALUES(codigo_hash),
+       expira_em = DATE_ADD(NOW(), INTERVAL 10 MINUTE),
+       tentativas = 0,
+       criado_em = CURRENT_TIMESTAMP`,
       [
+        emailNormalizado,
         nome.trim(),
         telefone.trim(),
-        emailNormalizado,
-        senhaHash
+        senhaHash,
+        codigoHash
       ]
     );
 
-    return res.status(201).json({
-      mensagem: "Cadastro realizado com sucesso!",
-      cliente: {
-        nome: nome.trim(),
-        telefone: telefone.trim(),
-        email: emailNormalizado
-      }
+    try {
+      await axios.post(
+        "https://api.brevo.com/v3/smtp/email",
+        {
+          sender: {
+            name: "Joel Barber",
+            email: process.env.BREVO_SENDER_EMAIL
+          },
+          to: [{ email: emailNormalizado }],
+          subject: "Confirme seu cadastro - Joel Barber",
+          htmlContent: `
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+              <h2>Bem-vindo ao Joel Barber!</h2>
+              <p>Use o código abaixo para confirmar seu cadastro:</p>
+              <h1 style="letter-spacing: 8px;">${codigo}</h1>
+              <p>Este código expira em 10 minutos.</p>
+              <p>Se você não solicitou este cadastro, ignore este e-mail.</p>
+            </div>
+          `
+        },
+        {
+          headers: {
+            "api-key": process.env.BREVO_API_KEY,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          timeout: 15000
+        }
+      );
+    } catch (erroEmail) {
+      await pool.execute(
+        "DELETE FROM verificacoes_email WHERE email = ? AND codigo_hash = ?",
+        [emailNormalizado, codigoHash]
+      );
+
+      console.error(
+        "Erro no envio pelo Brevo:",
+        erroEmail.response?.data || erroEmail.message
+      );
+
+      return res.status(502).json({
+        erro: "Não foi possível enviar o e-mail de confirmação."
+      });
+    }
+
+    return res.status(200).json({
+      mensagem: "Código de confirmação enviado para seu e-mail."
     });
+
   } catch (error) {
-    console.error("Erro ao cadastrar cliente:", error.message);
+    console.error("Erro ao solicitar confirmação:", error.message);
 
     return res.status(500).json({
-      erro: "Não foi possível realizar o cadastro."
+      erro: "Não foi possível iniciar o cadastro."
     });
   }
 });
+
+// ========================================
+// CONFIRMAR CADASTRO POR E-MAIL
+// ========================================
+app.post("/api/clientes/confirmar", async (req, res) => {
+  let conexao;
+
+  try {
+    const { email, codigo } = req.body;
+
+    if (
+      typeof email !== "string" ||
+      typeof codigo !== "string" ||
+      !/^\d{6}$/.test(codigo)
+    ) {
+      return res.status(400).json({
+        erro: "Informe um e-mail e um código válido de 6 dígitos."
+      });
+    }
+
+    if (!process.env.EMAIL_CODE_SECRET) {
+      return res.status(500).json({
+        erro: "Configuração de segurança incompleta."
+      });
+    }
+
+    const emailNormalizado = email.trim().toLowerCase();
+
+    conexao = await pool.getConnection();
+    await conexao.beginTransaction();
+
+    const [pendentes] = await conexao.execute(
+      `SELECT * FROM verificacoes_email
+       WHERE email = ?
+       LIMIT 1
+       FOR UPDATE`,
+      [emailNormalizado]
+    );
+
+    if (pendentes.length === 0) {
+      await conexao.rollback();
+
+      return res.status(400).json({
+        erro: "Não existe uma confirmação pendente para esse e-mail."
+      });
+    }
+
+    const pendente = pendentes[0];
+
+    if (new Date(pendente.expira_em).getTime() <= Date.now()) {
+      await conexao.execute(
+        "DELETE FROM verificacoes_email WHERE id = ?",
+        [pendente.id]
+      );
+
+      await conexao.commit();
+
+      return res.status(400).json({
+        erro: "O código expirou. Solicite um novo cadastro."
+      });
+    }
+
+    if (pendente.tentativas >= 5) {
+      await conexao.execute(
+        "DELETE FROM verificacoes_email WHERE id = ?",
+        [pendente.id]
+      );
+
+      await conexao.commit();
+
+      return res.status(429).json({
+        erro: "Limite de tentativas atingido. Solicite um novo código."
+      });
+    }
+
+    const codigoHashRecebido = createHash("sha256")
+      .update(`${emailNormalizado}:${codigo}:${process.env.EMAIL_CODE_SECRET}`)
+      .digest("hex");
+
+    const hashSalvo = Buffer.from(pendente.codigo_hash, "hex");
+    const hashRecebido = Buffer.from(codigoHashRecebido, "hex");
+
+    const codigoCorreto =
+      hashSalvo.length === hashRecebido.length &&
+      timingSafeEqual(hashSalvo, hashRecebido);
+
+    if (!codigoCorreto) {
+      await conexao.execute(
+        "UPDATE verificacoes_email SET tentativas = tentativas + 1 WHERE id = ?",
+        [pendente.id]
+      );
+
+      await conexao.commit();
+
+      return res.status(400).json({
+        erro: "Código incorreto. Confira seu e-mail e tente novamente."
+      });
+    }
+
+    const [existentes] = await conexao.execute(
+      "SELECT id FROM clientes WHERE email = ? LIMIT 1",
+      [emailNormalizado]
+    );
+
+    if (existentes.length > 0) {
+      await conexao.execute(
+        "DELETE FROM verificacoes_email WHERE id = ?",
+        [pendente.id]
+      );
+
+      await conexao.commit();
+
+      return res.status(409).json({
+        erro: "Já existe um cadastro com esse e-mail."
+      });
+    }
+
+    await conexao.execute(
+      `INSERT INTO clientes (nome, telefone, email, senha_hash)
+       VALUES (?, ?, ?, ?)`,
+      [
+        pendente.nome,
+        pendente.telefone,
+        pendente.email,
+        pendente.senha_hash
+      ]
+    );
+
+    await conexao.execute(
+      "DELETE FROM verificacoes_email WHERE id = ?",
+      [pendente.id]
+    );
+
+    await conexao.commit();
+
+    return res.status(201).json({
+      mensagem: "E-mail confirmado e cadastro realizado com sucesso!",
+      cliente: {
+        nome: pendente.nome,
+        telefone: pendente.telefone,
+        email: pendente.email
+      }
+    });
+
+  } catch (error) {
+    if (conexao) {
+      await conexao.rollback();
+    }
+
+    console.error("Erro ao confirmar cadastro:", error.message);
+
+    return res.status(500).json({
+      erro: "Não foi possível confirmar o cadastro."
+    });
+
+  } finally {
+    if (conexao) {
+      conexao.release();
+    }
+  }
+});
+
 
  // ========================================
 // LOGIN DO CLIENTE
