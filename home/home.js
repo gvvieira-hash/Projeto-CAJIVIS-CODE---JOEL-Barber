@@ -138,3 +138,83 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+// ========================================
+// LEMBRETE DE AGENDAMENTO DO CLIENTE
+// ========================================
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const aviso = document.getElementById("lembrete-agendamento");
+    const detalhes = document.getElementById("lembrete-detalhes");
+    const botaoDispensar = document.getElementById("dispensar-lembrete");
+
+    if (!aviso || !detalhes || !botaoDispensar) return;
+
+    const usuarioLogado = localStorage.getItem("logado") === "true";
+    const email = localStorage.getItem("emailUsuario");
+
+    if (!usuarioLogado || !email) return;
+
+    const API_URL = "https://projeto-cajivis-code-joel-barber-production.up.railway.app/api";
+
+    try {
+        const resposta = await fetch(
+            `${API_URL}/clientes/meus-agendamentos?email=${encodeURIComponent(email)}`
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Não foi possível consultar os agendamentos.");
+        }
+
+        const agendamentos = await resposta.json();
+
+        if (!Array.isArray(agendamentos)) return;
+
+        const agora = Date.now();
+
+        const proximos = agendamentos
+            .filter((agendamento) => {
+                if (!["agendado", "confirmado"].includes(agendamento.status)) {
+                    return false;
+                }
+
+                const dataHora = new Date(
+                    `${String(agendamento.data).slice(0, 10)}T${agendamento.horario}:00-03:00`
+                );
+
+                const diferenca = dataHora.getTime() - agora;
+
+                return diferenca > 0 && diferenca <= 6 * 60 * 60 * 1000;
+            })
+            .sort((a, b) => {
+                const dataA = new Date(`${a.data}T${a.horario}:00-03:00`);
+                const dataB = new Date(`${b.data}T${b.horario}:00-03:00`);
+
+                return dataA - dataB;
+            });
+
+        const agendamento = proximos.find((item) => {
+            return localStorage.getItem(`lembreteDispensado_${item.id}`) !== "true";
+        });
+
+        if (!agendamento) return;
+
+        const [ano, mes, dia] = String(agendamento.data).slice(0, 10).split("-");
+
+        detalhes.textContent =
+            `Serviço: ${agendamento.servico} | ` +
+            `Barbeiro: ${agendamento.barbeiro || "Não informado"} | ` +
+            `Data: ${dia}/${mes}/${ano} | ` +
+            `Horário: ${agendamento.horario}`;
+
+        aviso.hidden = false;
+
+        botaoDispensar.addEventListener("click", function () {
+            localStorage.setItem(`lembreteDispensado_${agendamento.id}`, "true");
+            aviso.hidden = true;
+        });
+
+    } catch (erro) {
+        console.error("Erro ao carregar lembrete:", erro);
+    }
+});

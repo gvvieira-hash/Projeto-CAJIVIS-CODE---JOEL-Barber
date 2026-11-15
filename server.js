@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import pool from "./database.js";
+import { iniciarLembretesAutomaticos } from "./src/services/lembreteService.js";
 import {
   verificarSenha,
   gerarToken,
@@ -1021,4 +1022,6 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Joel Barber rodando em http://localhost:${PORT}`);
+
+    iniciarLembretesAutomaticos();
 });
