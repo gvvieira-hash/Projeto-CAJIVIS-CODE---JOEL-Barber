@@ -1,65 +1,110 @@
-const cards =
-document.querySelectorAll(".card");
 
-cards.forEach(card => {
+const API_URL = "https://projeto-cajivis-code-joel-barber-production.up.railway.app";
 
-    card.addEventListener("click", () => {
+const listaServicos = document.getElementById("listaServicos");
 
-        /* REMOVE SELEÇÃO ANTIGA */
+function formatarPreco(valor) {
+    return Number(valor).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
 
-        cards.forEach(c => {
-            c.classList.remove("active-card");
-        });
+function obterIcone(nome) {
+    const nomeNormalizado = nome.toLowerCase();
 
-        /* ATIVA O CARD */
+    if (nomeNormalizado.includes("corte")) {
+        return "fa-solid fa-scissors";
+    }
 
-        card.classList.add("active-card");
+    if (nomeNormalizado.includes("barba") && nomeNormalizado.includes("cabelo")) {
+        return "fa-solid fa-user-tie";
+    }
 
-        /* PEGA O NOME */
+    if (nomeNormalizado.includes("barba")) {
+        return "fa-solid fa-user";
+    }
 
-        const servico =
-        card.querySelector("h3").innerText;
+    if (nomeNormalizado.includes("sobrancelha")) {
+        return "fa-regular fa-face-laugh-beam";
+    }
 
-        /* PEGA O VALOR */
+    return "fa-solid fa-scissors";
+}
 
-        const valor =
-        card.querySelector("p").innerText;
-
-        /* SALVA */
-
-        localStorage.setItem(
-            "servico",
-            servico
-        );
-
-        localStorage.setItem(
-            "valor",
-            valor
-        );
-
+function selecionarServico(card, servico) {
+    document.querySelectorAll(".card").forEach(c => {
+        c.classList.remove("active-card");
     });
 
-});
+    card.classList.add("active-card");
 
-const servicoInicial =
-document.querySelector(".active-card");
-
-if(servicoInicial){
-
-    localStorage.setItem(
-        "servico",
-        servicoInicial.querySelector("h3").innerText
-    );
-
-    localStorage.setItem(
-        "valor",
-        servicoInicial.querySelector("p").innerText
-    );
-
+    localStorage.setItem("servico", servico.nome);
+    localStorage.setItem("valor", formatarPreco(servico.preco));
 }
+
+async function carregarServicos() {
+    try {
+        const resposta = await fetch(`${API_URL}/api/servicos`);
+
+        if (!resposta.ok) {
+            throw new Error("Não foi possível buscar os serviços.");
+        }
+
+        const servicos = await resposta.json();
+
+        listaServicos.innerHTML = "";
+
+        if (!servicos.length) {
+            listaServicos.innerHTML = "<p>Nenhum serviço disponível no momento.</p>";
+            return;
+        }
+
+        servicos.forEach((servico, index) => {
+            const card = document.createElement("div");
+
+            card.className = "card";
+
+            if (index === 0) {
+                card.classList.add("active-card");
+            }
+
+            const icone = document.createElement("i");
+            icone.className = obterIcone(servico.nome);
+
+            const titulo = document.createElement("h3");
+            titulo.textContent = servico.nome;
+
+            const preco = document.createElement("p");
+            preco.textContent = formatarPreco(servico.preco);
+
+            card.appendChild(icone);
+            card.appendChild(titulo);
+            card.appendChild(preco);
+
+            card.addEventListener("click", () => {
+                selecionarServico(card, servico);
+            });
+
+            listaServicos.appendChild(card);
+
+            if (index === 0) {
+                localStorage.setItem("servico", servico.nome);
+                localStorage.setItem("valor", formatarPreco(servico.preco));
+            }
+        });
+
+    } catch (error) {
+        console.error("Erro ao carregar serviços:", error);
+
+        listaServicos.innerHTML =
+            "<p>Não foi possível carregar os serviços. Atualize a página.</p>";
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
-    const usuarioLogado = localStorage.getItem("logado") === "true"; 
-    const emailSalvo = localStorage.getItem("emailUsuario"); 
+    const usuarioLogado = localStorage.getItem("logado") === "true";
+    const emailSalvo = localStorage.getItem("emailUsuario");
 
     const authButtons = document.getElementById("auth-buttons");
     const userProfile = document.getElementById("user-profile");
@@ -67,21 +112,29 @@ document.addEventListener("DOMContentLoaded", function() {
     if (authButtons && userProfile) {
         if (usuarioLogado) {
             authButtons.style.display = "none";
-            userProfile.style.display = "flex"; 
-            if (emailSalvo) userProfile.title = emailSalvo; 
+            userProfile.style.display = "flex";
+
+            if (emailSalvo) {
+                userProfile.title = emailSalvo;
+            }
         } else {
-            authButtons.style.display = "flex"; 
+            authButtons.style.display = "flex";
             userProfile.style.display = "none";
         }
     }
 
     const btnLogout = document.getElementById("btn-logout");
-    if(btnLogout) {
+
+    if (btnLogout) {
         btnLogout.addEventListener("click", function(event) {
             event.preventDefault();
-            localStorage.setItem("logado", "false"); 
-            localStorage.removeItem("emailUsuario"); 
-            window.location.href = "../home/home.html"; // Manda de volta pra home deslogado
+
+            localStorage.setItem("logado", "false");
+            localStorage.removeItem("emailUsuario");
+
+            window.location.href = "../home/home.html";
         });
     }
+
+    carregarServicos();
 });
