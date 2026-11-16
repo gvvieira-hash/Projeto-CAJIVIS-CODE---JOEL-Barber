@@ -96,6 +96,11 @@ const paginas = {
     produtos: [
         "Produtos",
         "Gerencie os produtos exibidos na loja dos clientes."
+    ],
+
+    relatorios: [
+        "Relatórios",
+        "Analise o movimento e o desempenho da barbearia."
     ]
 };
 
@@ -117,6 +122,7 @@ function abrirPagina(nome) {
     if (nome === "clientes") carregarClientes();
     if (nome === "barbeiros") carregarBarbeiros();
     if (nome === "produtos") carregarProdutos();
+    if (nome === "relatorios") carregarRelatorios();
 }
 
 document.querySelectorAll(".admin-nav a").forEach(a => {
@@ -735,3 +741,182 @@ $("formProduto").addEventListener("submit", async e => {
         btn.textContent = "Salvar produto";
     }
 });
+// ========================================
+// RELATÓRIOS
+// ========================================
+
+function obterDataLocal(valor) {
+    if (!valor) return null;
+
+    const partes = String(valor).slice(0, 10).split("-");
+
+    if (partes.length !== 3) return null;
+
+    const [ano, mes, dia] = partes.map(Number);
+
+    const data = new Date(ano, mes - 1, dia);
+
+    return Number.isNaN(data.getTime()) ? null : data;
+}
+
+function renderRelatorios() {
+    const periodo = $("filtroPeriodoRelatorios").value;
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    let lista = [...agendamentos];
+
+    if (periodo !== "todos") {
+        const dias = Number(periodo);
+        const inicio = new Date(hoje);
+        inicio.setDate(inicio.getDate() - (dias - 1));
+
+        lista = lista.filter(a => {
+            const data = obterDataLocal(a.data_agendamento);
+
+            return data && data >= inicio && data <= hoje;
+        });
+    }
+
+    const concluidos = lista.filter(
+        a => statusNormal(a.status) === "concluido"
+    );
+
+    const cancelados = lista.filter(
+        a => statusNormal(a.status) === "cancelado"
+    );
+
+    const pendentes = lista.filter(
+        a => statusNormal(a.status) === "agendado"
+    );
+
+    $("relTotal").textContent = lista.length;
+    $("relConcluidos").textContent = concluidos.length;
+    $("relCancelados").textContent = cancelados.length;
+    $("relPendentes").textContent = pendentes.length;
+
+    // Dias da semana
+    const diasSemana = [
+        "Domingo",
+        "Segunda",
+        "Terça",
+        "Quarta",
+        "Quinta",
+        "Sexta",
+        "Sábado"
+    ];
+
+    const contagemDias = Array(7).fill(0);
+
+    lista.forEach(a => {
+        const data = obterDataLocal(a.data_agendamento);
+
+        if (data) {
+            contagemDias[data.getDay()]++;
+        }
+    });
+
+    const maiorDia = Math.max(...contagemDias, 1);
+
+    $("relDias").innerHTML = diasSemana.map((dia, i) => `
+        <div class="report-row">
+            <span>${dia}</span>
+            <div class="report-track">
+                <div class="report-fill"
+                    style="width:${contagemDias[i] / maiorDia * 100}%">
+                </div>
+            </div>
+            <strong>${contagemDias[i]}</strong>
+        </div>
+    `).join("");
+
+    // Horários de pico
+    const contagemHorarios = {};
+
+    lista.forEach(a => {
+        const hora = String(a.hora_agendamento || "").slice(0, 5);
+
+        if (hora) {
+            contagemHorarios[hora] =
+                (contagemHorarios[hora] || 0) + 1;
+        }
+    });
+
+    const horarios = Object.entries(contagemHorarios)
+        .sort((a, b) => b[1] - a[1]);
+
+    const maiorHorario = Math.max(
+        ...horarios.map(h => h[1]),
+        1
+    );
+
+    $("relHorarios").innerHTML = horarios.length
+        ? horarios.map(([hora, total]) => `
+            <div class="report-row">
+                <span>${hora}</span>
+                <div class="report-track">
+                    <div class="report-fill"
+                        style="width:${total / maiorHorario * 100}%">
+                    </div>
+                </div>
+                <strong>${total}</strong>
+            </div>
+        `).join("")
+        : '<p class="empty">Nenhum horário encontrado.</p>';
+
+    // Desempenho dos barbeiros
+    const contagemBarbeiros = {};
+
+    lista.forEach(a => {
+        const nome = a.barbeiro || "Não informado";
+
+        contagemBarbeiros[nome] =
+            (contagemBarbeiros[nome] || 0) + 1;
+    });
+
+    const barbeiros = Object.entries(contagemBarbeiros)
+        .sort((a, b) => b[1] - a[1]);
+
+    const maiorBarbeiro = Math.max(
+        ...barbeiros.map(b => b[1]),
+        1
+    );
+
+    $("relBarbeiros").innerHTML = barbeiros.length
+        ? barbeiros.map(([nome, total], i) => `
+            <div class="report-row">
+                <span>${i + 1}. ${escaparHTML(nome)}</span>
+                <div class="report-track">
+                    <div class="report-fill"
+                        style="width:${total / maiorBarbeiro * 100}%">
+                    </div>
+                </div>
+                <strong>${total}</strong>
+            </div>
+        `).join("")
+        : '<p class="empty">Nenhum barbeiro encontrado.</p>';
+}
+
+async function carregarRelatorios() {
+    mensagem("mensagemRelatorios", "Carregando relatórios...");
+
+    try {
+        agendamentos = await api("/api/admin/agendamentos");
+
+        renderRelatorios();
+
+        mensagem(
+            "mensagemRelatorios",
+            "Relatórios atualizados com sucesso."
+        );
+
+    } catch (erro) {
+        mensagem("mensagemRelatorios", erro.message, true);
+    }
+}
+
+$("filtroPeriodoRelatorios").addEventListener(
+    "change",
+    renderRelatorios
+);
