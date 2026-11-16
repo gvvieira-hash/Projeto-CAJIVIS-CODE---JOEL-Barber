@@ -21,16 +21,16 @@
     </div>
 
     <nav class="admin-nav">
-        <a href="#agendamentos" class="active" data-page="agendamentos">â–¦ <span>Agendamentos</span></a>
-        <a href="#barbeiros" data-page="barbeiros">â™™ <span>Barbeiros</span></a>
-        <a href="#clientes" data-page="clientes">â™§ <span>Clientes</span></a>
-        <a href="#produtos" data-page="produtos">â–£ <span>Produtos</span></a>
-        <a href="#relatorios" data-page="relatorios">ðŸ“Š <span>RelatÃ³rios</span></a>
+        <a href="#agendamentos" class="active" data-page="agendamentos">▦ <span>Agendamentos</span></a>
+        <a href="#barbeiros" data-page="barbeiros">♙ <span>Barbeiros</span></a>
+        <a href="#clientes" data-page="clientes">♧ <span>Clientes</span></a>
+        <a href="#produtos" data-page="produtos">▣ <span>Produtos</span></a>
+        <a href="#relatorios" data-page="relatorios">📊 <span>Relatórios</span></a>
     </nav>
 
     <div class="sidebar-bottom">
         <span class="online-dot"></span> Sistema administrativo
-        <button id="btnSair" type="button">Sair do painel â†—</button>
+        <button id="btnSair" type="button">Sair do painel ↗</button>
     </div>
 </aside>
 
@@ -38,9 +38,9 @@
 
     <header class="topbar">
         <div>
-            <p class="eyebrow">GESTÃƒO DA BARBEARIA</p>
+            <p class="eyebrow">GESTÃO DA BARBEARIA</p>
             <h1 id="tituloPagina">Agendamentos</h1>
-            <p class="subtitle" id="subtituloPagina">Acompanhe os horÃ¡rios de todos os barbeiros.</p>
+            <p class="subtitle" id="subtituloPagina">Acompanhe os horários de todos os barbeiros.</p>
         </div>
 
         <div class="admin-profile">
@@ -57,26 +57,26 @@
 
         <section class="stats">
             <article class="stat-card">
-                <div class="stat-heading"><span>Total de agendamentos</span><span class="stat-icon">â–¦</span></div>
-                <strong id="totalAgendamentos">â€”</strong>
+                <div class="stat-heading"><span>Total de agendamentos</span><span class="stat-icon">▦</span></div>
+                <strong id="totalAgendamentos">—</strong>
                 <small>Registros encontrados</small>
             </article>
 
             <article class="stat-card">
-                <div class="stat-heading"><span>Agendados</span><span class="stat-icon gold">â—·</span></div>
-                <strong id="totalAgendados">â€”</strong>
+                <div class="stat-heading"><span>Agendados</span><span class="stat-icon gold">◷</span></div>
+                <strong id="totalAgendados">—</strong>
                 <small>Atendimentos programados</small>
             </article>
 
             <article class="stat-card">
-                <div class="stat-heading"><span>ConcluÃ­dos</span><span class="stat-icon green">âœ“</span></div>
-                <strong id="totalConcluidos">â€”</strong>
+                <div class="stat-heading"><span>Concluídos</span><span class="stat-icon green">✓</span></div>
+                <strong id="totalConcluidos">—</strong>
                 <small>Atendimentos realizados</small>
             </article>
 
             <article class="stat-card">
-                <div class="stat-heading"><span>Cancelados</span><span class="stat-icon red">Ã—</span></div>
-                <strong id="totalCancelados">â€”</strong>
+                <div class="stat-heading"><span>Cancelados</span><span class="stat-icon red">×</span></div>
+                <strong id="totalCancelados">—</strong>
                 <small>Agendamentos cancelados</small>
             </article>
         </section>
@@ -84,16 +84,16 @@
         <section class="appointments">
             <div class="section-heading">
                 <div>
-                    <h2>Todos os horÃ¡rios</h2>
+                    <h2>Todos os horários</h2>
                     <p>Visualize os agendamentos dos barbeiros.</p>
                 </div>
-                <button id="btnAtualizar" class="btn-primary" type="button">â†» Atualizar lista</button>
+                <button id="btnAtualizar" class="btn-primary" type="button">↻ Atualizar lista</button>
             </div>
 
             <div class="filters">
                 <label class="search-box">
-                    <span>âŒ•</span>
-                    <input type="search" id="pesquisa" placeholder="Buscar cliente, serviÃ§o ou barbeiro...">
+                    <span>⌕</span>
+                    <input type="search" id="pesquisa" placeholder="Buscar cliente, serviço ou barbeiro...">
                 </label>
 
                 <select id="filtroBarbeiro" aria-label="Filtrar por barbeiro">
@@ -105,7 +105,7 @@
                 <select id="filtroStatus" aria-label="Filtrar por status">
                     <option value="">Todos os status</option>
                     <option value="agendado">Agendado</option>
-                    <option value="concluido">ConcluÃ­do</option>
+                    <option value="concluido">Concluído</option>
                     <option value="cancelado">Cancelado</option>
                 </select>
             </div>
@@ -117,11 +117,11 @@
                     <thead>
                         <tr>
                             <th>CLIENTE</th>
-                            <th>SERVIÃ‡O</th>
+                            <th>SERVIÇO</th>
                             <th>BARBEIRO</th>
                             <th>DATA</th>
-                            <th>HORÃRIO</th>
-                            <th>STATUS / AÃ‡Ã•ES</th>
+                            <th>HORÁRIO</th>
+                            <th>STATUS / AÇÕES</th>
                         </tr>
                     </thead>
                     <tbody id="listaAgendamentos">
@@ -132,7 +132,7 @@
 
             <footer class="table-footer">
                 <span id="contador">Nenhum agendamento carregado</span>
-                <span>Joel Barber <span class="gold-text">â€¢</span> AdministraÃ§Ã£o</span>
+                <span>Joel Barber <span class="gold-text">•</span> Administração</span>
             </footer>
         </section>
     </section>
@@ -145,12 +145,12 @@
                     <h2>Clientes cadastrados</h2>
                     <p>Consulte os clientes que possuem cadastro no site.</p>
                 </div>
-                <button class="btn-primary" id="btnAtualizarClientes">â†» Atualizar lista</button>
+                <button class="btn-primary" id="btnAtualizarClientes">↻ Atualizar lista</button>
             </div>
 
             <div class="filters single-filter">
                 <label class="search-box">
-                    <span>âŒ•</span>
+                    <span>⌕</span>
                     <input id="pesquisaClientes" type="search" placeholder="Buscar por nome, telefone ou e-mail...">
                 </label>
             </div>
@@ -175,7 +175,7 @@
 
             <footer class="table-footer">
                 <span id="contadorClientes">0 clientes</span>
-                <span>Joel Barber â€¢ AdministraÃ§Ã£o</span>
+                <span>Joel Barber • Administração</span>
             </footer>
         </section>
     </section>
@@ -191,8 +191,8 @@
                 </div>
 
                 <div>
-                    <button class="btn-primary" id="btnAtualizarBarbeiros" type="button">â†» Atualizar lista</button>
-                    <button class="btn-primary" id="btnNovoBarbeiro" type="button">ï¼‹ Adicionar barbeiro</button>
+                    <button class="btn-primary" id="btnAtualizarBarbeiros" type="button">↻ Atualizar lista</button>
+                    <button class="btn-primary" id="btnNovoBarbeiro" type="button">＋ Adicionar barbeiro</button>
                 </div>
             </div>
 
@@ -223,7 +223,7 @@
 <img
     id="previewFotoBarbeiro"
     style="display:none; width:120px; height:120px; object-fit:cover; border-radius:50%; margin-bottom:15px;"
-    alt="PrÃ©via da foto do barbeiro"
+    alt="Prévia da foto do barbeiro"
 >
 
                     <button type="submit" class="btn-primary" id="salvarBarbeiro">Salvar barbeiro</button>
@@ -249,12 +249,12 @@
                     <h2>Produtos da loja</h2>
                     <p>Cadastre e gerencie os produtos exibidos no painel dos clientes.</p>
                 </div>
-                <button class="btn-primary" id="btnNovoProduto">ï¼‹ Adicionar produto</button>
+                <button class="btn-primary" id="btnNovoProduto">＋ Adicionar produto</button>
             </div>
 
             <div class="filters single-filter">
                 <label class="search-box">
-                    <span>âŒ•</span>
+                    <span>⌕</span>
                     <input id="pesquisaProdutos" type="search" placeholder="Buscar produto...">
                 </label>
             </div>
@@ -268,26 +268,26 @@
 
 
 
-    <!-- RELATÃ“RIOS -->
+    <!-- RELATÓRIOS -->
     <section class="admin-page" id="pagina-relatorios">
 
         <section class="appointments">
 
             <div class="section-heading">
                 <div>
-                    <h2>VisÃ£o geral dos relatÃ³rios</h2>
+                    <h2>Visão geral dos relatórios</h2>
                     <p>Analise o movimento e o desempenho da barbearia.</p>
                 </div>
 
-                <select id="filtroPeriodoRelatorios" aria-label="Filtrar perÃ­odo">
-                    <option value="7">Ãšltimos 7 dias</option>
-                    <option value="30" selected>Ãšltimos 30 dias</option>
-                    <option value="todos">Todo o perÃ­odo</option>
+                <select id="filtroPeriodoRelatorios" aria-label="Filtrar período">
+                    <option value="7">Últimos 7 dias</option>
+                    <option value="30" selected>Últimos 30 dias</option>
+                    <option value="todos">Todo o período</option>
                 </select>
             </div>
 
             <div id="mensagemRelatorios" class="message" role="status">
-                Carregando relatÃ³rios...
+                Carregando relatórios...
             </div>
 
             <!-- INDICADORES -->
@@ -296,16 +296,16 @@
                 <article class="stat-card">
                     <div class="stat-heading">
                         <span>Total de agendamentos</span>
-                        <span class="stat-icon">â–¦</span>
+                        <span class="stat-icon">▦</span>
                     </div>
                     <strong id="relTotal">0</strong>
-                    <small>No perÃ­odo selecionado</small>
+                    <small>No período selecionado</small>
                 </article>
 
                 <article class="stat-card">
                     <div class="stat-heading">
-                        <span>ConcluÃ­dos</span>
-                        <span class="stat-icon green">âœ“</span>
+                        <span>Concluídos</span>
+                        <span class="stat-icon green">✓</span>
                     </div>
                     <strong id="relConcluidos">0</strong>
                     <small>Atendimentos realizados</small>
@@ -314,7 +314,7 @@
                 <article class="stat-card">
                     <div class="stat-heading">
                         <span>Cancelados</span>
-                        <span class="stat-icon red">Ã—</span>
+                        <span class="stat-icon red">×</span>
                     </div>
                     <strong id="relCancelados">0</strong>
                     <small>Agendamentos cancelados</small>
@@ -323,7 +323,7 @@
                 <article class="stat-card">
                     <div class="stat-heading">
                         <span>Pendentes</span>
-                        <span class="stat-icon gold">â—·</span>
+                        <span class="stat-icon gold">◷</span>
                     </div>
                     <strong id="relPendentes">0</strong>
                     <small>Atendimentos programados</small>
@@ -331,7 +331,7 @@
 
             </section>
 
-            <!-- GRÃFICOS -->
+            <!-- GRÁFICOS -->
             <div class="reports-grid">
 
                 <article class="report-card">
@@ -341,8 +341,8 @@
                 </article>
 
                 <article class="report-card">
-                    <h2>HorÃ¡rios de pico</h2>
-                    <p>HorÃ¡rios com maior procura pelos clientes.</p>
+                    <h2>Horários de pico</h2>
+                    <p>Horários com maior procura pelos clientes.</p>
                     <div id="relHorarios" class="report-chart"></div>
                 </article>
 
@@ -356,8 +356,8 @@
 
         </section>
 
-    </section>git diff --check
-<p class="page-footer">JOEL BARBER Â© 2026 Â· Sistema de gerenciamento</p>
+    </section>
+<p class="page-footer">JOEL BARBER © 2026 · Sistema de gerenciamento</p>
 
 </main>
 
@@ -368,9 +368,9 @@
         <div class="section-heading">
             <div>
                 <h2 id="tituloModalProduto">Novo produto</h2>
-                <p>Os dados serÃ£o publicados na loja dos clientes.</p>
+                <p>Os dados serão publicados na loja dos clientes.</p>
             </div>
-            <button type="button" class="btn-close" id="fecharModalProduto">Ã—</button>
+            <button type="button" class="btn-close" id="fecharModalProduto">×</button>
         </div>
 
         <input type="hidden" id="produtoId">
@@ -381,13 +381,13 @@
         </label>
 
         <label>
-            DescriÃ§Ã£o
+            Descrição
             <input id="produtoDescricao" maxlength="255" placeholder="Descreva o produto">
         </label>
 
         <div class="form-row">
             <label>
-                PreÃ§o (R$)
+                Preço (R$)
                 <input id="produtoPreco" required type="number" min="0.01" step="0.01" placeholder="30,00">
             </label>
 
@@ -397,7 +397,7 @@
                     <option value="cabelo">Cabelo</option>
                     <option value="barba">Barba</option>
                     <option value="acabamento">Acabamento</option>
-                    <option value="acessorios">AcessÃ³rios</option>
+                    <option value="acessorios">Acessórios</option>
                 </select>
             </label>
         </div>
@@ -409,7 +409,7 @@
 
         <label class="check-label">
             <input id="produtoAtivo" type="checkbox" checked>
-            Produto visÃ­vel na loja
+            Produto visível na loja
         </label>
 
         <div class="modal-actions">
