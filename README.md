@@ -89,6 +89,9 @@ O sistema foi projetado com foco na experiência do utilizador (UX/UI) e na iden
 * **Navegação Intuitiva:** Cards interativos e fluxo guiado por etapas, facilitando o agendamento rápido mesmo para utilizadores menos experientes.
 * **Micro-interações e Responsividade:** Transições suaves e adaptação completa para dispositivos móveis e computadores.
 
+  <img width="1903" height="941" alt="image" src="https://github.com/user-attachments/assets/fef638f8-9f3e-4500-b221-639eee7041f3" />
+
+
 ---
 
 # 📂 Estrutura do Projeto
