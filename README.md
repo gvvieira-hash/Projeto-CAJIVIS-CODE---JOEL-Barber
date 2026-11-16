@@ -32,6 +32,7 @@ A barbearia de Joel Posidoni, em Camaçari  sofrem com o problema de realizar se
 ## 📌 Sobre o Projeto
 
 Este é um projeto do  Trabalho de Conclusão de Curso (TCC) de estudantes de Técnico em Informática para a Internet do SENAI Bahia. O **Joel Barber** é uma plataforma web moderna desenvolvida para facilitar o agendamento de horários na barbearia de Joel Posidoni em Camaçari-BA. O projeto foi criado com foco em experiência do usuário, design profissional e navegação intuitiva. A plataforma permite que clientes escolham serviços, barbeiros, datas e horários disponíveis de forma rápida e prática.
+
 ---
 
 
