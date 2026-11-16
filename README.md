@@ -1,4 +1,6 @@
-<img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/2fb707d2-e24e-4025-9fa7-be084c33a74d" /># 💈 Joel Barber — Sistema de Agendamento para Barbearia
+<img width="400" height="400" alt="image" src="file:///C:/Users/ELIPSE/Downloads/Logotipo%20joel%20barber.png" /># 
+
+💈 Joel Barber — Sistema de Agendamento para Barbearia
 
 
 ## 👥 Equipe:
