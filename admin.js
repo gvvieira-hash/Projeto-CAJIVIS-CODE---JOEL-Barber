@@ -1,4 +1,4 @@
-
+﻿
 const API_URL = "https://projeto-cajivis-code-joel-barber-production.up.railway.app";
 
 const tokenAdmin = localStorage.getItem("tokenAdmin");
@@ -93,6 +93,11 @@ const paginas = {
         "Consulte os clientes cadastrados no site."
     ],
 
+    servicos: [
+        "Serviços",
+        "Gerencie os serviços oferecidos pela barbearia."
+    ],
+
     produtos: [
         "Produtos",
         "Gerencie os produtos exibidos na loja dos clientes."
@@ -122,6 +127,7 @@ function abrirPagina(nome) {
     if (nome === "clientes") carregarClientes();
     if (nome === "barbeiros") carregarBarbeiros();
     if (nome === "produtos") carregarProdutos();
+    if (nome === "servicos") carregarServicos();
     if (nome === "relatorios") carregarRelatorios();
 }
 
@@ -742,7 +748,164 @@ $("formProduto").addEventListener("submit", async e => {
     }
 });
 // ========================================
+// ========================================
+// SERVIÇOS
+// ========================================
+
+let servicos = [];
+
+function renderServicos() {
+    const busca = $("pesquisaServicos").value.toLowerCase().trim();
+
+    const filtrados = servicos.filter(s =>
+        s.nome.toLowerCase().includes(busca)
+    );
+
+    $("listaServicosAdmin").innerHTML = filtrados.length
+        ? filtrados.map(s => `
+            <article class="product-card">
+                <div class="product-info">
+                    <h3>${escaparHTML(s.nome)}</h3>
+                    <p>${dinheiro(s.preco)}</p>
+                    <p>Duração: ${Number(s.duracao_minutos)} minutos</p>
+                    <p>${Number(s.ativo) === 1 ? "Ativo" : "Inativo"}</p>
+                </div>
+                <div class="product-actions">
+                    <button class="btn-secondary" data-servico-edit="${s.id}">
+                        Editar
+                    </button>
+                    <button class="btn-danger" data-servico-delete="${s.id}">
+                        Excluir
+                    </button>
+                </div>
+            </article>
+        `).join("")
+        : '<p class="empty">Nenhum serviço encontrado.</p>';
+}
+
+async function carregarServicos() {
+    try {
+        mensagem("mensagemServicos", "Carregando serviços...");
+
+        servicos = await api("/api/admin/servicos");
+
+        renderServicos();
+
+        mensagem(
+            "mensagemServicos",
+            `${servicos.length} serviço(s) cadastrado(s).`
+        );
+    } catch (e) {
+        mensagem("mensagemServicos", e.message, true);
+    }
+}
+
+function abrirModalServico(servico = null) {
+    const form = $("formServico");
+    form.reset();
+
+    $("servicoId").value = servico?.id || "";
+    $("tituloModalServico").textContent = servico
+        ? "Editar serviço"
+        : "Novo serviço";
+
+    $("servicoNome").value = servico?.nome || "";
+    $("servicoPreco").value = servico?.preco ?? "";
+    $("servicoDuracao").value = servico?.duracao_minutos ?? "";
+    $("servicoAtivo").checked = servico
+        ? Number(servico.ativo) === 1
+        : true;
+
+    $("erroServico").textContent = "";
+    $("modalServico").classList.add("show");
+    $("modalServico").setAttribute("aria-hidden", "false");
+}
+
+function fecharModalServico() {
+    $("modalServico").classList.remove("show");
+    $("modalServico").setAttribute("aria-hidden", "true");
+}
+
+$("btnNovoServico").addEventListener("click", () => abrirModalServico());
+$("fecharModalServico").addEventListener("click", fecharModalServico);
+$("cancelarModalServico").addEventListener("click", fecharModalServico);
+$("pesquisaServicos").addEventListener("input", renderServicos);
+
+$("listaServicosAdmin").addEventListener("click", async e => {
+    const edit = e.target.closest("[data-servico-edit]");
+    const del = e.target.closest("[data-servico-delete]");
+
+    if (edit) {
+        const servico = servicos.find(s =>
+            s.id === Number(edit.dataset.servicoEdit)
+        );
+
+        if (servico) abrirModalServico(servico);
+    }
+
+    if (del) {
+        const servico = servicos.find(s =>
+            s.id === Number(del.dataset.servicoDelete)
+        );
+
+        if (!servico || !confirm(`Excluir "${servico.nome}"?`)) return;
+
+        try {
+            await api(`/api/admin/servicos/${servico.id}`, {
+                method: "DELETE"
+            });
+
+            await carregarServicos();
+            mensagem("mensagemServicos", "Serviço excluído com sucesso.");
+        } catch (err) {
+            mensagem("mensagemServicos", err.message, true);
+        }
+    }
+});
+
+$("formServico").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const id = $("servicoId").value;
+
+    const payload = {
+        nome: $("servicoNome").value.trim(),
+        preco: Number($("servicoPreco").value),
+        duracao_minutos: Number($("servicoDuracao").value),
+        ativo: $("servicoAtivo").checked ? 1 : 0
+    };
+
+    const botao = $("salvarServico");
+    botao.disabled = true;
+    botao.textContent = "Salvando...";
+
+    try {
+        await api(
+            id ? `/api/admin/servicos/${id}` : "/api/admin/servicos",
+            {
+                method: id ? "PUT" : "POST",
+                body: JSON.stringify(payload)
+            }
+        );
+
+        fecharModalServico();
+        await carregarServicos();
+
+        mensagem(
+            "mensagemServicos",
+            id ? "Serviço atualizado com sucesso." : "Serviço cadastrado com sucesso."
+        );
+    } catch (err) {
+        $("erroServico").textContent = err.message;
+    } finally {
+        botao.disabled = false;
+        botao.textContent = "Salvar serviço";
+    }
+});
+
+// ========================================
 // RELATÓRIOS
+// ========================================
 // ========================================
 
 function obterDataLocal(valor) {

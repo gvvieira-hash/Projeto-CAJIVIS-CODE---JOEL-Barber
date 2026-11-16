@@ -23,6 +23,7 @@
     <nav class="admin-nav">
         <a href="#agendamentos" class="active" data-page="agendamentos">▦ <span>Agendamentos</span></a>
         <a href="#barbeiros" data-page="barbeiros">♙ <span>Barbeiros</span></a>
+        <a href="#servicos" data-page="servicos">✂ <span>Serviços</span></a>
         <a href="#clientes" data-page="clientes">♧ <span>Clientes</span></a>
         <a href="#produtos" data-page="produtos">▣ <span>Produtos</span></a>
         <a href="#relatorios" data-page="relatorios">📊 <span>Relatórios</span></a>
@@ -268,6 +269,31 @@
 
 
 
+    <!-- SERVIÇOS -->
+    <section class="admin-page" id="pagina-servicos">
+        <section class="appointments">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Serviços da barbearia</h2>
+                    <p>Cadastre e gerencie os serviços oferecidos aos clientes.</p>
+                </div>
+                <button class="btn-primary" id="btnNovoServico">＋ Adicionar serviço</button>
+            </div>
+
+            <div class="filters single-filter">
+                <label class="search-box">
+                    <span>⌕</span>
+                    <input id="pesquisaServicos" type="search" placeholder="Buscar serviço...">
+                </label>
+            </div>
+
+            <div class="message" id="mensagemServicos" role="status">Carregando serviços...</div>
+
+            <div class="products-grid" id="listaServicosAdmin"></div>
+
+        </section>
+    </section>
     <!-- RELATÓRIOS -->
     <section class="admin-page" id="pagina-relatorios">
 
@@ -361,6 +387,51 @@
 
 </main>
 
+<!-- MODAL DE SERVIÇOS -->
+<div class="modal-backdrop" id="modalServico" aria-hidden="true">
+    <form class="modal-card" id="formServico">
+
+        <div class="section-heading">
+            <div>
+                <h2 id="tituloModalServico">Novo serviço</h2>
+                <p>Cadastre os serviços oferecidos pela barbearia.</p>
+            </div>
+            <button type="button" class="btn-close" id="fecharModalServico">×</button>
+        </div>
+
+        <input type="hidden" id="servicoId">
+
+        <label>
+            Nome do serviço
+            <input id="servicoNome" required maxlength="100" placeholder="Ex.: Corte de cabelo">
+        </label>
+
+        <div class="form-row">
+            <label>
+                Preço (R$)
+                <input id="servicoPreco" required type="number" min="0.01" step="0.01" placeholder="45,00">
+            </label>
+
+            <label>
+                Duração (minutos)
+                <input id="servicoDuracao" required type="number" min="1" step="1" placeholder="30">
+            </label>
+        </div>
+
+        <label class="check-label">
+            <input id="servicoAtivo" type="checkbox" checked>
+            Serviço disponível para agendamento
+        </label>
+
+        <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="cancelarModalServico">Cancelar</button>
+            <button class="btn-primary" type="submit" id="salvarServico">Salvar serviço</button>
+        </div>
+
+        <p class="modal-message" id="erroServico" role="status"></p>
+
+    </form>
+</div>
 <!-- MODAL DE PRODUTOS -->
 <div class="modal-backdrop" id="modalProduto" aria-hidden="true">
     <form class="modal-card" id="formProduto">

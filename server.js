@@ -1,4 +1,4 @@
-
+﻿
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -413,6 +413,122 @@ app.delete("/api/admin/produtos/:id", autenticarAdmin, async (req, res) => {
 });
 
 // ========================================
+
+// ========================================
+// GERENCIAR SERVIÇOS
+// ========================================
+
+app.get("/api/admin/servicos", autenticarAdmin, async (req, res) => {
+  try {
+    const [servicos] = await pool.query(`
+      SELECT id, nome, preco, duracao_minutos, ativo
+      FROM servicos
+      ORDER BY id DESC
+    `);
+    res.json(servicos);
+  } catch (error) {
+    console.error("Erro ao listar serviços:", error.message);
+    res.status(500).json({ erro: "Não foi possível carregar os serviços." });
+  }
+});
+
+app.post("/api/admin/servicos", autenticarAdmin, async (req, res) => {
+  try {
+    const { nome, preco, duracao_minutos, ativo = 1 } = req.body;
+    const precoNumero = Number(preco);
+    const duracao = Number(duracao_minutos);
+
+    if (
+      typeof nome !== "string" ||
+      !nome.trim() ||
+      nome.trim().length > 100 ||
+      !Number.isFinite(precoNumero) ||
+      precoNumero <= 0 ||
+      !Number.isInteger(duracao) ||
+      duracao <= 0
+    ) {
+      return res.status(400).json({ erro: "Informe nome, preço e duração válidos." });
+    }
+
+    const [resultado] = await pool.execute(`
+      INSERT INTO servicos (nome, preco, duracao_minutos, ativo)
+      VALUES (?, ?, ?, ?)
+    `, [nome.trim(), precoNumero, duracao, ativo ? 1 : 0]);
+
+    res.status(201).json({
+      mensagem: "Serviço cadastrado com sucesso!",
+      id: resultado.insertId
+    });
+  } catch (error) {
+    console.error("Erro ao cadastrar serviço:", error.message);
+    res.status(500).json({ erro: "Não foi possível cadastrar o serviço." });
+  }
+});
+
+app.put("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const { nome, preco, duracao_minutos, ativo = 1 } = req.body;
+    const precoNumero = Number(preco);
+    const duracao = Number(duracao_minutos);
+
+    if (
+      !Number.isInteger(id) ||
+      id <= 0 ||
+      typeof nome !== "string" ||
+      !nome.trim() ||
+      nome.trim().length > 100 ||
+      !Number.isFinite(precoNumero) ||
+      precoNumero <= 0 ||
+      !Number.isInteger(duracao) ||
+      duracao <= 0
+    ) {
+      return res.status(400).json({ erro: "Dados do serviço inválidos." });
+    }
+
+    const [resultado] = await pool.execute(`
+      UPDATE servicos
+      SET nome = ?, preco = ?, duracao_minutos = ?, ativo = ?
+      WHERE id = ?
+    `, [nome.trim(), precoNumero, duracao, ativo ? 1 : 0, id]);
+
+    if (!resultado.affectedRows) {
+      return res.status(404).json({ erro: "Serviço não encontrado." });
+    }
+
+    res.json({ mensagem: "Serviço atualizado com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao atualizar serviço:", error.message);
+    res.status(500).json({ erro: "Não foi possível atualizar o serviço." });
+  }
+});
+
+app.delete("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ erro: "ID de serviço inválido." });
+    }
+
+    const [resultado] = await pool.execute(
+      "DELETE FROM servicos WHERE id = ?",
+      [id]
+    );
+
+    if (!resultado.affectedRows) {
+      return res.status(404).json({ erro: "Serviço não encontrado." });
+    }
+
+    res.json({ mensagem: "Serviço excluído com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao excluir serviço:", error.message);
+    res.status(500).json({
+      erro: "Não foi possível excluir o serviço. Verifique se ele possui agendamentos vinculados."
+    });
+  }
+});
+
 // CADASTRAR CLIENTE
 // ========================================
 
