@@ -1,4 +1,6 @@
+<div align="center">
 <img width="400" height="400" alt="image" src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png" />
+</div>
 
 
 
