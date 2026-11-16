@@ -1136,3 +1136,222 @@ footer {
         padding: 0 8px;
     }
 }
+
+
+/* =====================================================
+   HEADER RESPONSIVO PADRONIZADO
+   Referência visual: home/home.css
+   Em telas menores, logo + ações ficam na primeira linha
+   e o menu ocupa uma segunda linha independente.
+===================================================== */
+
+/* NOTEBOOKS */
+@media (max-width: 1200px) {
+    header {
+        padding: 10px 25px;
+        gap: 15px;
+    }
+
+    nav ul,
+    .navbar ul {
+        gap: 22px;
+    }
+
+    nav ul li a,
+    .navbar ul li a {
+        font-size: 13px;
+    }
+}
+
+/* TABLETS */
+@media (max-width: 900px) {
+    header {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 100%;
+        height: auto;
+        min-height: 100px;
+        padding: 12px 20px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .logo {
+        order: 1;
+        flex: 0 0 auto;
+    }
+
+    .logo img {
+        width: 75px;
+        max-width: 100%;
+        display: block;
+    }
+
+    .buttons,
+    .user-profile {
+        order: 2;
+        flex: 0 0 auto;
+    }
+
+    .buttons {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+    }
+
+    nav,
+    .navbar {
+        order: 3;
+        flex: 0 0 100%;
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+    }
+
+    nav ul,
+    .navbar ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px 22px;
+        width: 100%;
+        margin: 0;
+    }
+
+    nav ul li,
+    .navbar ul li {
+        flex: 0 0 auto;
+    }
+
+    nav ul li a,
+    .navbar ul li a {
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .btn-login,
+    .btn-register {
+        padding: 10px 14px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .user-profile {
+        padding: 5px 12px 5px 5px;
+        margin-left: auto;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px) {
+    header {
+        padding: 10px 14px;
+        gap: 8px;
+    }
+
+    .logo img {
+        width: 65px;
+    }
+
+    nav,
+    .navbar {
+        width: 100%;
+        flex-basis: 100%;
+        overflow: hidden;
+    }
+
+    nav ul,
+    .navbar ul {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 20px;
+        padding: 8px 2px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    nav ul::-webkit-scrollbar,
+    .navbar ul::-webkit-scrollbar {
+        display: none;
+    }
+
+    nav ul li,
+    .navbar ul li {
+        flex-shrink: 0;
+    }
+
+    nav ul li a,
+    .navbar ul li a {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .buttons {
+        gap: 6px;
+    }
+
+    .btn-login,
+    .btn-register {
+        padding: 9px 10px;
+        font-size: 10px;
+    }
+
+    .user-profile {
+        padding: 5px 9px 5px 5px;
+    }
+
+    .user-profile .avatar {
+        width: 27px;
+        height: 27px;
+        margin-right: 6px;
+    }
+
+    .user-profile .user-name {
+        font-size: 11px;
+    }
+
+    #btn-logout {
+        margin-left: 8px;
+        font-size: 11px;
+    }
+}
+
+/* CELULARES PEQUENOS */
+@media (max-width: 380px) {
+    header {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+
+    .logo img {
+        width: 58px;
+    }
+
+    nav ul,
+    .navbar ul {
+        gap: 16px;
+    }
+
+    nav ul li a,
+    .navbar ul li a {
+        font-size: 11px;
+    }
+
+    .btn-login,
+    .btn-register {
+        padding: 8px 9px;
+        font-size: 10px;
+    }
+
+    .user-profile .user-name {
+        font-size: 10px;
+    }
+}
