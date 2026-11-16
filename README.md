@@ -4,7 +4,7 @@
 
 
 
-# 💈 Joel Barber - Sistema de Agendamento para Barbearia
+<h1 align="center"># 💈 Joel Barber - Sistema de Agendamento para Barbearia </h1>
 
 ## 👥 Equipe:
 
