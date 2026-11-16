@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import pool from "./database.js";
+import { iniciarLembretesAutomaticos } from "./src/services/lembreteService.js";
 import {
   verificarSenha,
   gerarToken,
@@ -11,12 +12,17 @@ import {
 } from "./auth-admin.js";
 import catalogoRoutes from "./src/routes/catalogoRoutes.js";
 dotenv.config();
+import agendamentoRoutes from "./src/routes/agendamentoRoutes.js";
+import axios from "axios";
+import { randomInt, createHash, timingSafeEqual } from "node:crypto";
+
 
 const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use("/api", catalogoRoutes);
+app.use("/api", agendamentoRoutes);
 
 // ========================================
 // LOGIN DO ADMINISTRADOR
@@ -407,11 +413,197 @@ app.delete("/api/admin/produtos/:id", autenticarAdmin, async (req, res) => {
 });
 
 // ========================================
+
+
+ // ========================================
+// GERENCIAR SERVIÇOS
+// ========================================
+
+const iconesServicosPermitidos = [
+  "fa-solid fa-scissors",
+  "fa-solid fa-user",
+  "fa-solid fa-user-tie",
+  "fa-solid fa-face-smile",
+  "fa-solid fa-eye",
+  "fa-solid fa-wand-magic-sparkles",
+  "fa-solid fa-spray-can-sparkles",
+  "fa-solid fa-star"
+];
+
+app.get("/api/admin/servicos", autenticarAdmin, async (req, res) => {
+  try {
+    const [servicos] = await pool.query(`
+      SELECT id, nome, preco, duracao_minutos, ativo, icone
+      FROM servicos
+      ORDER BY id DESC
+    `);
+
+    res.json(servicos);
+  } catch (error) {
+    console.error("Erro ao listar serviços:", error.message);
+    res.status(500).json({
+      erro: "Não foi possível carregar os serviços."
+    });
+  }
+});
+
+app.post("/api/admin/servicos", autenticarAdmin, async (req, res) => {
+  try {
+    const {
+      nome,
+      preco,
+      duracao_minutos,
+      icone = "fa-solid fa-scissors",
+      ativo = 1
+    } = req.body;
+
+    const precoNumero = Number(preco);
+    const duracao = Number(duracao_minutos);
+
+    if (
+      typeof nome !== "string" ||
+      !nome.trim() ||
+      nome.trim().length > 100 ||
+      !Number.isFinite(precoNumero) ||
+      precoNumero <= 0 ||
+      !Number.isInteger(duracao) ||
+      duracao <= 0 ||
+      !iconesServicosPermitidos.includes(icone)
+    ) {
+      return res.status(400).json({
+        erro: "Informe nome, preço, duração e ícone válidos."
+      });
+    }
+
+    const [resultado] = await pool.execute(`
+      INSERT INTO servicos
+      (nome, preco, duracao_minutos, ativo, icone)
+      VALUES (?, ?, ?, ?, ?)
+    `, [
+      nome.trim(),
+      precoNumero,
+      duracao,
+      ativo ? 1 : 0,
+      icone
+    ]);
+
+    res.status(201).json({
+      mensagem: "Serviço cadastrado com sucesso!",
+      id: resultado.insertId
+    });
+
+  } catch (error) {
+    console.error("Erro ao cadastrar serviço:", error.message);
+    res.status(500).json({
+      erro: "Não foi possível cadastrar o serviço."
+    });
+  }
+});
+
+app.put("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    const {
+      nome,
+      preco,
+      duracao_minutos,
+      icone = "fa-solid fa-scissors",
+      ativo = 1
+    } = req.body;
+
+    const precoNumero = Number(preco);
+    const duracao = Number(duracao_minutos);
+
+    if (
+      !Number.isInteger(id) ||
+      id <= 0 ||
+      typeof nome !== "string" ||
+      !nome.trim() ||
+      nome.trim().length > 100 ||
+      !Number.isFinite(precoNumero) ||
+      precoNumero <= 0 ||
+      !Number.isInteger(duracao) ||
+      duracao <= 0 ||
+      !iconesServicosPermitidos.includes(icone)
+    ) {
+      return res.status(400).json({
+        erro: "Dados do serviço inválidos."
+      });
+    }
+
+    const [resultado] = await pool.execute(`
+      UPDATE servicos
+      SET nome = ?, preco = ?, duracao_minutos = ?, ativo = ?, icone = ?
+      WHERE id = ?
+    `, [
+      nome.trim(),
+      precoNumero,
+      duracao,
+      ativo ? 1 : 0,
+      icone,
+      id
+    ]);
+
+    if (!resultado.affectedRows) {
+      return res.status(404).json({
+        erro: "Serviço não encontrado."
+      });
+    }
+
+    res.json({
+      mensagem: "Serviço atualizado com sucesso!"
+    });
+
+  } catch (error) {
+    console.error("Erro ao atualizar serviço:", error.message);
+    res.status(500).json({
+      erro: "Não foi possível atualizar o serviço."
+    });
+  }
+});
+
+app.delete("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        erro: "ID de serviço inválido."
+      });
+    }
+
+    const [resultado] = await pool.execute(
+      "DELETE FROM servicos WHERE id = ?",
+      [id]
+    );
+
+    if (!resultado.affectedRows) {
+      return res.status(404).json({
+        erro: "Serviço não encontrado."
+      });
+    }
+
+    res.json({
+      mensagem: "Serviço excluído com sucesso!"
+    });
+
+  } catch (error) {
+    console.error("Erro ao excluir serviço:", error.message);
+    res.status(500).json({
+      erro: "Não foi possível excluir o serviço. Verifique se ele possui agendamentos vinculados."
+    });
+  }
+});
+
+
 // CADASTRAR CLIENTE
 // ========================================
-app.post("/api/clientes", async (req, res) => {
-  console.log("🚀 ROTA DE CADASTRO DE CLIENTE FOI CHAMADA!");
 
+// ========================================
+// CADASTRO COM CONFIRMAÇÃO POR E-MAIL
+// ========================================
+app.post("/api/clientes", async (req, res) => {
   try {
     const { nome, telefone, email, senha } = req.body;
 
@@ -426,7 +618,19 @@ app.post("/api/clientes", async (req, res) => {
       senha.length < 6
     ) {
       return res.status(400).json({
-        erro: "Preencha nome, telefone, e-mail e uma senha com pelo menos 6 caracteres."
+        erro: "Preencha todos os campos. A senha precisa ter pelo menos 6 caracteres."
+      });
+    }
+console.log("DIAGNÓSTICO DAS VARIÁVEIS:", {
+    BREVO_API_KEY: Boolean(process.env.BREVO_API_KEY?.trim()),
+    BREVO_SENDER_EMAIL: Boolean(process.env.BREVO_SENDER_EMAIL?.trim()),
+    EMAIL_CODE_SECRET: Boolean(process.env.EMAIL_CODE_SECRET?.trim())
+});
+    if (!process.env.BREVO_API_KEY ||
+        !process.env.BREVO_SENDER_EMAIL ||
+        !process.env.EMAIL_CODE_SECRET) {
+      return res.status(500).json({
+        erro: "Configuração de e-mail incompleta no servidor."
       });
     }
 
@@ -443,35 +647,268 @@ app.post("/api/clientes", async (req, res) => {
       });
     }
 
+    const [pendentes] = await pool.execute(
+      "SELECT criado_em FROM verificacoes_email WHERE email = ? LIMIT 1",
+      [emailNormalizado]
+    );
+
+    if (
+      pendentes.length > 0 &&
+      Date.now() - new Date(pendentes[0].criado_em).getTime() < 60000
+    ) {
+      return res.status(429).json({
+        erro: "Aguarde um minuto antes de solicitar outro código."
+      });
+    }
+
+    const codigo = String(randomInt(100000, 1000000));
+
+    const codigoHash = createHash("sha256")
+      .update(`${emailNormalizado}:${codigo}:${process.env.EMAIL_CODE_SECRET}`)
+      .digest("hex");
+
     const senhaHash = await bcrypt.hash(senha, 10);
 
     await pool.execute(
-      `INSERT INTO clientes (nome, telefone, email, senha_hash)
-       VALUES (?, ?, ?, ?)`,
+      `INSERT INTO verificacoes_email
+       (email, nome, telefone, senha_hash, codigo_hash, expira_em, tentativas)
+       VALUES (?, ?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE), 0)
+       ON DUPLICATE KEY UPDATE
+       nome = VALUES(nome),
+       telefone = VALUES(telefone),
+       senha_hash = VALUES(senha_hash),
+       codigo_hash = VALUES(codigo_hash),
+       expira_em = DATE_ADD(NOW(), INTERVAL 10 MINUTE),
+       tentativas = 0,
+       criado_em = CURRENT_TIMESTAMP`,
       [
+        emailNormalizado,
         nome.trim(),
         telefone.trim(),
-        emailNormalizado,
-        senhaHash
+        senhaHash,
+        codigoHash
       ]
     );
 
-    return res.status(201).json({
-      mensagem: "Cadastro realizado com sucesso!",
-      cliente: {
-        nome: nome.trim(),
-        telefone: telefone.trim(),
-        email: emailNormalizado
-      }
+    try {
+      await axios.post(
+        "https://api.brevo.com/v3/smtp/email",
+        {
+          sender: {
+            name: "Joel Barber",
+            email: process.env.BREVO_SENDER_EMAIL
+          },
+          to: [{ email: emailNormalizado }],
+          subject: "Confirme seu cadastro - Joel Barber",
+          htmlContent: `
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+              <h2>Bem-vindo ao Joel Barber!</h2>
+              <p>Use o código abaixo para confirmar seu cadastro:</p>
+              <h1 style="letter-spacing: 8px;">${codigo}</h1>
+              <p>Este código expira em 10 minutos.</p>
+              <p>Se você não solicitou este cadastro, ignore este e-mail.</p>
+            </div>
+          `
+        },
+        {
+          headers: {
+            "api-key": process.env.BREVO_API_KEY,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          timeout: 15000
+        }
+      );
+    } catch (erroEmail) {
+      await pool.execute(
+        "DELETE FROM verificacoes_email WHERE email = ? AND codigo_hash = ?",
+        [emailNormalizado, codigoHash]
+      );
+
+      console.error(
+        "Erro no envio pelo Brevo:",
+        erroEmail.response?.data || erroEmail.message
+      );
+
+      return res.status(502).json({
+        erro: "Não foi possível enviar o e-mail de confirmação."
+      });
+    }
+
+    return res.status(200).json({
+      mensagem: "Código de confirmação enviado para seu e-mail."
     });
+
   } catch (error) {
-    console.error("Erro ao cadastrar cliente:", error.message);
+    console.error("Erro ao solicitar confirmação:", error.message);
 
     return res.status(500).json({
-      erro: "Não foi possível realizar o cadastro."
+      erro: "Não foi possível iniciar o cadastro."
     });
   }
 });
+
+// ========================================
+// CONFIRMAR CADASTRO POR E-MAIL
+// ========================================
+app.post("/api/clientes/confirmar", async (req, res) => {
+  let conexao;
+
+  try {
+    const { email, codigo } = req.body;
+
+    if (
+      typeof email !== "string" ||
+      typeof codigo !== "string" ||
+      !/^\d{6}$/.test(codigo)
+    ) {
+      return res.status(400).json({
+        erro: "Informe um e-mail e um código válido de 6 dígitos."
+      });
+    }
+
+    if (!process.env.EMAIL_CODE_SECRET) {
+      return res.status(500).json({
+        erro: "Configuração de segurança incompleta."
+      });
+    }
+
+    const emailNormalizado = email.trim().toLowerCase();
+
+    conexao = await pool.getConnection();
+    await conexao.beginTransaction();
+
+    const [pendentes] = await conexao.execute(
+      `SELECT * FROM verificacoes_email
+       WHERE email = ?
+       LIMIT 1
+       FOR UPDATE`,
+      [emailNormalizado]
+    );
+
+    if (pendentes.length === 0) {
+      await conexao.rollback();
+
+      return res.status(400).json({
+        erro: "Não existe uma confirmação pendente para esse e-mail."
+      });
+    }
+
+    const pendente = pendentes[0];
+
+    if (new Date(pendente.expira_em).getTime() <= Date.now()) {
+      await conexao.execute(
+        "DELETE FROM verificacoes_email WHERE id = ?",
+        [pendente.id]
+      );
+
+      await conexao.commit();
+
+      return res.status(400).json({
+        erro: "O código expirou. Solicite um novo cadastro."
+      });
+    }
+
+    if (pendente.tentativas >= 5) {
+      await conexao.execute(
+        "DELETE FROM verificacoes_email WHERE id = ?",
+        [pendente.id]
+      );
+
+      await conexao.commit();
+
+      return res.status(429).json({
+        erro: "Limite de tentativas atingido. Solicite um novo código."
+      });
+    }
+
+    const codigoHashRecebido = createHash("sha256")
+      .update(`${emailNormalizado}:${codigo}:${process.env.EMAIL_CODE_SECRET}`)
+      .digest("hex");
+
+    const hashSalvo = Buffer.from(pendente.codigo_hash, "hex");
+    const hashRecebido = Buffer.from(codigoHashRecebido, "hex");
+
+    const codigoCorreto =
+      hashSalvo.length === hashRecebido.length &&
+      timingSafeEqual(hashSalvo, hashRecebido);
+
+    if (!codigoCorreto) {
+      await conexao.execute(
+        "UPDATE verificacoes_email SET tentativas = tentativas + 1 WHERE id = ?",
+        [pendente.id]
+      );
+
+      await conexao.commit();
+
+      return res.status(400).json({
+        erro: "Código incorreto. Confira seu e-mail e tente novamente."
+      });
+    }
+
+    const [existentes] = await conexao.execute(
+      "SELECT id FROM clientes WHERE email = ? LIMIT 1",
+      [emailNormalizado]
+    );
+
+    if (existentes.length > 0) {
+      await conexao.execute(
+        "DELETE FROM verificacoes_email WHERE id = ?",
+        [pendente.id]
+      );
+
+      await conexao.commit();
+
+      return res.status(409).json({
+        erro: "Já existe um cadastro com esse e-mail."
+      });
+    }
+
+    await conexao.execute(
+      `INSERT INTO clientes (nome, telefone, email, senha_hash)
+       VALUES (?, ?, ?, ?)`,
+      [
+        pendente.nome,
+        pendente.telefone,
+        pendente.email,
+        pendente.senha_hash
+      ]
+    );
+
+    await conexao.execute(
+      "DELETE FROM verificacoes_email WHERE id = ?",
+      [pendente.id]
+    );
+
+    await conexao.commit();
+
+    return res.status(201).json({
+      mensagem: "E-mail confirmado e cadastro realizado com sucesso!",
+      cliente: {
+        nome: pendente.nome,
+        telefone: pendente.telefone,
+        email: pendente.email
+      }
+    });
+
+  } catch (error) {
+    if (conexao) {
+      await conexao.rollback();
+    }
+
+    console.error("Erro ao confirmar cadastro:", error.message);
+
+    return res.status(500).json({
+      erro: "Não foi possível confirmar o cadastro."
+    });
+
+  } finally {
+    if (conexao) {
+      conexao.release();
+    }
+  }
+});
+
 
  // ========================================
 // LOGIN DO CLIENTE
@@ -611,161 +1048,6 @@ app.get("/api/barbeiros", async (req, res) => {
             erro: "Não foi possível carregar os barbeiros."
         });
     }
-});
-// ========================================
-// CRIAR AGENDAMENTO
-// ========================================
-app.post("/api/agendamentos", async (req, res) => {
-  try {
-    const {
-      email,
-      servico,
-      barbeiro,
-      data,
-      horario
-    } = req.body;
-
-    if (
-      typeof email !== "string" ||
-      typeof servico !== "string" ||
-      typeof barbeiro !== "string" ||
-      typeof data !== "string" ||
-      typeof horario !== "string" ||
-      !email.trim() ||
-      !servico.trim() ||
-      !barbeiro.trim() ||
-      !data.trim() ||
-      !horario.trim()
-    ) {
-      return res.status(400).json({
-        erro: "Estão faltando informações do agendamento."
-      });
-    }
-
-    // Aceita data no formato DD/MM/AAAA ou AAAA-MM-DD.
-    let dataBanco = data.trim();
-
-    const dataBrasileira = dataBanco.match(
-      /^(\d{2})\/(\d{2})\/(\d{4})$/
-    );
-
-    if (dataBrasileira) {
-      dataBanco =
-        `${dataBrasileira[3]}-${dataBrasileira[2]}-${dataBrasileira[1]}`;
-    }
-
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(dataBanco)) {
-      return res.status(400).json({
-        erro: "A data do agendamento está em um formato inválido."
-      });
-    }
-
-    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(horario.trim())) {
-      return res.status(400).json({
-        erro: "O horário do agendamento está inválido."
-      });
-    }
-
-    // Localiza o cliente cadastrado.
-    const [clientes] = await pool.execute(
-      `SELECT id
-       FROM clientes
-       WHERE email = ?
-       LIMIT 1`,
-      [email.trim().toLowerCase()]
-    );
-
-    if (clientes.length === 0) {
-      return res.status(404).json({
-        erro: "Cliente não encontrado. Faça seu cadastro antes de agendar."
-      });
-    }
-
-    // Localiza o serviço selecionado.
-    console.log("Serviço recebido do site:", servico);
-    const [servicos] = await pool.execute(
-      `SELECT id
-       FROM servicos
-       WHERE nome = ? AND ativo = 1
-       LIMIT 1`,
-      [servico.trim()]
-    );
-
-    if (servicos.length === 0) {
-      return res.status(404).json({
-        erro: "Serviço não encontrado ou indisponível."
-      });
-    }
-
-    // Localiza o barbeiro selecionado.
-    const [barbeiros] = await pool.execute(
-      `SELECT id
-       FROM barbeiros
-       WHERE nome = ? AND ativo = 1
-       LIMIT 1`,
-      [barbeiro.trim()]
-    );
-
-    if (barbeiros.length === 0) {
-      return res.status(404).json({
-        erro: "Barbeiro não encontrado ou indisponível."
-      });
-    }
-
-    // Impede dois agendamentos ativos no mesmo horário
-    // para o mesmo barbeiro.
-    const [conflitos] = await pool.execute(
-      `SELECT id
-       FROM agendamentos
-       WHERE barbeiro_id = ?
-         AND data_agendamento = ?
-         AND hora_agendamento = ?
-         AND status <> 'cancelado'
-       LIMIT 1`,
-      [
-        barbeiros[0].id,
-        dataBanco,
-        horario.trim()
-      ]
-    );
-
-    if (conflitos.length > 0) {
-      return res.status(409).json({
-        erro: "Esse barbeiro já possui um agendamento nesse horário. Escolha outro horário."
-      });
-    }
-
-    const [resultado] = await pool.execute(
-      `INSERT INTO agendamentos
-       (
-         cliente_id,
-         servico_id,
-         barbeiro_id,
-         data_agendamento,
-         hora_agendamento,
-         status
-       )
-       VALUES (?, ?, ?, ?, ?, 'agendado')`,
-      [
-        clientes[0].id,
-        servicos[0].id,
-        barbeiros[0].id,
-        dataBanco,
-        horario.trim()
-      ]
-    );
-
-    return res.status(201).json({
-      mensagem: "Agendamento confirmado com sucesso!",
-      id: resultado.insertId
-    });
-  } catch (error) {
-    console.error("Erro ao criar agendamento:", error.message);
-
-    return res.status(500).json({
-      erro: "Não foi possível salvar o agendamento."
-    });
-  }
 });
 
 // ========================================
@@ -924,5 +1206,6 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Joel Barber rodando em http://localhost:${PORT}`);
+
+    iniciarLembretesAutomaticos();
 });
-Exibindo server.js…
