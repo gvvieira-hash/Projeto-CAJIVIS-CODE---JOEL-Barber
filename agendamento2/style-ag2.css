@@ -1,51 +1,147 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-/* =======================================================
-   RESET
-======================================================= */
-* {
+/* RESET */
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 /* BODY */
-body {
+body{
     font-family: 'Poppins', sans-serif;
     background-color: #0b0b0b;
     color: white;
 }
 
-/* HEADER */
-header {
-    width: 100%;
-    height: 90px;
-    background-color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 50px;
-    border-bottom: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 999;
+/* =======================================================
+   HEADER
+======================================================= */
+
+header{
+    width:100%;
+    height:90px;
+    background:#000;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 50px;
+
+    position:fixed;
+    top:0;
+    left:0;
+
+    z-index:999;
+}
+
+.logo img{
+    width:90px;
+}
+
+/* MENU */
+
+.navbar ul{
+    display:flex;
+    gap:40px;
+    list-style:none;
+}
+
+.navbar a{
+    text-decoration:none;
+    color:white;
+    font-size:15px;
+    transition:.3s;
+    position:relative;
+}
+
+.navbar a::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-6px;
+
+    width:0;
+    height:2px;
+
+    background:#d4a24c;
+    transition:.3s;
+}
+
+.navbar a:hover,
+.navbar .active{
+    color:#d4a24c;
+}
+
+.navbar a:hover::after,
+.navbar .active::after{
+    width:100%;
+}
+
+/* BOTÕES */
+
+.buttons{
+    display:flex;
+    gap:15px;
+}
+
+.btn-login,
+.btn-register{
+    text-decoration:none;
+    padding:12px 22px;
+    border-radius:10px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-login{
+    border:1px solid #d4a24c;
+    color:white;
+}
+
+.btn-login:hover{
+    background:#d4a24c;
+    color:black;
+}
+
+.btn-register{
+    background:#d4a24c;
+    color:black;
+}
+
+.btn-register:hover{
+    opacity:.8;
+}
+
+/* =======================================================
+   CONTAINER
+======================================================= */
+
+.container{
+    display:flex;
+    gap:30px;
+
+    padding:30px;
+    margin-top:90px;
+
+    height:690px;
 }
 
 /* LOGO */
-.logo img {
+.logo img{
     width: 90px;
     display: block;
 }
 
 /* MENU */
-nav ul {
+nav ul{
     display: flex;
     list-style: none;
     gap: 40px;
 }
 
-nav ul li a {
+nav ul li a{
     text-decoration: none;
     color: white;
     font-size: 15px;
@@ -55,28 +151,30 @@ nav ul li a {
 }
 
 /* LINHA EMBAIXO DO LINK */
-nav ul li a::after {
+nav ul li a::after{
     content: '';
     position: absolute;
     left: 0;
     bottom: -6px;
+
     width: 0%;
     height: 2px;
+
     background-color: #d4a24c;
+
     transition: 0.3s;
 }
 
-nav ul li a:hover,
-nav ul li a.active{
-    color:#d4a24c;
+nav ul li a:hover{
+    color: #d4a24c;
 }
 
-nav ul li a:hover::after,
-nav ul li a.active::after{
-    width:100%;
+nav ul li a:hover::after{
+    width: 100%;
 }
 
 /* BOTÕES */
+
 .buttons {
     display: flex;
     gap: 15px;
@@ -152,110 +250,130 @@ nav ul li a.active::after{
     font-weight: bold;
 }
 
-/* =======================================================
-   CONTAINER
-======================================================= */
-.container {
+/* Container que segura o card da img barbeariano centro da página */
+.container-pagina {
     display: flex;
-    gap: 30px;
-    padding: 30px;
-    margin-top: 90px;
-    height: auto;
-    min-height: calc(100vh - 90px);
+    justify-content: left;
+    align-items: center;
+    min-height: 100vh; /* Faz ocupar a tela toda */
+    padding: 20px;
+
 }
 
-/* =======================================================
-   SIDEBAR
-======================================================= */
-.container-sidebar {
-    display: flex;
+/* O Card em si */
+.card-barbearia {
+    position: relative; /* Regra de ouro para podermos jogar o texto por cima */
+    width: 400px;       /* Largura aproximada do card da foto */
+    border-radius: 15px;
+    overflow: hidden;   /* Faz a imagem respeitar as bordas arredondadas */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+   
+
 }
 
-.sidebar {
-    width: 400px;
-    min-height: 630px;
-    height: 100%;
-    border-radius: 24px;
-    overflow: hidden;
-    position: relative;
-    flex-shrink: 0;
-    background: #111;
+/* A IMAGEM DE FUNDO (Ela dita as regras do tamanho agora) */
+.card-barbearia img, 
+.card-barbearia .img-fundo {
+    /* REMOVEMOS: position: absolute (para ela voltar a ocupar espaço real) */
+    display: block;
+    width: 100%;
+    height: auto; /* Faz a altura se ajustar proporcionalmente sem sobras */
+      opacity: 0.2; /* aqui controla a transparência */
 }
 
-.sidebar img {
+/* Bloco de texto flutuando sobre a imagem */
+.conteudo-card {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    position: absolute;
-    inset: 0;
-    opacity: 0.2;
-}
-
-.overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to top,
-        rgba(0,0,0,.95) 15%,
-        rgba(0,0,0,.55) 45%,
-        rgba(0,0,0,.15) 100%
-    );
-}
-
-.sidebar-content {
-    position: absolute;
-    bottom: 40px;
-    left: 25px;
-    right: 25px;
-    z-index: 2;
-}
-
-.sidebar-content h1 {
-    font-size: 52px;
-    line-height: 1;
-    margin-bottom: 20px;
-}
-
-.sidebar-content p {
-    color: #ccc;
-    line-height: 1.7;
-    margin-bottom: 30px;
-}
-
-.sidebar button {
-    background: #d4a24c;
-    color: black;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: .3s;
-}
-
-.sidebar button:hover {
-    transform: scale(1.05);
-}
-
-/* =======================================================
-   MAIN CONTENT
-======================================================= */
-.main-content {
-    flex: 1;
-    background: #0d0d0d;
-    border-radius: 20px;
-    padding: 40px;
+    /* Centraliza todo o texto e botão verticalmente */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center; 
+    align-items: center;
+    
+    padding: 40px 30px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Título */
+.conteudo-card h1 {
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 42px;         /* Fonte grande igual à foto */
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+/* A linha divisória dourada */
+.divisor {
+    width: 60%;
+    border: none;
+    height: 1px;
+    background-color: #c09455; /* Cor dourada */
+    margin-bottom: 30px;
+    opacity: 0.7;
+}
+
+/* Parágrafo explicativo */
+.conteudo-card p {
+    color: #a0a0a0; /* Cinza claro idêntico à imagem */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+}
+
+/* Botão Começar Agendamento */
+.btn-agendamento {
+    background-color: #dca35a; /* Tom de dourado/caramelo fosco */
+    color: #000000;    
+    border: none;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-family: sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;                 /* Espaço entre o emoji de calendário e o texto */
+    transition: 
+    background-color 0.3s;
+}
+
+.btn-agendamento:hover {
+    background-color: #c09455; /* Escurece de leve ao passar o mouse */
+}
+/* =======================================================
+TITLE
+======================================================= */
+
+.title-area{
+    margin-bottom:35px;
+}
+
+.title-area h2{
+    font-size:34px;
+    margin-bottom:8px;
+}
+
+.title-area p{
+    color:#777;
+    font-size:15px;
 }
 
 /* =======================================================
    STEPS
 ======================================================= */
+
 .steps{
     display:flex;
-    align-items:center; 
+    align-items:center; /* IMPORTANTE */
     margin-bottom:50px;
 }
 
@@ -282,15 +400,21 @@ nav ul li a.active::after{
 .circle{
     width:60px;
     height:60px;
+
     border-radius:50%;
     border:2px solid #444;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     background:#0d0d0d;
+
     color:white;
+
     position:relative;
     z-index:2;
+
     margin-bottom:12px;
 }
 
@@ -310,430 +434,305 @@ nav ul li a.active::after{
     color:black;
     border:none;
 }
-/* TITULO */
-.main-content h2 {
-    font-size: 32px;
-    margin-bottom: 30px;
+
+
+/* =======================================================
+BARBEIROS
+======================================================= */
+
+.barbers{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+}
+
+.barber-card{
+
+    background:#121212;
+
+    border:1px solid transparent;
+
+    border-radius:22px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    position:relative;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.barber-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#d4a24c;
+}
+
+.selected{
+
+    border-color:#d4a24c;
+
+    background:linear-gradient(
+        180deg,
+        #1a1a1a,
+        #101010
+    );
+
+    box-shadow:
+    0 10px 30px rgba(212,162,76,.12);
+}
+
+.selected-icon{
+
+    position:absolute;
+
+    top:18px;
+    right:18px;
+
+    width:24px;
+    height:24px;
+
+    border-radius:50%;
+
+    border:2px solid #555;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:11px;
+
+    color:transparent;
+
+    transition:.3s;
+}
+
+.selected .selected-icon{
+
+    background:#d4a24c;
+
+    border-color:#d4a24c;
+
+    color:black;
+}
+
+.barber-image{
+
+    width:110px;
+    height:110px;
+
+    margin:0 auto 20px auto;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    border:3px solid #d4a24c;
+}
+
+.barber-card img{
+    width:110px;
+    height:110px;
+
+    border-radius:50%; /* deixa redonda */
+
+    object-fit:cover;
+
+    border:3px solid #d4a24c;
+
+    margin-bottom:18px;
+
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.barber-card h3{
+
+    font-size:20px;
+
+    margin-bottom:8px;
+}
+
+.job{
+
+    color:#888;
+
+    font-size:14px;
+
+    display:block;
+
+    margin-bottom:16px;
+}
+
+.rating{
+
+    color:#d4a24c;
+
+    font-size:15px;
 }
 
 /* =======================================================
-   SCHEDULE CONTAINER
+ACTIONS
 ======================================================= */
-.schedule-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    align-items: flex-start;
-    margin-top: 20px;
-    flex-wrap: wrap;
-    flex: 1;
+
+.actions{
+
+    display:flex;
+    justify-content:space-between;
+
+    margin-top:45px;
 }
 
-/* --- ESTILIZAÇÃO DO CALENDÁRIO --- */
-.calendar-wrapper {
-    background: #121212;
-    border: 1px solid #1f1f1f;
-    border-radius: 16px;
-    padding: 25px;
-    width: 100%;
-    max-width: 380px;
+.back-btn,
+.next-btn{
+
+    height:55px;
+
+    padding:0 28px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+
+    font-weight:700;
+
+    transition:.3s;
 }
 
-.calendar-header {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 25px;
+.back-btn{
+
+    border:1px solid #333;
+
+    color:white;
 }
 
-.calendar-header span {
-    font-size: 16px;
-    font-weight: 600;
+.back-btn:hover{
+
+    border-color:#d4a24c;
+
+    color:#d4a24c;
 }
 
-.cal-btn {
-    background: transparent;
-    border: none;
-    color: #888;
-    cursor: pointer;
-    font-size: 14px;
-    transition: color 0.2s;
+.next-btn{
+
+    background:#d4a24c;
+
+    color:black;
 }
 
-.cal-btn:hover {
-    color: #d4a24c;
-}
+.next-btn:hover{
 
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 12px 8px;
-    text-align: center;
+    transform:translateY(-4px);
 }
+/* =======================================================
+   CONTAINER
+======================================================= */
 
-.day-name {
-    color: #555;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
+.container{
+    display:flex;
+    gap:30px;
 
-.day {
-    font-size: 14px;
-    font-weight: 500;
-    color: #fff;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: all 0.2s;
-}
+    padding:30px;
+    margin-top:90px;
 
-.day:hover:not(.next-prev-month):not(.past-day) {
-    background: rgba(212, 162, 76, 0.2);
-    color: #d4a24c;
-}
-
-.next-prev-month {
-    color: #333 !important;
-    cursor: default;
-}
-
-.active-day {
-    background: #d4a24c;
-    color: #000 !important;
-    font-weight: 700;
-}
-
-/* --- ESTILIZAÇÃO DOS HORÁRIOS --- */
-.time-wrapper {
-    background: #121212;
-    border: 1px solid #1f1f1f;
-    border-radius: 16px;
-    padding: 25px;
-    flex: 1;
-    min-width: 320px;
-    max-width: 500px;
-}
-
-.time-wrapper h3 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #fff;
-}
-
-.time-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-}
-
-.time-slot {
-    background: transparent;
-    border: 1px solid #242424;
-    color: #fff;
-    padding: 12px 0;
-    font-size: 14px;
-    font-weight: 500;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-}
-
-.time-slot:hover {
-    border-color: #d4a24c;
-    color: #d4a24c;
-}
-
-.active-time {
-    background: #d4a24c;
-    border-color: #d4a24c;
-    color: #000;
-    font-weight: 600;
+    height: 810px
 }
 
 /* =======================================================
-   CONTAINER DOS BOTÕES DE AÇÃO
+   SIDEBAR
 ======================================================= */
-.action-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-top: 40px;
+
+.sidebar{
+    width:400px;
+    height:750px;
+
+    border-radius:24px;
+    overflow:hidden;
+
+    position:relative;
+    flex-shrink:0;
+
+    background:#111;
 }
 
-.btn-back {
-    text-decoration: none;
-    background: transparent;
-    color: #888;
-    border: 1px solid #333;
-    padding: 14px 30px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.2s ease;
+.sidebar img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    position:absolute;
+    inset:0;
+
+    opacity:.22;
 }
 
-.btn-back:hover {
-    color: #fff;
-    border-color: #fff;
-    transform: translateY(-2px);
+.overlay{
+    position:absolute;
+    inset:0;
+
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.95) 15%,
+        rgba(0,0,0,.55) 45%,
+        rgba(0,0,0,.15) 100%
+    );
 }
 
-.btn-next {
-    text-decoration: none;
-    background: #d4a24c;
-    color: #000;
-    border: none;
-    padding: 14px 40px;
-    font-size: 16px;
-    font-weight: 700;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.2s ease;
+.sidebar-content{
+    position:absolute;
+    bottom:40px;
+    left:25px;
+    right:25px;
+    z-index:2;
 }
 
-.btn-next:hover {
-    background: #b88735;
-    transform: translateY(-2px);
+.sidebar-content h1{
+    font-size:50px;
+    line-height:1;
+    margin-bottom:18px;
 }
 
-.btn-next i, .btn-back i {
-    font-size: 14px;
+.sidebar-content p{
+    color:#ccc;
+    line-height:1.7;
+    margin-bottom:30px;
 }
 
-/* =======================================================
-   DIAS PASSADOS (Bloqueados para agendamento)
-======================================================= */
-.past-day {
-    color: #444 !important;
-    cursor: not-allowed;
-    pointer-events: none;
+.sidebar button{
+    background:#d4a24c;
+    color:black;
+
+    border:none;
+    padding:15px 25px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:700;
+    transition:.3s;
 }
 
-/* ================= RODAPÉ DE AÇÕES (BOTÕES) ================= */
-.action-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 40px;
-    padding-top: 20px;
-    width: 100%;
+.sidebar button:hover{
+    transform:scale(1.05);
 }
-
-.back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background-color: transparent;
-    border: 1px solid #333;
-    border-radius: 8px;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-}
-
-.back-btn:hover {
-    border-color: #d4a359;
-    color: #d4a359;
-}
-
-.confirm-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background-color: #d4a359;
-    border: none;
-    border-radius: 8px;
-    color: #0d0d0d;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 14px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.confirm-btn:hover {
-    background-color: #b88b44;
-    transform: translateY(-2px);
-}
-
-/* HORÁRIO SELECIONADO */
-.selected {
-    background-color: #d4a359 !important;
-    color: #0d0d0d !important;
-    border-color: #d4a359 !important;
-    font-weight: bold;
-}
-
-/* HORÁRIOS DESABILITADOS (QUE JÁ PASSARAM HOJE) */
-.disabled-slot {
-    opacity: 0.25;
-    cursor: not-allowed !important;
-    pointer-events: none;
-    border-color: #333 !important;
-    color: #666 !important;
-}
-
-/* ================= GRID DE NAVEGAÇÃO E CALENDÁRIO ================= */
-.booking-grid {
-    display: flex;
-    gap: 30px;
-    margin-top: 20px;
-}
-
-.calendar-card, .time-card {
-    background-color: #121212;
-    border: 1px solid #222;
-    border-radius: 12px;
-    padding: 20px;
-    flex: 1;
-}
-
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    color: #fff;
-}
-
-.calendar-header i {
-    cursor: pointer;
-    padding: 8px;
-    color: #d4a359;
-}
-
-.weekdays, .calendar-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    gap: 8px;
-}
-
-.weekdays span {
-    font-size: 12px;
-    color: #777;
-    margin-bottom: 10px;
-}
-
-.day {
-    padding: 10px 0;
-    border-radius: 6px;
-    cursor: pointer;
-    color: #fff;
-    font-size: 14px;
-    transition: all 0.2s;
-}
-
-.day:hover:not(.past-day):not(.other-month) {
-    background-color: #222;
-    color: #d4a359;
-}
-
-.day.other-month {
-    color: #333;
-    cursor: default;
-}
-
-.day.past-day {
-    color: #333;
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-
-.day.selected {
-    background-color: #d4a359 !important;
-    color: #0d0d0d !important;
-    font-weight: bold;
-}
-
-/* ================= HORÁRIOS ================= */
-.time-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 15px;
-}
-
-.time-slot {
-    background-color: transparent;
-    border: 1px solid #333;
-    border-radius: 8px;
-    color: #fff;
-    padding: 12px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.time-slot:hover:not(.disabled-slot) {
-    border-color: #d4a359;
-    color: #d4a359;
-}
-
-.time-slot.selected {
-    background-color: #d4a359 !important;
-    color: #0d0d0d !important;
-    border-color: #d4a359 !important;
-    font-weight: bold;
-}
-
-.disabled-slot {
-    opacity: 0.2;
-    cursor: not-allowed !important;
-    border-color: #222 !important;
-    color: #555 !important;
-}
-
-/* ================= BOTOES RODAPE ================= */
-.action-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 30px;
-}
-
-.back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    border: 1px solid #333;
-    border-radius: 8px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.confirm-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background-color: #d4a359;
-    border: none;
-    border-radius: 8px;
-    color: #0d0d0d;
-    font-weight: bold;
-    cursor: pointer;
+.main-content{
+    flex:1;
+    background:#0d0d0d;
+    border-radius:24px;
+    padding:40px;
+    min-height:630px;
 }
 
 /* RODAPÉ */
@@ -762,66 +761,51 @@ footer {
 }
 
 /* =======================================================
-   RESPONSIVIDADE COMPLETA - AGENDAMENTO 3
+   RESPONSIVIDADE COMPLETA - AGENDAMENTO 2
 ======================================================= */
 
-/* NOTEBOOKS */
+/* NOTEBOOKS E TELAS MÉDIAS */
 @media (max-width: 1200px) {
     header {
         padding: 10px 25px;
         gap: 15px;
     }
 
-    nav ul {
+    .navbar ul {
         gap: 18px;
     }
 
-    nav ul li a {
+    .navbar a {
         font-size: 13px;
     }
 
     .container {
+        height: auto;
+        min-height: 0;
         gap: 20px;
-        padding: 25px;
     }
 
     .sidebar {
         width: 320px;
-    }
-
-    .sidebar-content h1 {
-        font-size: 40px;
+        height: 650px;
     }
 
     .main-content {
         padding: 30px;
     }
 
-    .steps {
-        margin-bottom: 35px;
-    }
-
     .step {
-        min-width: 90px;
+        min-width: 100px;
     }
 
     .line {
-        margin-left: 8px;
-        margin-right: 8px;
+        margin-left: 5px;
+        margin-right: 5px;
     }
 
-    .booking-grid {
+    .barbers {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 18px;
-    }
-
-    .calendar-card,
-    .time-card {
-        padding: 16px;
-        min-width: 0;
-    }
-
-    .time-grid {
-        gap: 9px;
     }
 }
 
@@ -830,6 +814,7 @@ footer {
     header {
         position: relative;
         height: auto;
+        flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
         padding: 15px 20px;
@@ -845,7 +830,7 @@ footer {
         order: 3;
     }
 
-    nav ul {
+    .navbar ul {
         justify-content: center;
         flex-wrap: wrap;
         gap: 15px 22px;
@@ -858,9 +843,8 @@ footer {
 
     .container {
         flex-direction: column;
-        margin-top: 0;
-        min-height: 0;
         height: auto;
+        margin-top: 0;
         padding: 25px;
     }
 
@@ -870,7 +854,6 @@ footer {
 
     .sidebar {
         width: 100%;
-        min-height: 350px;
         height: 350px;
     }
 
@@ -881,11 +864,11 @@ footer {
     .main-content {
         width: 100%;
         min-height: 0;
-        gap: 25px;
     }
 
     .steps {
-        margin-bottom: 15px;
+        justify-content: space-between;
+        margin-bottom: 35px;
     }
 
     .step {
@@ -895,28 +878,8 @@ footer {
 
     .line {
         flex: 1;
+        min-width: 5px;
         margin: 0 5px;
-        margin-top: 28px;
-    }
-
-    .booking-grid {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .calendar-card,
-    .time-card {
-        width: 100%;
-        max-width: none;
-    }
-
-    .calendar-card {
-        max-width: 500px;
-        margin: 0 auto;
-    }
-
-    .time-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
@@ -931,11 +894,15 @@ footer {
         width: 65px;
     }
 
-    nav ul {
+    .navbar {
+        width: 100%;
+    }
+
+    .navbar ul {
         gap: 12px 16px;
     }
 
-    nav ul li a {
+    .navbar a {
         font-size: 12px;
     }
 
@@ -968,7 +935,6 @@ footer {
     }
 
     .sidebar {
-        min-height: 280px;
         height: 280px;
         border-radius: 18px;
     }
@@ -998,12 +964,11 @@ footer {
     .main-content {
         padding: 22px 15px;
         border-radius: 16px;
-        gap: 20px;
     }
 
     .steps {
         width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 30px;
         gap: 3px;
     }
 
@@ -1013,9 +978,14 @@ footer {
     }
 
     .circle {
-        width: 40px;
-        height: 40px;
+        width: 42px;
+        height: 42px;
+        font-size: 13px;
         margin-bottom: 8px;
+    }
+
+    .circle i {
+        font-size: 15px;
     }
 
     .step span {
@@ -1024,83 +994,77 @@ footer {
 
     .line {
         flex: 1;
-        min-width: 5px;
         margin: 0 2px;
-        margin-top: 19px;
+        margin-top: 20px;
+        min-width: 5px;
     }
 
-    .main-content h2 {
-        font-size: 22px;
-        margin-bottom: 5px;
+    .title-area {
+        margin-bottom: 25px;
     }
 
-    .booking-grid {
-        gap: 15px;
-        margin-top: 0;
+    .title-area h2 {
+        font-size: 23px;
     }
 
-    .calendar-card,
-    .time-card {
-        padding: 16px 12px;
-        border-radius: 14px;
-    }
-
-    .calendar-header {
-        margin-bottom: 15px;
-    }
-
-    .calendar-header span {
-        font-size: 14px;
-    }
-
-    .calendar-header i {
-        padding: 5px;
+    .title-area p {
         font-size: 13px;
     }
 
-    .weekdays,
-    .calendar-days {
-        gap: 5px 3px;
+    .barbers {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
     }
 
-    .weekdays span {
+    .barber-card {
+        padding: 25px 10px;
+        border-radius: 16px;
+    }
+
+    .barber-image {
+        width: 85px;
+        height: 85px;
+        margin-bottom: 15px;
+    }
+
+    .barber-card img {
+        width: 85px;
+        height: 85px;
+        margin-bottom: 12px;
+    }
+
+    .barber-card h3 {
+        font-size: 14px;
+    }
+
+    .job {
         font-size: 11px;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
     }
 
-    .day {
-        font-size: 12px;
-        padding: 8px 0;
-    }
-
-    .time-card h3 {
-        font-size: 15px;
-    }
-
-    .time-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 9px;
-        margin-top: 12px;
-    }
-
-    .time-slot {
-        padding: 11px 5px;
+    .rating {
         font-size: 12px;
     }
 
-    .action-footer {
-        margin-top: 10px;
-        padding-top: 10px;
+    .selected-icon {
+        top: 10px;
+        right: 10px;
+        width: 21px;
+        height: 21px;
+    }
+
+    .actions {
+        margin-top: 28px;
         gap: 12px;
     }
 
     .back-btn,
-    .confirm-btn {
+    .next-btn {
         flex: 1;
-        justify-content: center;
-        padding: 13px 10px;
+        height: 48px;
+        padding: 0 12px;
         font-size: 12px;
-        gap: 6px;
+        gap: 7px;
     }
 
     footer {
@@ -1115,11 +1079,11 @@ footer {
 
 /* CELULARES PEQUENOS */
 @media (max-width: 380px) {
-    nav ul {
+    .navbar ul {
         gap: 10px 12px;
     }
 
-    nav ul li a {
+    .navbar a {
         font-size: 11px;
     }
 
@@ -1136,31 +1100,40 @@ footer {
     }
 
     .circle {
-        width: 34px;
-        height: 34px;
+        width: 36px;
+        height: 36px;
     }
 
     .step span {
         font-size: 9px;
     }
 
-    .calendar-card,
-    .time-card {
-        padding: 13px 9px;
+    .barbers {
+        gap: 8px;
     }
 
-    .day {
+    .barber-card {
+        padding: 22px 6px;
+    }
+
+    .barber-image,
+    .barber-card img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .barber-card h3 {
+        font-size: 12px;
+    }
+
+    .actions {
+        gap: 8px;
+    }
+
+    .back-btn,
+    .next-btn {
         font-size: 11px;
-        padding: 7px 0;
-    }
-
-    .time-grid {
-        gap: 7px;
-    }
-
-    .time-slot {
-        font-size: 11px;
-        padding: 10px 3px;
+        padding: 0 8px;
     }
 }
 
