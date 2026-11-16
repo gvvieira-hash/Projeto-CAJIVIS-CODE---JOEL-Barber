@@ -159,17 +159,23 @@ header{
    CONTAINER
 ======================================================= */
 
-.container{
-    display:flex;
-    gap:30px;
+.container {
+    display: flex;
+    gap: 30px;
+    padding: 30px;
+    margin-top: 90px;
 
-    padding:30px;
-    margin-top:90px;
+    min-height: 690px;
+    height: auto;
 
-    min-height:690px;
-    height:auto;
+    align-items: stretch;
+}
 
-    align-items:flex-start;
+/* COLUNA LATERAL */
+.container-sidebar {
+    width: 400px;
+    flex: 0 0 400px;
+    min-width: 0;
 }
 
 /* =======================================================
@@ -254,16 +260,18 @@ header{
    MAIN CONTENT
 ======================================================= */
 
-.main-content{
-    flex:1;
-    background:#0d0d0d;
+.main-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 480px;
+    height: auto;
 
-    border-radius:20px;
-    padding:40px;
+    background: #0d0d0d;
+    border-radius: 20px;
+    padding: 40px;
 
-    min-height:480px;
-     display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
 }
 
 /* =======================================================
@@ -342,6 +350,10 @@ header{
 ======================================================= */
 
 @media(max-width:1000px){
+    .container-sidebar {
+    width: 100%;
+    flex: 0 0 auto;
+}
 
     .container{
         flex-direction:column;
@@ -1236,4 +1248,20 @@ footer {
     .user-profile .user-name {
         font-size: 10px;
     }
+}
+/* CORREÇÃO DO ESPAÇAMENTO DOS SERVIÇOS */
+.services {
+    width: 100%;
+    grid-auto-rows: minmax(240px, auto);
+}
+
+.next-area {
+    flex-shrink: 0;
+    margin-bottom: 10px;
+}
+
+.products-cta {
+    position: relative;
+    clear: both;
+    margin-bottom: 20px;
 }
