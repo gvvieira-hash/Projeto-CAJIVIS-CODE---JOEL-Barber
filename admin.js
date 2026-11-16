@@ -747,7 +747,7 @@ $("formProduto").addEventListener("submit", async e => {
         btn.textContent = "Salvar produto";
     }
 });
-// ========================================
+
 // ========================================
 // SERVIÇOS
 // ========================================
@@ -765,15 +765,18 @@ function renderServicos() {
         ? filtrados.map(s => `
             <article class="product-card">
                 <div class="product-info">
+                    <i class="${escaparHTML(s.icone || "fa-solid fa-scissors")}"></i>
                     <h3>${escaparHTML(s.nome)}</h3>
                     <p>${dinheiro(s.preco)}</p>
                     <p>Duração: ${Number(s.duracao_minutos)} minutos</p>
                     <p>${Number(s.ativo) === 1 ? "Ativo" : "Inativo"}</p>
                 </div>
+
                 <div class="product-actions">
                     <button class="btn-secondary" data-servico-edit="${s.id}">
                         Editar
                     </button>
+
                     <button class="btn-danger" data-servico-delete="${s.id}">
                         Excluir
                     </button>
@@ -805,6 +808,7 @@ function abrirModalServico(servico = null) {
     form.reset();
 
     $("servicoId").value = servico?.id || "";
+
     $("tituloModalServico").textContent = servico
         ? "Editar serviço"
         : "Novo serviço";
@@ -812,6 +816,10 @@ function abrirModalServico(servico = null) {
     $("servicoNome").value = servico?.nome || "";
     $("servicoPreco").value = servico?.preco ?? "";
     $("servicoDuracao").value = servico?.duracao_minutos ?? "";
+
+    $("servicoIcone").value =
+        servico?.icone || "fa-solid fa-scissors";
+
     $("servicoAtivo").checked = servico
         ? Number(servico.ativo) === 1
         : true;
@@ -827,8 +835,11 @@ function fecharModalServico() {
 }
 
 $("btnNovoServico").addEventListener("click", () => abrirModalServico());
+
 $("fecharModalServico").addEventListener("click", fecharModalServico);
+
 $("cancelarModalServico").addEventListener("click", fecharModalServico);
+
 $("pesquisaServicos").addEventListener("input", renderServicos);
 
 $("listaServicosAdmin").addEventListener("click", async e => {
@@ -856,6 +867,7 @@ $("listaServicosAdmin").addEventListener("click", async e => {
             });
 
             await carregarServicos();
+
             mensagem("mensagemServicos", "Serviço excluído com sucesso.");
         } catch (err) {
             mensagem("mensagemServicos", err.message, true);
@@ -872,16 +884,20 @@ $("formServico").addEventListener("submit", async e => {
         nome: $("servicoNome").value.trim(),
         preco: Number($("servicoPreco").value),
         duracao_minutos: Number($("servicoDuracao").value),
+        icone: $("servicoIcone").value,
         ativo: $("servicoAtivo").checked ? 1 : 0
     };
 
     const botao = $("salvarServico");
+
     botao.disabled = true;
     botao.textContent = "Salvando...";
 
     try {
         await api(
-            id ? `/api/admin/servicos/${id}` : "/api/admin/servicos",
+            id
+                ? `/api/admin/servicos/${id}`
+                : "/api/admin/servicos",
             {
                 method: id ? "PUT" : "POST",
                 body: JSON.stringify(payload)
@@ -889,19 +905,25 @@ $("formServico").addEventListener("submit", async e => {
         );
 
         fecharModalServico();
+
         await carregarServicos();
 
         mensagem(
             "mensagemServicos",
-            id ? "Serviço atualizado com sucesso." : "Serviço cadastrado com sucesso."
+            id
+                ? "Serviço atualizado com sucesso."
+                : "Serviço cadastrado com sucesso."
         );
+
     } catch (err) {
         $("erroServico").textContent = err.message;
+
     } finally {
         botao.disabled = false;
         botao.textContent = "Salvar serviço";
     }
 });
+
 
 // ========================================
 // RELATÓRIOS

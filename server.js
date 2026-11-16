@@ -414,27 +414,49 @@ app.delete("/api/admin/produtos/:id", autenticarAdmin, async (req, res) => {
 
 // ========================================
 
-// ========================================
+
+ // ========================================
 // GERENCIAR SERVIÇOS
 // ========================================
+
+const iconesServicosPermitidos = [
+  "fa-solid fa-scissors",
+  "fa-solid fa-user",
+  "fa-solid fa-user-tie",
+  "fa-solid fa-face-smile",
+  "fa-solid fa-eye",
+  "fa-solid fa-wand-magic-sparkles",
+  "fa-solid fa-spray-can-sparkles",
+  "fa-solid fa-star"
+];
 
 app.get("/api/admin/servicos", autenticarAdmin, async (req, res) => {
   try {
     const [servicos] = await pool.query(`
-      SELECT id, nome, preco, duracao_minutos, ativo
+      SELECT id, nome, preco, duracao_minutos, ativo, icone
       FROM servicos
       ORDER BY id DESC
     `);
+
     res.json(servicos);
   } catch (error) {
     console.error("Erro ao listar serviços:", error.message);
-    res.status(500).json({ erro: "Não foi possível carregar os serviços." });
+    res.status(500).json({
+      erro: "Não foi possível carregar os serviços."
+    });
   }
 });
 
 app.post("/api/admin/servicos", autenticarAdmin, async (req, res) => {
   try {
-    const { nome, preco, duracao_minutos, ativo = 1 } = req.body;
+    const {
+      nome,
+      preco,
+      duracao_minutos,
+      icone = "fa-solid fa-scissors",
+      ativo = 1
+    } = req.body;
+
     const precoNumero = Number(preco);
     const duracao = Number(duracao_minutos);
 
@@ -445,30 +467,51 @@ app.post("/api/admin/servicos", autenticarAdmin, async (req, res) => {
       !Number.isFinite(precoNumero) ||
       precoNumero <= 0 ||
       !Number.isInteger(duracao) ||
-      duracao <= 0
+      duracao <= 0 ||
+      !iconesServicosPermitidos.includes(icone)
     ) {
-      return res.status(400).json({ erro: "Informe nome, preço e duração válidos." });
+      return res.status(400).json({
+        erro: "Informe nome, preço, duração e ícone válidos."
+      });
     }
 
     const [resultado] = await pool.execute(`
-      INSERT INTO servicos (nome, preco, duracao_minutos, ativo)
-      VALUES (?, ?, ?, ?)
-    `, [nome.trim(), precoNumero, duracao, ativo ? 1 : 0]);
+      INSERT INTO servicos
+      (nome, preco, duracao_minutos, ativo, icone)
+      VALUES (?, ?, ?, ?, ?)
+    `, [
+      nome.trim(),
+      precoNumero,
+      duracao,
+      ativo ? 1 : 0,
+      icone
+    ]);
 
     res.status(201).json({
       mensagem: "Serviço cadastrado com sucesso!",
       id: resultado.insertId
     });
+
   } catch (error) {
     console.error("Erro ao cadastrar serviço:", error.message);
-    res.status(500).json({ erro: "Não foi possível cadastrar o serviço." });
+    res.status(500).json({
+      erro: "Não foi possível cadastrar o serviço."
+    });
   }
 });
 
 app.put("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const { nome, preco, duracao_minutos, ativo = 1 } = req.body;
+
+    const {
+      nome,
+      preco,
+      duracao_minutos,
+      icone = "fa-solid fa-scissors",
+      ativo = 1
+    } = req.body;
+
     const precoNumero = Number(preco);
     const duracao = Number(duracao_minutos);
 
@@ -481,25 +524,42 @@ app.put("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
       !Number.isFinite(precoNumero) ||
       precoNumero <= 0 ||
       !Number.isInteger(duracao) ||
-      duracao <= 0
+      duracao <= 0 ||
+      !iconesServicosPermitidos.includes(icone)
     ) {
-      return res.status(400).json({ erro: "Dados do serviço inválidos." });
+      return res.status(400).json({
+        erro: "Dados do serviço inválidos."
+      });
     }
 
     const [resultado] = await pool.execute(`
       UPDATE servicos
-      SET nome = ?, preco = ?, duracao_minutos = ?, ativo = ?
+      SET nome = ?, preco = ?, duracao_minutos = ?, ativo = ?, icone = ?
       WHERE id = ?
-    `, [nome.trim(), precoNumero, duracao, ativo ? 1 : 0, id]);
+    `, [
+      nome.trim(),
+      precoNumero,
+      duracao,
+      ativo ? 1 : 0,
+      icone,
+      id
+    ]);
 
     if (!resultado.affectedRows) {
-      return res.status(404).json({ erro: "Serviço não encontrado." });
+      return res.status(404).json({
+        erro: "Serviço não encontrado."
+      });
     }
 
-    res.json({ mensagem: "Serviço atualizado com sucesso!" });
+    res.json({
+      mensagem: "Serviço atualizado com sucesso!"
+    });
+
   } catch (error) {
     console.error("Erro ao atualizar serviço:", error.message);
-    res.status(500).json({ erro: "Não foi possível atualizar o serviço." });
+    res.status(500).json({
+      erro: "Não foi possível atualizar o serviço."
+    });
   }
 });
 
@@ -508,7 +568,9 @@ app.delete("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
-      return res.status(400).json({ erro: "ID de serviço inválido." });
+      return res.status(400).json({
+        erro: "ID de serviço inválido."
+      });
     }
 
     const [resultado] = await pool.execute(
@@ -517,10 +579,15 @@ app.delete("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
     );
 
     if (!resultado.affectedRows) {
-      return res.status(404).json({ erro: "Serviço não encontrado." });
+      return res.status(404).json({
+        erro: "Serviço não encontrado."
+      });
     }
 
-    res.json({ mensagem: "Serviço excluído com sucesso!" });
+    res.json({
+      mensagem: "Serviço excluído com sucesso!"
+    });
+
   } catch (error) {
     console.error("Erro ao excluir serviço:", error.message);
     res.status(500).json({
@@ -528,6 +595,7 @@ app.delete("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
     });
   }
 });
+
 
 // CADASTRAR CLIENTE
 // ========================================

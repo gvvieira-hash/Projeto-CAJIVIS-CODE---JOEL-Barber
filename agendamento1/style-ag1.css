@@ -166,7 +166,10 @@ header{
     padding:30px;
     margin-top:90px;
 
-    height:690px;
+    min-height:690px;
+    height:auto;
+
+    align-items:flex-start;
 }
 
 /* =======================================================
@@ -372,7 +375,8 @@ header{
 
 .products-cta{
      margin:14px auto 0 auto;
-    width:1840px; /* reduz largura */
+    width:calc(100% - 60px);
+max-width:1840px;
     background:linear-gradient(135deg,#111,#1b1b1b);
     border:1px solid rgba(212,162,76,.3);
     border-radius:22px;

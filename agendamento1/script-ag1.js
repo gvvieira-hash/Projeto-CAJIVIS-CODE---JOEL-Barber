@@ -10,28 +10,6 @@ function formatarPreco(valor) {
     });
 }
 
-function obterIcone(nome) {
-    const nomeNormalizado = nome.toLowerCase();
-
-    if (nomeNormalizado.includes("corte")) {
-        return "fa-solid fa-scissors";
-    }
-
-    if (nomeNormalizado.includes("barba") && nomeNormalizado.includes("cabelo")) {
-        return "fa-solid fa-user-tie";
-    }
-
-    if (nomeNormalizado.includes("barba")) {
-        return "fa-solid fa-user";
-    }
-
-    if (nomeNormalizado.includes("sobrancelha")) {
-        return "fa-regular fa-face-laugh-beam";
-    }
-
-    return "fa-solid fa-scissors";
-}
-
 function selecionarServico(card, servico) {
     document.querySelectorAll(".card").forEach(c => {
         c.classList.remove("active-card");
@@ -56,7 +34,8 @@ async function carregarServicos() {
         listaServicos.innerHTML = "";
 
         if (!servicos.length) {
-            listaServicos.innerHTML = "<p>Nenhum serviço disponível no momento.</p>";
+            listaServicos.innerHTML =
+                "<p>Nenhum serviço disponível no momento.</p>";
             return;
         }
 
@@ -70,7 +49,9 @@ async function carregarServicos() {
             }
 
             const icone = document.createElement("i");
-            icone.className = obterIcone(servico.nome);
+
+            // Usa o ícone cadastrado no painel administrativo
+            icone.className = servico.icone || "fa-solid fa-scissors";
 
             const titulo = document.createElement("h3");
             titulo.textContent = servico.nome;
