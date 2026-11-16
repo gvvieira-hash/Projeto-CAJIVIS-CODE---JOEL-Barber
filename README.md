@@ -1,4 +1,4 @@
-<img width="400" height="400" alt="image" src="file:///C:/Users/ELIPSE/Downloads/Logotipo%20joel%20barber.png" /># 
+<img width="400" height="400" alt="image" src="Logotipo_barbearia_profissional_cinza_e_vermelho-removebg-preview.png" /># 
 
 💈 Joel Barber — Sistema de Agendamento para Barbearia
 
