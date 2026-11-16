@@ -1,26 +1,30 @@
-﻿
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import pool from "./database.js";
-import { iniciarLembretesAutomaticos } from "./src/services/lembreteService.js";
+
+import clienteRoutes from "./src/routes/clienteRoutes.js";
+import catalogoRoutes from "./src/routes/catalogoRoutes.js";
+import agendamentoRoutes from "./src/routes/agendamentoRoutes.js";
+
 import {
   verificarSenha,
   gerarToken,
   autenticarAdmin
 } from "./auth-admin.js";
-import catalogoRoutes from "./src/routes/catalogoRoutes.js";
-dotenv.config();
-import agendamentoRoutes from "./src/routes/agendamentoRoutes.js";
-import axios from "axios";
-import { randomInt, createHash, timingSafeEqual } from "node:crypto";
 
+dotenv.config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
+
+// ROTAS MVC + PRISMA
+app.use("/api/clientes", clienteRoutes);
+
+// OUTRAS ROTAS
 app.use("/api", catalogoRoutes);
 app.use("/api", agendamentoRoutes);
 
@@ -57,6 +61,7 @@ app.post("/api/admin/login", async (req, res) => {
     }
 
     const admin = administradores[0];
+
     const senhaCorreta = await verificarSenha(
       senha,
       admin.senha_hash
@@ -141,87 +146,94 @@ app.get(
   }
 );
 
-app.patch("/api/admin/agendamentos/:id/concluir", autenticarAdmin, async (req, res) => {
-    try {
-        const id = Number(req.params.id);
-
-        if (!Number.isInteger(id) || id <= 0) {
-            return res.status(400).json({
-                erro: "ID de agendamento inválido."
-            });
-        }
-
-        const [resultado] = await pool.execute(
-            `UPDATE agendamentos
-             SET status = 'concluido'
-             WHERE id = ?
-             AND status IN ('agendado', 'confirmado')`,
-            [id]
-        );
-
-        if (resultado.affectedRows === 0) {
-            return res.status(400).json({
-                erro: "Agendamento não encontrado ou não pode ser concluído."
-            });
-        }
-
-        return res.json({
-            mensagem: "Agendamento concluído com sucesso!"
-        });
-
-    } catch (erro) {
-        console.error("Erro ao concluir agendamento:", erro);
-
-        return res.status(500).json({
-            erro: "Erro interno ao concluir agendamento."
-        });
-    }
-});
-
+// ========================================
+// CONCLUIR AGENDAMENTO
+// ========================================
 app.patch(
-    "/api/admin/agendamentos/:id/cancelar",
-    autenticarAdmin,
-    async (req, res) => {
-        try {
-            const id = Number(req.params.id);
+  "/api/admin/agendamentos/:id/concluir",
+  autenticarAdmin,
+  async (req, res) => {
+    try {
+      const id = Number(req.params.id);
 
-            if (!Number.isInteger(id) || id <= 0) {
-                return res.status(400).json({
-                    erro: "ID de agendamento inválido."
-                });
-            }
+      if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+          erro: "ID de agendamento inválido."
+        });
+      }
 
-            const [resultado] = await pool.execute(
-                `UPDATE agendamentos
-                 SET status = 'cancelado'
-                 WHERE id = ?
-                 AND status IN ('agendado', 'confirmado')`,
-                [id]
-            );
+      const [resultado] = await pool.execute(
+        `UPDATE agendamentos
+         SET status = 'concluido'
+         WHERE id = ?
+         AND status IN ('agendado', 'confirmado')`,
+        [id]
+      );
 
-            if (resultado.affectedRows === 0) {
-                return res.status(400).json({
-                    erro: "Agendamento não encontrado ou não pode ser cancelado."
-                });
-            }
+      if (resultado.affectedRows === 0) {
+        return res.status(400).json({
+          erro: "Agendamento não encontrado ou não pode ser concluído."
+        });
+      }
 
-            return res.json({
-                mensagem: "Agendamento cancelado com sucesso!"
-            });
+      return res.json({
+        mensagem: "Agendamento concluído com sucesso!"
+      });
+    } catch (erro) {
+      console.error("Erro ao concluir agendamento:", erro);
 
-        } catch (erro) {
-            console.error("Erro ao cancelar agendamento:", erro);
-
-            return res.status(500).json({
-                erro: "Erro interno ao cancelar agendamento."
-            });
-        }
+      return res.status(500).json({
+        erro: "Erro interno ao concluir agendamento."
+      });
     }
+  }
 );
 
+// ========================================
+// CANCELAR AGENDAMENTO - ADMIN
+// ========================================
+app.patch(
+  "/api/admin/agendamentos/:id/cancelar",
+  autenticarAdmin,
+  async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+
+      if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+          erro: "ID de agendamento inválido."
+        });
+      }
+
+      const [resultado] = await pool.execute(
+        `UPDATE agendamentos
+         SET status = 'cancelado'
+         WHERE id = ?
+         AND status IN ('agendado', 'confirmado')`,
+        [id]
+      );
+
+      if (resultado.affectedRows === 0) {
+        return res.status(400).json({
+          erro: "Agendamento não encontrado ou não pode ser cancelado."
+        });
+      }
+
+      return res.json({
+        mensagem: "Agendamento cancelado com sucesso!"
+      });
+    } catch (erro) {
+      console.error("Erro ao cancelar agendamento:", erro);
+
+      return res.status(500).json({
+        erro: "Erro interno ao cancelar agendamento."
+      });
+    }
+  }
+);
 
 // ========================================
-// ÁREA ADMINISTRATIVA: CLIENTES E BARBEIROS
+// ÁREA ADMINISTRATIVA: CLIENTES
 // ========================================
 app.get("/api/admin/clientes", autenticarAdmin, async (req, res) => {
   try {
@@ -230,13 +242,20 @@ app.get("/api/admin/clientes", autenticarAdmin, async (req, res) => {
       FROM clientes
       ORDER BY nome ASC
     `);
-    res.json(clientes);
+
+    return res.json(clientes);
   } catch (error) {
     console.error("Erro ao listar clientes no painel:", error.message);
-    res.status(500).json({ erro: "Não foi possível carregar os clientes." });
+
+    return res.status(500).json({
+      erro: "Não foi possível carregar os clientes."
+    });
   }
 });
 
+// ========================================
+// ÁREA ADMINISTRATIVA: BARBEIROS
+// ========================================
 app.get("/api/admin/barbeiros", autenticarAdmin, async (req, res) => {
   try {
     const [barbeiros] = await pool.query(`
@@ -244,90 +263,92 @@ app.get("/api/admin/barbeiros", autenticarAdmin, async (req, res) => {
       FROM barbeiros
       ORDER BY nome ASC
     `);
-    res.json(barbeiros);
+
+    return res.json(barbeiros);
   } catch (error) {
     console.error("Erro ao listar barbeiros no painel:", error.message);
-    res.status(500).json({ erro: "Não foi possível carregar os barbeiros." });
+
+    return res.status(500).json({
+      erro: "Não foi possível carregar os barbeiros."
+    });
   }
 });
 
-app.patch("/api/admin/barbeiros/:id/status", autenticarAdmin, async (req, res) => {
+app.patch(
+  "/api/admin/barbeiros/:id/status",
+  autenticarAdmin,
+  async (req, res) => {
     try {
-        const id = Number(req.params.id);
+      const id = Number(req.params.id);
 
-        if (!Number.isInteger(id) || id <= 0) {
-            return res.status(400).json({
-                erro: "ID do barbeiro inválido."
-            });
-        }
-
-        const [resultado] = await pool.query(
-            `UPDATE barbeiros
-             SET ativo = IF(ativo = 1, 0, 1)
-             WHERE id = ?`,
-            [id]
-        );
-
-        if (resultado.affectedRows === 0) {
-            return res.status(404).json({
-                erro: "Barbeiro não encontrado."
-            });
-        }
-
-        return res.json({
-            mensagem: "Disponibilidade do barbeiro atualizada!"
+      if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+          erro: "ID do barbeiro inválido."
         });
+      }
 
+      const [resultado] = await pool.query(
+        `UPDATE barbeiros
+         SET ativo = IF(ativo = 1, 0, 1)
+         WHERE id = ?`,
+        [id]
+      );
+
+      if (resultado.affectedRows === 0) {
+        return res.status(404).json({
+          erro: "Barbeiro não encontrado."
+        });
+      }
+
+      return res.json({
+        mensagem: "Disponibilidade do barbeiro atualizada!"
+      });
     } catch (error) {
-        console.error("Erro ao alterar disponibilidade:", error.message);
+      console.error("Erro ao alterar disponibilidade:", error.message);
 
-        return res.status(500).json({
-            erro: "Não foi possível alterar a disponibilidade."
-        });
+      return res.status(500).json({
+        erro: "Não foi possível alterar a disponibilidade."
+      });
     }
-});
-
-
-
+  }
+);
 
 app.post("/api/admin/barbeiros", autenticarAdmin, async (req, res) => {
-    try {
-        const { nome, foto } = req.body;
+  try {
+    const { nome, foto } = req.body;
 
-        if (!nome || !nome.trim()) {
-            return res.status(400).json({
-                erro: "Informe o nome do barbeiro."
-            });
-        }
-
-        if (!foto || !foto.startsWith("data:image/")) {
-            return res.status(400).json({
-                erro: "Selecione uma foto válida para o barbeiro."
-            });
-        }
-
-        const [resultado] = await pool.query(
-            "INSERT INTO barbeiros (nome, foto, ativo) VALUES (?, ?, 1)",
-            [nome.trim(), foto]
-        );
-
-        return res.status(201).json({
-            mensagem: "Barbeiro cadastrado com sucesso!",
-            id: resultado.insertId
-        });
-
-    } catch (error) {
-        console.error("Erro ao cadastrar barbeiro:", error.message);
-
-        return res.status(500).json({
-            erro: "Não foi possível cadastrar o barbeiro."
-        });
+    if (!nome || !nome.trim()) {
+      return res.status(400).json({
+        erro: "Informe o nome do barbeiro."
+      });
     }
+
+    if (!foto || !foto.startsWith("data:image/")) {
+      return res.status(400).json({
+        erro: "Selecione uma foto válida para o barbeiro."
+      });
+    }
+
+    const [resultado] = await pool.query(
+      "INSERT INTO barbeiros (nome, foto, ativo) VALUES (?, ?, 1)",
+      [nome.trim(), foto]
+    );
+
+    return res.status(201).json({
+      mensagem: "Barbeiro cadastrado com sucesso!",
+      id: resultado.insertId
+    });
+  } catch (error) {
+    console.error("Erro ao cadastrar barbeiro:", error.message);
+
+    return res.status(500).json({
+      erro: "Não foi possível cadastrar o barbeiro."
+    });
+  }
 });
 
 // ========================================
 // PRODUTOS: LISTAGEM PÚBLICA E GESTÃO ADMIN
-// Execute antes: sql/05_produtos.sql
 // ========================================
 app.get("/api/produtos", async (req, res) => {
   try {
@@ -337,10 +358,14 @@ app.get("/api/produtos", async (req, res) => {
       WHERE ativo = 1
       ORDER BY nome ASC
     `);
-    res.json(produtos);
+
+    return res.json(produtos);
   } catch (error) {
     console.error("Erro ao listar produtos da loja:", error.message);
-    res.status(500).json({ erro: "Não foi possível carregar os produtos." });
+
+    return res.status(500).json({
+      erro: "Não foi possível carregar os produtos."
+    });
   }
 });
 
@@ -351,570 +376,171 @@ app.get("/api/admin/produtos", autenticarAdmin, async (req, res) => {
       FROM produtos
       ORDER BY id DESC
     `);
-    res.json(produtos);
+
+    return res.json(produtos);
   } catch (error) {
     console.error("Erro ao listar produtos administrativos:", error.message);
-    res.status(500).json({ erro: "Não foi possível carregar os produtos." });
+
+    return res.status(500).json({
+      erro: "Não foi possível carregar os produtos."
+    });
   }
 });
 
 app.post("/api/admin/produtos", autenticarAdmin, async (req, res) => {
   try {
-    const { nome, descricao = "", preco, categoria, imagem_url = "", ativo = 1 } = req.body;
+    const {
+      nome,
+      descricao = "",
+      preco,
+      categoria,
+      imagem_url = "",
+      ativo = 1
+    } = req.body;
+
     const precoNumero = Number(preco);
     const categorias = ["cabelo", "barba", "acabamento", "acessorios"];
-    if (typeof nome !== "string" || !nome.trim() || !Number.isFinite(precoNumero) || precoNumero <= 0 || !categorias.includes(categoria)) {
-      return res.status(400).json({ erro: "Informe nome, preço válido e uma categoria." });
+
+    if (
+      typeof nome !== "string" ||
+      !nome.trim() ||
+      !Number.isFinite(precoNumero) ||
+      precoNumero <= 0 ||
+      !categorias.includes(categoria)
+    ) {
+      return res.status(400).json({
+        erro: "Informe nome, preço válido e uma categoria."
+      });
     }
-    const [resultado] = await pool.execute(`
-      INSERT INTO produtos (nome, descricao, preco, categoria, imagem_url, ativo)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `, [nome.trim(), String(descricao).trim(), precoNumero, categoria, String(imagem_url).trim(), ativo ? 1 : 0]);
-    res.status(201).json({ mensagem: "Produto cadastrado com sucesso!", id: resultado.insertId });
+
+    const [resultado] = await pool.execute(
+      `INSERT INTO produtos
+       (nome, descricao, preco, categoria, imagem_url, ativo)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        nome.trim(),
+        String(descricao).trim(),
+        precoNumero,
+        categoria,
+        String(imagem_url).trim(),
+        ativo ? 1 : 0
+      ]
+    );
+
+    return res.status(201).json({
+      mensagem: "Produto cadastrado com sucesso!",
+      id: resultado.insertId
+    });
   } catch (error) {
     console.error("Erro ao cadastrar produto:", error.message);
-    res.status(500).json({ erro: "Não foi possível cadastrar o produto. Confira se executou sql/05_produtos.sql." });
+
+    return res.status(500).json({
+      erro: "Não foi possível cadastrar o produto. Confira se executou sql/05_produtos.sql."
+    });
   }
 });
 
 app.put("/api/admin/produtos/:id", autenticarAdmin, async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const { nome, descricao = "", preco, categoria, imagem_url = "", ativo = 1 } = req.body;
+
+    const {
+      nome,
+      descricao = "",
+      preco,
+      categoria,
+      imagem_url = "",
+      ativo = 1
+    } = req.body;
+
     const precoNumero = Number(preco);
     const categorias = ["cabelo", "barba", "acabamento", "acessorios"];
-    if (!Number.isInteger(id) || id <= 0 || typeof nome !== "string" || !nome.trim() || !Number.isFinite(precoNumero) || precoNumero <= 0 || !categorias.includes(categoria)) {
-      return res.status(400).json({ erro: "Dados do produto inválidos." });
-    }
-    const [resultado] = await pool.execute(`
-      UPDATE produtos
-      SET nome = ?, descricao = ?, preco = ?, categoria = ?, imagem_url = ?, ativo = ?
-      WHERE id = ?
-    `, [nome.trim(), String(descricao).trim(), precoNumero, categoria, String(imagem_url).trim(), ativo ? 1 : 0, id]);
-    if (!resultado.affectedRows) return res.status(404).json({ erro: "Produto não encontrado." });
-    res.json({ mensagem: "Produto atualizado com sucesso!" });
-  } catch (error) {
-    console.error("Erro ao atualizar produto:", error.message);
-    res.status(500).json({ erro: "Não foi possível atualizar o produto." });
-  }
-});
-
-app.delete("/api/admin/produtos/:id", autenticarAdmin, async (req, res) => {
-  try {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id <= 0) return res.status(400).json({ erro: "ID de produto inválido." });
-    const [resultado] = await pool.execute("DELETE FROM produtos WHERE id = ?", [id]);
-    if (!resultado.affectedRows) return res.status(404).json({ erro: "Produto não encontrado." });
-    res.json({ mensagem: "Produto excluído com sucesso!" });
-  } catch (error) {
-    console.error("Erro ao excluir produto:", error.message);
-    res.status(500).json({ erro: "Não foi possível excluir o produto." });
-  }
-});
-
-// ========================================
-
-
- // ========================================
-// GERENCIAR SERVIÇOS
-// ========================================
-
-const iconesServicosPermitidos = [
-  "fa-solid fa-scissors",
-  "fa-solid fa-user",
-  "fa-solid fa-user-tie",
-  "fa-solid fa-face-smile",
-  "fa-solid fa-eye",
-  "fa-solid fa-wand-magic-sparkles",
-  "fa-solid fa-spray-can-sparkles",
-  "fa-solid fa-star"
-];
-
-app.get("/api/admin/servicos", autenticarAdmin, async (req, res) => {
-  try {
-    const [servicos] = await pool.query(`
-      SELECT id, nome, preco, duracao_minutos, ativo, icone
-      FROM servicos
-      ORDER BY id DESC
-    `);
-
-    res.json(servicos);
-  } catch (error) {
-    console.error("Erro ao listar serviços:", error.message);
-    res.status(500).json({
-      erro: "Não foi possível carregar os serviços."
-    });
-  }
-});
-
-app.post("/api/admin/servicos", autenticarAdmin, async (req, res) => {
-  try {
-    const {
-      nome,
-      preco,
-      duracao_minutos,
-      icone = "fa-solid fa-scissors",
-      ativo = 1
-    } = req.body;
-
-    const precoNumero = Number(preco);
-    const duracao = Number(duracao_minutos);
-
-    if (
-      typeof nome !== "string" ||
-      !nome.trim() ||
-      nome.trim().length > 100 ||
-      !Number.isFinite(precoNumero) ||
-      precoNumero <= 0 ||
-      !Number.isInteger(duracao) ||
-      duracao <= 0 ||
-      !iconesServicosPermitidos.includes(icone)
-    ) {
-      return res.status(400).json({
-        erro: "Informe nome, preço, duração e ícone válidos."
-      });
-    }
-
-    const [resultado] = await pool.execute(`
-      INSERT INTO servicos
-      (nome, preco, duracao_minutos, ativo, icone)
-      VALUES (?, ?, ?, ?, ?)
-    `, [
-      nome.trim(),
-      precoNumero,
-      duracao,
-      ativo ? 1 : 0,
-      icone
-    ]);
-
-    res.status(201).json({
-      mensagem: "Serviço cadastrado com sucesso!",
-      id: resultado.insertId
-    });
-
-  } catch (error) {
-    console.error("Erro ao cadastrar serviço:", error.message);
-    res.status(500).json({
-      erro: "Não foi possível cadastrar o serviço."
-    });
-  }
-});
-
-app.put("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
-  try {
-    const id = Number(req.params.id);
-
-    const {
-      nome,
-      preco,
-      duracao_minutos,
-      icone = "fa-solid fa-scissors",
-      ativo = 1
-    } = req.body;
-
-    const precoNumero = Number(preco);
-    const duracao = Number(duracao_minutos);
 
     if (
       !Number.isInteger(id) ||
       id <= 0 ||
       typeof nome !== "string" ||
       !nome.trim() ||
-      nome.trim().length > 100 ||
       !Number.isFinite(precoNumero) ||
       precoNumero <= 0 ||
-      !Number.isInteger(duracao) ||
-      duracao <= 0 ||
-      !iconesServicosPermitidos.includes(icone)
+      !categorias.includes(categoria)
     ) {
       return res.status(400).json({
-        erro: "Dados do serviço inválidos."
+        erro: "Dados do produto inválidos."
       });
     }
 
-    const [resultado] = await pool.execute(`
-      UPDATE servicos
-      SET nome = ?, preco = ?, duracao_minutos = ?, ativo = ?, icone = ?
-      WHERE id = ?
-    `, [
-      nome.trim(),
-      precoNumero,
-      duracao,
-      ativo ? 1 : 0,
-      icone,
-      id
-    ]);
+    const [resultado] = await pool.execute(
+      `UPDATE produtos
+       SET nome = ?, descricao = ?, preco = ?, categoria = ?,
+           imagem_url = ?, ativo = ?
+       WHERE id = ?`,
+      [
+        nome.trim(),
+        String(descricao).trim(),
+        precoNumero,
+        categoria,
+        String(imagem_url).trim(),
+        ativo ? 1 : 0,
+        id
+      ]
+    );
 
     if (!resultado.affectedRows) {
       return res.status(404).json({
-        erro: "Serviço não encontrado."
+        erro: "Produto não encontrado."
       });
     }
 
-    res.json({
-      mensagem: "Serviço atualizado com sucesso!"
+    return res.json({
+      mensagem: "Produto atualizado com sucesso!"
     });
-
   } catch (error) {
-    console.error("Erro ao atualizar serviço:", error.message);
-    res.status(500).json({
-      erro: "Não foi possível atualizar o serviço."
+    console.error("Erro ao atualizar produto:", error.message);
+
+    return res.status(500).json({
+      erro: "Não foi possível atualizar o produto."
     });
   }
 });
 
-app.delete("/api/admin/servicos/:id", autenticarAdmin, async (req, res) => {
+app.delete("/api/admin/produtos/:id", autenticarAdmin, async (req, res) => {
   try {
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
       return res.status(400).json({
-        erro: "ID de serviço inválido."
+        erro: "ID de produto inválido."
       });
     }
 
     const [resultado] = await pool.execute(
-      "DELETE FROM servicos WHERE id = ?",
+      "DELETE FROM produtos WHERE id = ?",
       [id]
     );
 
     if (!resultado.affectedRows) {
       return res.status(404).json({
-        erro: "Serviço não encontrado."
+        erro: "Produto não encontrado."
       });
     }
 
-    res.json({
-      mensagem: "Serviço excluído com sucesso!"
+    return res.json({
+      mensagem: "Produto excluído com sucesso!"
     });
-
   } catch (error) {
-    console.error("Erro ao excluir serviço:", error.message);
-    res.status(500).json({
-      erro: "Não foi possível excluir o serviço. Verifique se ele possui agendamentos vinculados."
-    });
-  }
-});
-
-
-// CADASTRAR CLIENTE
-// ========================================
-
-// ========================================
-// CADASTRO COM CONFIRMAÇÃO POR E-MAIL
-// ========================================
-app.post("/api/clientes", async (req, res) => {
-  try {
-    const { nome, telefone, email, senha } = req.body;
-
-    if (
-      typeof nome !== "string" ||
-      typeof telefone !== "string" ||
-      typeof email !== "string" ||
-      typeof senha !== "string" ||
-      !nome.trim() ||
-      !telefone.trim() ||
-      !email.trim() ||
-      senha.length < 6
-    ) {
-      return res.status(400).json({
-        erro: "Preencha todos os campos. A senha precisa ter pelo menos 6 caracteres."
-      });
-    }
-console.log("DIAGNÓSTICO DAS VARIÁVEIS:", {
-    BREVO_API_KEY: Boolean(process.env.BREVO_API_KEY?.trim()),
-    BREVO_SENDER_EMAIL: Boolean(process.env.BREVO_SENDER_EMAIL?.trim()),
-    EMAIL_CODE_SECRET: Boolean(process.env.EMAIL_CODE_SECRET?.trim())
-});
-    if (!process.env.BREVO_API_KEY ||
-        !process.env.BREVO_SENDER_EMAIL ||
-        !process.env.EMAIL_CODE_SECRET) {
-      return res.status(500).json({
-        erro: "Configuração de e-mail incompleta no servidor."
-      });
-    }
-
-    const emailNormalizado = email.trim().toLowerCase();
-
-    const [existentes] = await pool.execute(
-      "SELECT id FROM clientes WHERE email = ? LIMIT 1",
-      [emailNormalizado]
-    );
-
-    if (existentes.length > 0) {
-      return res.status(409).json({
-        erro: "Já existe um cadastro com esse e-mail. Tente entrar na sua conta."
-      });
-    }
-
-    const [pendentes] = await pool.execute(
-      "SELECT criado_em FROM verificacoes_email WHERE email = ? LIMIT 1",
-      [emailNormalizado]
-    );
-
-    if (
-      pendentes.length > 0 &&
-      Date.now() - new Date(pendentes[0].criado_em).getTime() < 60000
-    ) {
-      return res.status(429).json({
-        erro: "Aguarde um minuto antes de solicitar outro código."
-      });
-    }
-
-    const codigo = String(randomInt(100000, 1000000));
-
-    const codigoHash = createHash("sha256")
-      .update(`${emailNormalizado}:${codigo}:${process.env.EMAIL_CODE_SECRET}`)
-      .digest("hex");
-
-    const senhaHash = await bcrypt.hash(senha, 10);
-
-    await pool.execute(
-      `INSERT INTO verificacoes_email
-       (email, nome, telefone, senha_hash, codigo_hash, expira_em, tentativas)
-       VALUES (?, ?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE), 0)
-       ON DUPLICATE KEY UPDATE
-       nome = VALUES(nome),
-       telefone = VALUES(telefone),
-       senha_hash = VALUES(senha_hash),
-       codigo_hash = VALUES(codigo_hash),
-       expira_em = DATE_ADD(NOW(), INTERVAL 10 MINUTE),
-       tentativas = 0,
-       criado_em = CURRENT_TIMESTAMP`,
-      [
-        emailNormalizado,
-        nome.trim(),
-        telefone.trim(),
-        senhaHash,
-        codigoHash
-      ]
-    );
-
-    try {
-      await axios.post(
-        "https://api.brevo.com/v3/smtp/email",
-        {
-          sender: {
-            name: "Joel Barber",
-            email: process.env.BREVO_SENDER_EMAIL
-          },
-          to: [{ email: emailNormalizado }],
-          subject: "Confirme seu cadastro - Joel Barber",
-          htmlContent: `
-            <div style="font-family: Arial, sans-serif; padding: 20px;">
-              <h2>Bem-vindo ao Joel Barber!</h2>
-              <p>Use o código abaixo para confirmar seu cadastro:</p>
-              <h1 style="letter-spacing: 8px;">${codigo}</h1>
-              <p>Este código expira em 10 minutos.</p>
-              <p>Se você não solicitou este cadastro, ignore este e-mail.</p>
-            </div>
-          `
-        },
-        {
-          headers: {
-            "api-key": process.env.BREVO_API_KEY,
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          timeout: 15000
-        }
-      );
-    } catch (erroEmail) {
-      await pool.execute(
-        "DELETE FROM verificacoes_email WHERE email = ? AND codigo_hash = ?",
-        [emailNormalizado, codigoHash]
-      );
-
-      console.error(
-        "Erro no envio pelo Brevo:",
-        erroEmail.response?.data || erroEmail.message
-      );
-
-      return res.status(502).json({
-        erro: "Não foi possível enviar o e-mail de confirmação."
-      });
-    }
-
-    return res.status(200).json({
-      mensagem: "Código de confirmação enviado para seu e-mail."
-    });
-
-  } catch (error) {
-    console.error("Erro ao solicitar confirmação:", error.message);
+    console.error("Erro ao excluir produto:", error.message);
 
     return res.status(500).json({
-      erro: "Não foi possível iniciar o cadastro."
+      erro: "Não foi possível excluir o produto."
     });
   }
 });
 
 // ========================================
-// CONFIRMAR CADASTRO POR E-MAIL
-// ========================================
-app.post("/api/clientes/confirmar", async (req, res) => {
-  let conexao;
-
-  try {
-    const { email, codigo } = req.body;
-
-    if (
-      typeof email !== "string" ||
-      typeof codigo !== "string" ||
-      !/^\d{6}$/.test(codigo)
-    ) {
-      return res.status(400).json({
-        erro: "Informe um e-mail e um código válido de 6 dígitos."
-      });
-    }
-
-    if (!process.env.EMAIL_CODE_SECRET) {
-      return res.status(500).json({
-        erro: "Configuração de segurança incompleta."
-      });
-    }
-
-    const emailNormalizado = email.trim().toLowerCase();
-
-    conexao = await pool.getConnection();
-    await conexao.beginTransaction();
-
-    const [pendentes] = await conexao.execute(
-      `SELECT * FROM verificacoes_email
-       WHERE email = ?
-       LIMIT 1
-       FOR UPDATE`,
-      [emailNormalizado]
-    );
-
-    if (pendentes.length === 0) {
-      await conexao.rollback();
-
-      return res.status(400).json({
-        erro: "Não existe uma confirmação pendente para esse e-mail."
-      });
-    }
-
-    const pendente = pendentes[0];
-
-    if (new Date(pendente.expira_em).getTime() <= Date.now()) {
-      await conexao.execute(
-        "DELETE FROM verificacoes_email WHERE id = ?",
-        [pendente.id]
-      );
-
-      await conexao.commit();
-
-      return res.status(400).json({
-        erro: "O código expirou. Solicite um novo cadastro."
-      });
-    }
-
-    if (pendente.tentativas >= 5) {
-      await conexao.execute(
-        "DELETE FROM verificacoes_email WHERE id = ?",
-        [pendente.id]
-      );
-
-      await conexao.commit();
-
-      return res.status(429).json({
-        erro: "Limite de tentativas atingido. Solicite um novo código."
-      });
-    }
-
-    const codigoHashRecebido = createHash("sha256")
-      .update(`${emailNormalizado}:${codigo}:${process.env.EMAIL_CODE_SECRET}`)
-      .digest("hex");
-
-    const hashSalvo = Buffer.from(pendente.codigo_hash, "hex");
-    const hashRecebido = Buffer.from(codigoHashRecebido, "hex");
-
-    const codigoCorreto =
-      hashSalvo.length === hashRecebido.length &&
-      timingSafeEqual(hashSalvo, hashRecebido);
-
-    if (!codigoCorreto) {
-      await conexao.execute(
-        "UPDATE verificacoes_email SET tentativas = tentativas + 1 WHERE id = ?",
-        [pendente.id]
-      );
-
-      await conexao.commit();
-
-      return res.status(400).json({
-        erro: "Código incorreto. Confira seu e-mail e tente novamente."
-      });
-    }
-
-    const [existentes] = await conexao.execute(
-      "SELECT id FROM clientes WHERE email = ? LIMIT 1",
-      [emailNormalizado]
-    );
-
-    if (existentes.length > 0) {
-      await conexao.execute(
-        "DELETE FROM verificacoes_email WHERE id = ?",
-        [pendente.id]
-      );
-
-      await conexao.commit();
-
-      return res.status(409).json({
-        erro: "Já existe um cadastro com esse e-mail."
-      });
-    }
-
-    await conexao.execute(
-      `INSERT INTO clientes (nome, telefone, email, senha_hash)
-       VALUES (?, ?, ?, ?)`,
-      [
-        pendente.nome,
-        pendente.telefone,
-        pendente.email,
-        pendente.senha_hash
-      ]
-    );
-
-    await conexao.execute(
-      "DELETE FROM verificacoes_email WHERE id = ?",
-      [pendente.id]
-    );
-
-    await conexao.commit();
-
-    return res.status(201).json({
-      mensagem: "E-mail confirmado e cadastro realizado com sucesso!",
-      cliente: {
-        nome: pendente.nome,
-        telefone: pendente.telefone,
-        email: pendente.email
-      }
-    });
-
-  } catch (error) {
-    if (conexao) {
-      await conexao.rollback();
-    }
-
-    console.error("Erro ao confirmar cadastro:", error.message);
-
-    return res.status(500).json({
-      erro: "Não foi possível confirmar o cadastro."
-    });
-
-  } finally {
-    if (conexao) {
-      conexao.release();
-    }
-  }
-});
-
-
- // ========================================
 // LOGIN DO CLIENTE
 // ========================================
 app.post("/api/clientes/login", async (req, res) => {
-  
   try {
     const { email, senha } = req.body;
 
@@ -947,7 +573,7 @@ app.post("/api/clientes/login", async (req, res) => {
 
     if (!cliente.senha_hash) {
       return res.status(401).json({
-        erro: "Sua conta ainda não possui uma senha cadastrada. Crie uma nova conta com outro e-mail ou regularize seu cadastro."
+        erro: "Sua conta ainda não possui uma senha cadastrada. Regularize seu cadastro."
       });
     }
 
@@ -955,9 +581,6 @@ app.post("/api/clientes/login", async (req, res) => {
       senha,
       cliente.senha_hash
     );
-    console.log("E-mail encontrado:", cliente.email);
-console.log("Hash existe:", Boolean(cliente.senha_hash));
-console.log("Senha correta?", senhaCorreta);
 
     if (!senhaCorreta) {
       return res.status(401).json({
@@ -979,30 +602,6 @@ console.log("Senha correta?", senhaCorreta);
 
     return res.status(500).json({
       erro: "Não foi possível realizar o login."
-
-      
-    });
-  }
-});
-
-
-// ========================================
-// LISTAR CLIENTES
-// ========================================
-app.get("/api/clientes", async (req, res) => {
-  try {
-    const [clientes] = await pool.query(`
-      SELECT id, nome, telefone, email, criado_em
-      FROM clientes
-      ORDER BY id DESC
-    `);
-
-    return res.json(clientes);
-  } catch (error) {
-    console.error("Erro ao buscar clientes:", error.message);
-
-    return res.status(500).json({
-      erro: "Erro ao buscar clientes."
     });
   }
 });
@@ -1029,25 +628,26 @@ app.get("/api/servicos", async (req, res) => {
   }
 });
 
-// Lista somente os barbeiros disponíveis para agendamento
+// ========================================
+// LISTAR BARBEIROS DISPONÍVEIS
+// ========================================
 app.get("/api/barbeiros", async (req, res) => {
-    try {
-        const [barbeiros] = await pool.query(`
-            SELECT id, nome, foto
-            FROM barbeiros
-            WHERE ativo = 1
-            ORDER BY nome ASC
-        `);
+  try {
+    const [barbeiros] = await pool.query(`
+      SELECT id, nome, foto
+      FROM barbeiros
+      WHERE ativo = 1
+      ORDER BY nome ASC
+    `);
 
-        return res.json(barbeiros);
+    return res.json(barbeiros);
+  } catch (error) {
+    console.error("Erro ao listar barbeiros:", error.message);
 
-    } catch (error) {
-        console.error("Erro ao listar barbeiros:", error.message);
-
-        return res.status(500).json({
-            erro: "Não foi possível carregar os barbeiros."
-        });
-    }
+    return res.status(500).json({
+      erro: "Não foi possível carregar os barbeiros."
+    });
+  }
 });
 
 // ========================================
@@ -1084,6 +684,7 @@ app.get("/api/agendamentos", async (req, res) => {
     });
   }
 });
+
 // ========================================
 // LISTAR AGENDAMENTOS DE UM CLIENTE
 // ========================================
@@ -1126,60 +727,61 @@ app.get("/api/clientes/meus-agendamentos", async (req, res) => {
   }
 });
 
-app.patch("/api/clientes/meus-agendamentos/:id/cancelar", async (req, res) => {
+// ========================================
+// CANCELAR AGENDAMENTO DO CLIENTE
+// ========================================
+app.patch(
+  "/api/clientes/meus-agendamentos/:id/cancelar",
+  async (req, res) => {
     try {
-        const id = Number(req.params.id);
-        const email = req.body?.email;
+      const id = Number(req.params.id);
+      const email = req.body?.email;
 
-        if (!Number.isInteger(id) || id <= 0) {
-            return res.status(400).json({
-                erro: "ID do agendamento inválido."
-            });
-        }
-
-        if (typeof email !== "string" || !email.trim()) {
-            return res.status(400).json({
-                erro: "E-mail do cliente não informado."
-            });
-        }
-
-        const [resultado] = await pool.execute(
-            `UPDATE agendamentos a
-             INNER JOIN clientes c ON c.id = a.cliente_id
-             SET a.status = 'cancelado'
-             WHERE a.id = ?
-               AND LOWER(c.email) = LOWER(?)
-               AND a.status IN ('agendado', 'confirmado')
-               AND TIMESTAMP(a.data_agendamento, a.hora_agendamento) > NOW()`,
-            [id, email.trim()]
-        );
-
-        if (resultado.affectedRows === 0) {
-            return res.status(404).json({
-                erro: "Agendamento não encontrado, já cancelado, concluído ou não pode mais ser cancelado."
-            });
-        }
-
-        return res.json({
-            mensagem: "Agendamento cancelado com sucesso!"
+      if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+          erro: "ID do agendamento inválido."
         });
+      }
+
+      if (typeof email !== "string" || !email.trim()) {
+        return res.status(400).json({
+          erro: "E-mail do cliente não informado."
+        });
+      }
+
+      const [resultado] = await pool.execute(
+        `UPDATE agendamentos a
+         INNER JOIN clientes c ON c.id = a.cliente_id
+         SET a.status = 'cancelado'
+         WHERE a.id = ?
+           AND LOWER(c.email) = LOWER(?)
+           AND a.status IN ('agendado', 'confirmado')
+           AND TIMESTAMP(a.data_agendamento, a.hora_agendamento) > NOW()`,
+        [id, email.trim()]
+      );
+
+      if (resultado.affectedRows === 0) {
+        return res.status(404).json({
+          erro: "Agendamento não encontrado, já cancelado, concluído ou não pode mais ser cancelado."
+        });
+      }
+
+      return res.json({
+        mensagem: "Agendamento cancelado com sucesso!"
+      });
     } catch (error) {
-        console.error("Erro ao cancelar agendamento:", error);
+      console.error("Erro ao cancelar agendamento:", error);
 
-        return res.status(500).json({
-            erro: "Não foi possível cancelar o agendamento."
-        });
+      return res.status(500).json({
+        erro: "Não foi possível cancelar o agendamento."
+      });
     }
-});
+  }
+);
 
 // ========================================
 // TESTAR CONEXÃO COM MYSQL
 // ========================================
-console.log("HOST:", process.env.DB_HOST);
-console.log("PORT:", process.env.DB_PORT);
-console.log("USER:", process.env.DB_USER);
-console.log("DATABASE:", process.env.DB_NAME);
-console.log("PASSWORD CONFIGURADA:", !!process.env.DB_PASSWORD);
 app.get("/api/health", async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -1206,6 +808,4 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Joel Barber rodando em http://localhost:${PORT}`);
-
-    iniciarLembretesAutomaticos();
 });
